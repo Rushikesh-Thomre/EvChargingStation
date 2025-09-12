@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Session History</title>
+    <title>System Alerts</title>
     <link rel="icon" href="<?php echo base_url('Images\logo.png'); ?>" type="image/png">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
@@ -60,7 +60,7 @@
             font-weight: bold;
         }
 
-        /* Session History Dashboard Styles */
+        /* System Alerts Dashboard Styles */
         .dashboard-container {
             width: 100%;
             max-width: 1200px;
@@ -164,7 +164,7 @@
             display: none;
         }
 
-        .sessions-table {
+        .alerts-table {
             width: 100%;
             border-collapse: collapse;
             background: #ffffff;
@@ -172,14 +172,14 @@
             overflow: hidden;
         }
 
-        .sessions-table th, .sessions-table td {
+        .alerts-table th, .alerts-table td {
             padding: 15px;
             text-align: left;
             color: #333;
             border-bottom: 1px solid #e0e0e0;
         }
 
-        .sessions-table th {
+        .alerts-table th {
             background: #f5f7fa;
             color: #333;
             font-weight: 700;
@@ -187,11 +187,11 @@
             letter-spacing: 1px;
         }
 
-        .sessions-table tr:hover {
+        .alerts-table tr:hover {
             background: #f9f9f9;
         }
 
-        .status-completed {
+        .status-resolved {
             color: #28a745;
             font-weight: 600;
             background: rgba(40, 167, 69, 0.1);
@@ -199,7 +199,7 @@
             border-radius: 12px;
         }
 
-        .status-failed {
+        .status-active {
             color: #dc3545;
             font-weight: 600;
             background: rgba(220, 53, 69, 0.1);
@@ -226,7 +226,7 @@
         }
 
         /* Modal Styles */
-        .session-modal {
+        .alert-modal {
             display: none;
             position: fixed;
             top: 0;
@@ -240,7 +240,7 @@
             align-items: center;
         }
 
-        .session-modal.active {
+        .alert-modal.active {
             display: flex;
         }
 
@@ -313,7 +313,7 @@
             background: #5a6268;
         }
 
-        .sessions-table-wrapper {
+        .alerts-table-wrapper {
             overflow-x: auto;
         }
 
@@ -363,7 +363,7 @@
                 padding: 10px 20px;
             }
 
-            .sessions-table th, .sessions-table td {
+            .alerts-table th, .alerts-table td {
                 padding: 10px;
                 font-size: 13px;
             }
@@ -397,13 +397,13 @@
                 padding: 8px 15px;
             }
 
-            .sessions-table {
+            .alerts-table {
                 display: block;
                 overflow-x: auto;
                 white-space: nowrap;
             }
 
-            .sessions-table th, .sessions-table td {
+            .alerts-table th, .alerts-table td {
                 min-width: 100px;
                 font-size: 12px;
                 padding: 8px;
@@ -432,8 +432,8 @@
         }
 
         /* Blur Sidebar and Content when Modal is Active */
-        .session-modal.active ~ .wrapper #sidebar,
-        .session-modal.active ~ .wrapper .content {
+        .alert-modal.active ~ .wrapper #sidebar,
+        .alert-modal.active ~ .wrapper .content {
             filter: blur(5px);
             transition: filter 0.3s ease;
         }
@@ -461,7 +461,7 @@
                 <div id="datetime"></div>
                 <div class="dashboard-container">
                     <div class="dashboard-header">
-                        <h2 class="dashboard-title">Session History</h2>
+                        <h2 class="dashboard-title">System Alerts History</h2>
                         <div>
                             <button class="filter-btn" id="filterBtn"><i class="fas fa-filter me-2"></i>Filter</button>
                             <button class="clear-filter-btn" id="clearFilterBtn"><i class="fas fa-times me-2"></i>Clear Filters</button>
@@ -479,104 +479,87 @@
                             <div class="error-message" id="endDateError">End date must be after start date.</div>
                         </div>
                         <div class="form-group">
-                            <label for="status">Status</label>
-                            <select id="status" name="status" class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500">
-                                <option value="">All Statuses</option>
-                                <option value="Completed">Completed</option>
-                                <option value="Failed">Failed</option>
+                            <label for="alertType">Alert Type</label>
+                            <select id="alertType" name="alertType" class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500">
+                                <option value="">All Types</option>
+                                <option value="Error">Error</option>
+                                <option value="Warning">Warning</option>
+                                <option value="Info">Info</option>
                             </select>
-                            <div class="error-message" id="statusError">Please select a valid status.</div>
+                            <div class="error-message" id="alertTypeError">Please select a valid alert type.</div>
                         </div>
                         <div class="form-group">
-                            <label for="user">User</label>
-                            <input type="text" id="user" name="user" maxlength="50" class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500">
-                            <div class="error-message" id="userError">User name must be 2-50 characters.</div>
+                            <label for="message">Message</label>
+                            <input type="text" id="message" name="message" maxlength="100" class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500">
+                            <div class="error-message" id="messageError">Message must be 2-100 characters (letters, numbers, spaces, or punctuation).</div>
                         </div>
                         <div class="form-actions">
                             <button type="submit" class="filter-btn" onclick="applyFilters()">Apply Filters</button>
                             <button type="button" class="clear-filter-btn" onclick="toggleFilterForm()">Cancel</button>
                         </div>
                     </div>
-                    <div class="sessions-table-wrapper">
-                        <table class="sessions-table">
+                    <div class="alerts-table-wrapper">
+                        <table class="alerts-table">
                             <thead>
                                 <tr>
-                                    <th>Session ID</th>
+                                    <th>Alert ID</th>
                                     <th>Charger ID</th>
-                                    <th>User</th>
-                                    <th>Vehicle</th>
+                                    <th>Alert Type</th>
+                                    <th>Message</th>
+                                    <th>Timestamp</th>
                                     <th>Status</th>
-                                    <th>Start Time</th>
-                                    <th>End Time</th>
-                                    <th>Energy Delivered</th>
-                                    <th>Cost</th>
                                     <th>Actions</th>
                                 </tr>
                             </thead>
-                            <tbody id="sessionsTbody">
+                            <tbody id="alertsTbody">
                                 <?php
-                                // Sample session history data
-                                $sessions = [
+                                // Sample alert data
+                                $alerts = [
                                     [
-                                        'id' => 1001,
+                                        'alert_id' => 2001,
                                         'charger_id' => 1,
-                                        'user' => 'John Doe',
-                                        'vehicle' => 'Tesla Model 3',
-                                        'status' => 'Completed',
-                                        'start_time' => '2025-09-12 14:30:25',
-                                        'end_time' => '2025-09-12 15:30:25',
-                                        'energy_delivered' => '18.5 kWh',
-                                        'cost' => '$3.70'
+                                        'alert_type' => 'Error',
+                                        'message' => 'Charger offline due to power failure',
+                                        'timestamp' => '2025-09-12 14:30:25',
+                                        'status' => 'Active'
                                     ],
                                     [
-                                        'id' => 1002,
+                                        'alert_id' => 2002,
                                         'charger_id' => 2,
-                                        'user' => 'Jane Smith',
-                                        'vehicle' => 'Nissan Leaf',
-                                        'status' => 'Completed',
-                                        'start_time' => '2025-09-11 13:45:10',
-                                        'end_time' => '2025-09-11 14:20:45',
-                                        'energy_delivered' => '15.2 kWh',
-                                        'cost' => '$3.04'
+                                        'alert_type' => 'Warning',
+                                        'message' => 'High temperature detected',
+                                        'timestamp' => '2025-09-11 13:45:10',
+                                        'status' => 'Resolved'
                                     ],
                                     [
-                                        'id' => 1003,
+                                        'alert_id' => 2003,
                                         'charger_id' => 4,
-                                        'user' => 'Mike Johnson',
-                                        'vehicle' => 'Chevrolet Bolt',
-                                        'status' => 'Failed',
-                                        'start_time' => '2025-09-10 15:10:30',
-                                        'end_time' => '2025-09-10 15:15:30',
-                                        'energy_delivered' => '0 kWh',
-                                        'cost' => '$0.00'
+                                        'alert_type' => 'Info',
+                                        'message' => 'Maintenance scheduled',
+                                        'timestamp' => '2025-09-10 15:10:30',
+                                        'status' => 'Resolved'
                                     ],
                                     [
-                                        'id' => 1004,
+                                        'alert_id' => 2004,
                                         'charger_id' => 3,
-                                        'user' => 'Sarah Wilson',
-                                        'vehicle' => 'BMW i3',
-                                        'status' => 'Completed',
-                                        'start_time' => '2025-09-09 12:15:00',
-                                        'end_time' => '2025-09-09 13:00:00',
-                                        'energy_delivered' => '12.8 kWh',
-                                        'cost' => '$2.56'
+                                        'alert_type' => 'Error',
+                                        'message' => 'Connection error with vehicle',
+                                        'timestamp' => '2025-09-09 12:15:00',
+                                        'status' => 'Active'
                                     ]
                                 ];
 
-                                foreach ($sessions as $session) {
-                                    $statusClass = strtolower($session['status']) === 'completed' ? 'status-completed' : 'status-failed';
-                                    echo "<tr data-session-id='" . $session['id'] . "'>";
-                                    echo "<td><strong>#" . $session['id'] . "</strong></td>";
-                                    echo "<td>Charger " . $session['charger_id'] . "</td>";
-                                    echo "<td>" . htmlspecialchars($session['user']) . "</td>";
-                                    echo "<td>" . htmlspecialchars($session['vehicle']) . "</td>";
-                                    echo "<td><span class='$statusClass'>" . $session['status'] . "</span></td>";
-                                    echo "<td>" . date('Y-m-d H:i:s', strtotime($session['start_time'])) . "</td>";
-                                    echo "<td>" . date('Y-m-d H:i:s', strtotime($session['end_time'])) . "</td>";
-                                    echo "<td>" . $session['energy_delivered'] . "</td>";
-                                    echo "<td>" . $session['cost'] . "</td>";
+                                foreach ($alerts as $alert) {
+                                    $statusClass = strtolower($alert['status']) === 'resolved' ? 'status-resolved' : 'status-active';
+                                    echo "<tr data-alert-id='" . $alert['alert_id'] . "'>";
+                                    echo "<td><strong>#" . $alert['alert_id'] . "</strong></td>";
+                                    echo "<td>Charger " . $alert['charger_id'] . "</td>";
+                                    echo "<td>" . htmlspecialchars($alert['alert_type']) . "</td>";
+                                    echo "<td>" . htmlspecialchars($alert['message']) . "</td>";
+                                    echo "<td>" . date('Y-m-d H:i:s', strtotime($alert['timestamp'])) . "</td>";
+                                    echo "<td><span class='$statusClass'>" . $alert['status'] . "</span></td>";
                                     echo "<td>";
-                                    echo "<button class='action-btn' onclick='viewSession(" . json_encode($session) . ")'>View</button>";
+                                    echo "<button class='action-btn' onclick='viewAlert(" . json_encode($alert) . ")'>View</button>";
                                     echo "</td>";
                                     echo "</tr>";
                                 }
@@ -589,15 +572,15 @@
         </div>
     </div>
 
-    <!-- Session Details Modal -->
-    <div id="sessionModal" class="session-modal">
+    <!-- Alert Details Modal -->
+    <div id="alertModal" class="alert-modal">
         <div class="modal-content">
-            <div class="modal-header" id="sessionModalTitle">Session Details</div>
-            <div class="detail-grid" id="sessionDetails">
+            <div class="modal-header" id="alertModalTitle">Alert Details</div>
+            <div class="detail-grid" id="alertDetails">
                 <!-- Dynamic content populated by JavaScript -->
             </div>
             <div class="form-actions">
-                <button type="button" class="close-btn" onclick="closeSessionModal()">Close</button>
+                <button type="button" class="close-btn" onclick="closeAlertModal()">Close</button>
             </div>
         </div>
     </div>
@@ -614,30 +597,27 @@
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
     <script>
-        // Sessions data
-        let sessions = <?php echo json_encode($sessions); ?>;
-        let filteredSessions = [...sessions];
+        // Alerts data
+        let alerts = <?php echo json_encode($alerts); ?>;
+        let filteredAlerts = [...alerts];
 
-        // Render sessions table
-        function renderSessionsTable() {
-            const tbody = document.getElementById('sessionsTbody');
+        // Render alerts table
+        function renderAlertsTable() {
+            const tbody = document.getElementById('alertsTbody');
             tbody.innerHTML = '';
-            filteredSessions.forEach(session => {
-                const statusClass = session.status.toLowerCase() === 'completed' ? 'status-completed' : 'status-failed';
+            filteredAlerts.forEach(alert => {
+                const statusClass = alert.status.toLowerCase() === 'resolved' ? 'status-resolved' : 'status-active';
                 const tr = document.createElement('tr');
-                tr.setAttribute('data-session-id', session.id);
+                tr.setAttribute('data-alert-id', alert.alert_id);
                 tr.innerHTML = `
-                    <td><strong>#${session.id}</strong></td>
-                    <td>Charger ${session.charger_id}</td>
-                    <td>${session.user}</td>
-                    <td>${session.vehicle}</td>
-                    <td><span class="${statusClass}">${session.status}</span></td>
-                    <td>${new Date(session.start_time).toLocaleString('en-IN')}</td>
-                    <td>${new Date(session.end_time).toLocaleString('en-IN')}</td>
-                    <td>${session.energy_delivered}</td>
-                    <td>${session.cost}</td>
+                    <td><strong>#${alert.alert_id}</strong></td>
+                    <td>Charger ${alert.charger_id}</td>
+                    <td>${alert.alert_type}</td>
+                    <td>${alert.message}</td>
+                    <td>${new Date(alert.timestamp).toLocaleString('en-IN')}</td>
+                    <td><span class="${statusClass}">${alert.status}</span></td>
                     <td>
-                        <button class="action-btn" onclick="viewSession(${JSON.stringify(session).replace(/"/g, '&quot;')})">View</button>
+                        <button class="action-btn" onclick="viewAlert(${JSON.stringify(alert).replace(/"/g, '&quot;')})">View</button>
                     </td>
                 `;
                 tbody.appendChild(tr);
@@ -655,40 +635,40 @@
             if (validateFilterForm()) {
                 const startDate = document.getElementById('startDate').value;
                 const endDate = document.getElementById('endDate').value;
-                const status = document.getElementById('status').value;
-                const user = document.getElementById('user').value.trim().toLowerCase();
+                const alertType = document.getElementById('alertType').value;
+                const message = document.getElementById('message').value.trim().toLowerCase();
 
-                filteredSessions = sessions.filter(session => {
+                filteredAlerts = alerts.filter(alert => {
                     let isMatch = true;
 
                     if (startDate) {
-                        const sessionStart = new Date(session.start_time);
+                        const alertTimestamp = new Date(alert.timestamp);
                         const filterStart = new Date(startDate);
                         filterStart.setHours(0, 0, 0, 0);
-                        isMatch = isMatch && sessionStart >= filterStart;
+                        isMatch = isMatch && alertTimestamp >= filterStart;
                     }
                     if (endDate) {
-                        const sessionEnd = new Date(session.end_time);
+                        const alertTimestamp = new Date(alert.timestamp);
                         const filterEnd = new Date(endDate);
                         filterEnd.setHours(23, 59, 59, 999);
-                        isMatch = isMatch && sessionEnd <= filterEnd;
+                        isMatch = isMatch && alertTimestamp <= filterEnd;
                     }
-                    if (status) {
-                        isMatch = isMatch && session.status === status;
+                    if (alertType) {
+                        isMatch = isMatch && alert.alert_type === alertType;
                     }
-                    if (user) {
-                        isMatch = isMatch && session.user.toLowerCase().includes(user);
+                    if (message) {
+                        isMatch = isMatch && alert.message.toLowerCase().includes(message);
                     }
 
                     return isMatch;
                 });
 
-                renderSessionsTable();
+                renderAlertsTable();
                 toggleFilterForm();
                 Swal.fire({
                     icon: 'success',
                     title: 'Filters Applied',
-                    text: 'Session history has been filtered successfully.',
+                    text: 'System alerts history has been filtered successfully.',
                     timer: 1500,
                     showConfirmButton: false
                 });
@@ -699,9 +679,9 @@
         function clearFilters() {
             const filterForm = document.getElementById('filterForm');
             filterForm.reset();
-            filteredSessions = [...sessions];
+            filteredAlerts = [...alerts];
             clearErrors();
-            renderSessionsTable();
+            renderAlertsTable();
             if (filterForm.style.display === 'flex') {
                 toggleFilterForm();
             }
@@ -718,8 +698,8 @@
         function validateFilterForm() {
             const startDateInput = document.getElementById('startDate');
             const endDateInput = document.getElementById('endDate');
-            const userInput = document.getElementById('user');
-            const statusInput = document.getElementById('status');
+            const messageInput = document.getElementById('message');
+            const alertTypeInput = document.getElementById('alertType');
             let isValid = true;
 
             clearErrors();
@@ -727,7 +707,7 @@
             const currentDate = new Date('2025-09-12');
 
             // Validate at least one filter is provided
-            if (!startDateInput.value && !endDateInput.value && !statusInput.value && !userInput.value) {
+            if (!startDateInput.value && !endDateInput.value && !alertTypeInput.value && !messageInput.value) {
                 showError(startDateInput, 'At least one filter must be provided.');
                 isValid = false;
             }
@@ -757,10 +737,13 @@
                 }
             }
 
-            // Validate user
-            if (userInput.value && (userInput.value.length < 2 || userInput.value.length > 50)) {
-                showError(userInput, 'User name must be 2-50 characters.');
-                isValid = false;
+            // Validate message
+            if (messageInput.value) {
+                const messageRegex = /^[a-zA-Z0-9\s.,!?-]{2,100}$/;
+                if (!messageRegex.test(messageInput.value)) {
+                    showError(messageInput, 'Message must be 2-100 characters (letters, numbers, spaces, or punctuation).');
+                    isValid = false;
+                }
             }
 
             return isValid;
@@ -788,62 +771,50 @@
             inputs.forEach(input => input.classList.remove('error'));
         }
 
-        // Open Session Modal
-        function viewSession(session) {
-            document.getElementById('sessionModalTitle').textContent = `Session #${session.id} Details`;
-            const detailsContainer = document.getElementById('sessionDetails');
+        // Open Alert Modal
+        function viewAlert(alert) {
+            document.getElementById('alertModalTitle').textContent = `Alert #${alert.alert_id} Details`;
+            const detailsContainer = document.getElementById('alertDetails');
             detailsContainer.innerHTML = `
                 <div class="detail-item">
+                    <div class="detail-label">Alert ID</div>
+                    <div class="detail-value">#${alert.alert_id}</div>
+                </div>
+                <div class="detail-item">
                     <div class="detail-label">Charger ID</div>
-                    <div class="detail-value">Charger ${session.charger_id}</div>
+                    <div class="detail-value">Charger ${alert.charger_id}</div>
                 </div>
                 <div class="detail-item">
-                    <div class="detail-label">User Name</div>
-                    <div class="detail-value">${session.user}</div>
+                    <div class="detail-label">Alert Type</div>
+                    <div class="detail-value">${alert.alert_type}</div>
                 </div>
                 <div class="detail-item">
-                    <div class="detail-label">Vehicle Model</div>
-                    <div class="detail-value">${session.vehicle}</div>
+                    <div class="detail-label">Message</div>
+                    <div class="detail-value">${alert.message}</div>
+                </div>
+                <div class="detail-item">
+                    <div class="detail-label">Timestamp</div>
+                    <div class="detail-value">${new Date(alert.timestamp).toLocaleString('en-IN')}</div>
                 </div>
                 <div class="detail-item">
                     <div class="detail-label">Status</div>
-                    <div class="detail-value">${session.status}</div>
-                </div>
-                <div class="detail-item">
-                    <div class="detail-label">Start Time</div>
-                    <div class="detail-value">${new Date(session.start_time).toLocaleString('en-IN')}</div>
-                </div>
-                <div class="detail-item">
-                    <div class="detail-label">End Time</div>
-                    <div class="detail-value">${new Date(session.end_time).toLocaleString('en-IN')}</div>
-                </div>
-                <div class="detail-item">
-                    <div class="detail-label">Duration</div>
-                    <div class="detail-value">${Math.round((new Date(session.end_time) - new Date(session.start_time)) / 60000)} minutes</div>
-                </div>
-                <div class="detail-item">
-                    <div class="detail-label">Energy Delivered</div>
-                    <div class="detail-value">${session.energy_delivered}</div>
-                </div>
-                <div class="detail-item">
-                    <div class="detail-label">Cost</div>
-                    <div class="detail-value">${session.cost}</div>
+                    <div class="detail-value">${alert.status}</div>
                 </div>
             `;
 
-            document.getElementById('sessionModal').classList.add('active');
+            document.getElementById('alertModal').classList.add('active');
         }
 
-        // Close Session Modal
-        function closeSessionModal() {
-            document.getElementById('sessionModal').classList.remove('active');
+        // Close Alert Modal
+        function closeAlertModal() {
+            document.getElementById('alertModal').classList.remove('active');
         }
 
         // Close modal on outside click
         window.onclick = function(event) {
-            const modal = document.getElementById('sessionModal');
+            const modal = document.getElementById('alertModal');
             if (event.target === modal) {
-                closeSessionModal();
+                closeAlertModal();
             }
         }
 
@@ -861,8 +832,13 @@
                 input.addEventListener('input', function(e) {
                     if (!isValidDate(e.target.value) && e.target.type === 'date') {
                         showError(e.target, `Please select a valid ${e.target.id === 'startDate' ? 'start' : 'end'} date.`);
-                    } else if (e.target.id === 'user' && e.target.value && (e.target.value.length < 2 || e.target.value.length > 50)) {
-                        showError(e.target, 'User name must be 2-50 characters.');
+                    } else if (e.target.id === 'message') {
+                        const messageRegex = /^[a-zA-Z0-9\s.,!?-]{2,100}$/;
+                        if (e.target.value && !messageRegex.test(e.target.value)) {
+                            showError(e.target, 'Message must be 2-100 characters (letters, numbers, spaces, or punctuation).');
+                        } else {
+                            hideError(e.target);
+                        }
                     } else {
                         hideError(e.target);
                     }
@@ -870,7 +846,7 @@
             });
 
             // Initial render
-            renderSessionsTable();
+            renderAlertsTable();
         });
 
         // DateTime Update

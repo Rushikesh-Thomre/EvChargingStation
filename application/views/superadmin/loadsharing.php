@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Session History</title>
+    <title>Load Sharing</title>
     <link rel="icon" href="<?php echo base_url('Images\logo.png'); ?>" type="image/png">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
@@ -60,7 +60,7 @@
             font-weight: bold;
         }
 
-        /* Session History Dashboard Styles */
+        /* Load Sharing Dashboard Styles */
         .dashboard-container {
             width: 100%;
             max-width: 1200px;
@@ -461,7 +461,7 @@
                 <div id="datetime"></div>
                 <div class="dashboard-container">
                     <div class="dashboard-header">
-                        <h2 class="dashboard-title">Session History</h2>
+                        <h2 class="dashboard-title">Load Sharing History</h2>
                         <div>
                             <button class="filter-btn" id="filterBtn"><i class="fas fa-filter me-2"></i>Filter</button>
                             <button class="clear-filter-btn" id="clearFilterBtn"><i class="fas fa-times me-2"></i>Clear Filters</button>
@@ -509,13 +509,12 @@
                                     <th>Start Time</th>
                                     <th>End Time</th>
                                     <th>Energy Delivered</th>
-                                    <th>Cost</th>
                                     <th>Actions</th>
                                 </tr>
                             </thead>
                             <tbody id="sessionsTbody">
                                 <?php
-                                // Sample session history data
+                                // Sample load sharing data
                                 $sessions = [
                                     [
                                         'id' => 1001,
@@ -525,8 +524,7 @@
                                         'status' => 'Completed',
                                         'start_time' => '2025-09-12 14:30:25',
                                         'end_time' => '2025-09-12 15:30:25',
-                                        'energy_delivered' => '18.5 kWh',
-                                        'cost' => '$3.70'
+                                        'energy_delivered' => '18.5 kWh'
                                     ],
                                     [
                                         'id' => 1002,
@@ -536,8 +534,7 @@
                                         'status' => 'Completed',
                                         'start_time' => '2025-09-11 13:45:10',
                                         'end_time' => '2025-09-11 14:20:45',
-                                        'energy_delivered' => '15.2 kWh',
-                                        'cost' => '$3.04'
+                                        'energy_delivered' => '15.2 kWh'
                                     ],
                                     [
                                         'id' => 1003,
@@ -547,8 +544,7 @@
                                         'status' => 'Failed',
                                         'start_time' => '2025-09-10 15:10:30',
                                         'end_time' => '2025-09-10 15:15:30',
-                                        'energy_delivered' => '0 kWh',
-                                        'cost' => '$0.00'
+                                        'energy_delivered' => '0 kWh'
                                     ],
                                     [
                                         'id' => 1004,
@@ -558,8 +554,7 @@
                                         'status' => 'Completed',
                                         'start_time' => '2025-09-09 12:15:00',
                                         'end_time' => '2025-09-09 13:00:00',
-                                        'energy_delivered' => '12.8 kWh',
-                                        'cost' => '$2.56'
+                                        'energy_delivered' => '12.8 kWh'
                                     ]
                                 ];
 
@@ -574,7 +569,6 @@
                                     echo "<td>" . date('Y-m-d H:i:s', strtotime($session['start_time'])) . "</td>";
                                     echo "<td>" . date('Y-m-d H:i:s', strtotime($session['end_time'])) . "</td>";
                                     echo "<td>" . $session['energy_delivered'] . "</td>";
-                                    echo "<td>" . $session['cost'] . "</td>";
                                     echo "<td>";
                                     echo "<button class='action-btn' onclick='viewSession(" . json_encode($session) . ")'>View</button>";
                                     echo "</td>";
@@ -592,7 +586,7 @@
     <!-- Session Details Modal -->
     <div id="sessionModal" class="session-modal">
         <div class="modal-content">
-            <div class="modal-header" id="sessionModalTitle">Session Details</div>
+            <div class="modal-header" id="sessionModalTitle">Load Sharing Details</div>
             <div class="detail-grid" id="sessionDetails">
                 <!-- Dynamic content populated by JavaScript -->
             </div>
@@ -635,7 +629,6 @@
                     <td>${new Date(session.start_time).toLocaleString('en-IN')}</td>
                     <td>${new Date(session.end_time).toLocaleString('en-IN')}</td>
                     <td>${session.energy_delivered}</td>
-                    <td>${session.cost}</td>
                     <td>
                         <button class="action-btn" onclick="viewSession(${JSON.stringify(session).replace(/"/g, '&quot;')})">View</button>
                     </td>
@@ -688,7 +681,7 @@
                 Swal.fire({
                     icon: 'success',
                     title: 'Filters Applied',
-                    text: 'Session history has been filtered successfully.',
+                    text: 'Load sharing history has been filtered successfully.',
                     timer: 1500,
                     showConfirmButton: false
                 });
@@ -790,7 +783,7 @@
 
         // Open Session Modal
         function viewSession(session) {
-            document.getElementById('sessionModalTitle').textContent = `Session #${session.id} Details`;
+            document.getElementById('sessionModalTitle').textContent = `Load Sharing #${session.id} Details`;
             const detailsContainer = document.getElementById('sessionDetails');
             detailsContainer.innerHTML = `
                 <div class="detail-item">
@@ -824,10 +817,6 @@
                 <div class="detail-item">
                     <div class="detail-label">Energy Delivered</div>
                     <div class="detail-value">${session.energy_delivered}</div>
-                </div>
-                <div class="detail-item">
-                    <div class="detail-label">Cost</div>
-                    <div class="detail-value">${session.cost}</div>
                 </div>
             `;
 

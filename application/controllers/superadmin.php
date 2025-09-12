@@ -31,4 +31,28 @@ public function softwareupdates(){
 		public function sessionhistory(){
 		$this->load->view('Superadmin/sessionhistory');
 	}
+	public function powerusage(){
+		$this->load->view('Superadmin/powerusage');
+	}
+	public function loadsharing(){
+		$this->load->view('Superadmin/loadsharing');
+	}
+	public function systemalert(){
+		$this->load->view('Superadmin/systemalert');
+	}
+	public function PaymentProcessing(){
+		$this->load->view('Superadmin/PaymentProcessing');
+	}
+	public function revenuereport(){
+		$this->load->view('Superadmin/revenuereport');
+	}
+	public function report(){
+		$this->load->view('Superadmin/report');
+	}
+	public function generalsettings(){
+		$this->load->view('Superadmin/generalsettings');
+	}
+	public function monetizationsettings(){
+		$this->load->view('Superadmin/monetizationsettings');
+	}
 }

@@ -1,6 +1,6 @@
-<!-- File: application/views/dashboard.php -->
+<!-- File: application/views/base.php -->
+<!DOCTYPE html>
 <html lang="en">
-
 <head>
     <meta charset="UTF-8">
     <title>EV Charging Dashboard</title>
@@ -99,7 +99,7 @@
             text-decoration: none;
         }
 
-        #sidebar ul li.active>a,
+        #sidebar ul li.active > a,
         a[aria-expanded="true"] {
             color: black;
             background: #fff;
@@ -531,68 +531,61 @@
                     <div class="sidebar fs-5 mx-1">
                         <ul class="nav flex-column" id="nav_accordion">
                             <li id="dashboardMenuItem" style="color:white;">
-                                <a href="<?php echo base_url('Superadmin\dashboard'); ?>"><i class="fas fa-home"></i> Dashboard</a>
+                                <a href="<?php echo base_url('Superadmin/dashboard'); ?>"><i class="fas fa-home"></i> Dashboard</a>
                             </li>
                             <li id="stationsMenuItem">
                                 <a href="#Stations" data-toggle="collapse" aria-expanded="false" class="dropdown-toggle">
                                     <i class="fas fa-charging-station"></i> Charging Stations</a>
                                 <ul class="collapse list-unstyled submenu" id="Stations">
-                                    <li><a href="<?php echo base_url('Superadmin\managestations'); ?>">Manage Stations</a></li>
-                                    <li><a href="<?php echo base_url('status'); ?>">Charger Status</a></li>
-                                    <li><a href="<?php echo base_url('updates'); ?>">Software Updates</a></li>
+                                    <li><a href="<?php echo base_url('Superadmin/managestations'); ?>">Manage Stations</a></li>
+                                    <li><a href="<?php echo base_url('Superadmin/chargerstatus'); ?>">Charger Status</a></li>
+                                    <li><a href="<?php echo base_url('Superadmin/softwareupdates'); ?>">Software Updates</a></li>
                                 </ul>
                             </li>
                             <li id="usersMenuItem">
                                 <a href="#Users" data-toggle="collapse" aria-expanded="false" class="dropdown-toggle">
                                     <i class="fas fa-users"></i> Users</a>
                                 <ul class="collapse list-unstyled submenu" id="Users">
-                                    <li><a href="<?php echo base_url('users'); ?>">User Management</a></li>
-                                    <li><a href="<?php echo base_url('authentication'); ?>">Authentication</a></li>
-                                    <li><a href="<?php echo base_url('data'); ?>">User Data</a></li>
+                                    <li><a href="<?php echo base_url('Superadmin/usermanagement'); ?>">User Management</a></li>
+                                    <li><a href="<?php echo base_url('Superadmin/authentication'); ?>">Authentication</a></li>
+                                    <li><a href="<?php echo base_url('Superadmin/userdata'); ?>">User Data</a></li>
                                 </ul>
                             </li>
                             <li id="sessionsMenuItem">
                                 <a href="#Sessions" data-toggle="collapse" aria-expanded="false" class="dropdown-toggle">
                                     <i class="fas fa-plug"></i> Charging Sessions</a>
                                 <ul class="collapse list-unstyled submenu" id="Sessions">
-                                    <li><a href="<?php echo base_url('sessions'); ?>">Real-time Sessions</a></li>
-                                    <li><a href="<?php echo base_url('history'); ?>">Session History</a></li>
+                                    <li><a href="<?php echo base_url('Superadmin/realtimesessions'); ?>">Real-time Sessions</a></li>
+                                    <li><a href="<?php echo base_url('Superadmin/sessionhistory'); ?>">Session History</a></li>
                                 </ul>
                             </li>
                             <li id="energyMenuItem">
                                 <a href="#Energy" data-toggle="collapse" aria-expanded="false" class="dropdown-toggle">
                                     <i class="fas fa-bolt"></i> Energy Management</a>
                                 <ul class="collapse list-unstyled submenu" id="Energy">
-                                    <li><a href="<?php echo base_url('usage'); ?>">Power Usage</a></li>
-                                    <li><a href="<?php echo base_url('sharing'); ?>">Load Sharing</a></li>
-                                    <li><a href="<?php echo base_url('alerts'); ?>">System Alerts</a></li>
+                                    <li><a href="<?php echo base_url('Superadmin/powerusage'); ?>">Power Usage</a></li>
+                                    <li><a href="<?php echo base_url('Superadmin/loadsharing'); ?>">Load Sharing</a></li>
+                                    <li><a href="<?php echo base_url('Superadmin/systemalert'); ?>">System Alerts</a></li>
                                 </ul>
                             </li>
                             <li id="paymentsMenuItem">
                                 <a href="#Payments" data-toggle="collapse" aria-expanded="false" class="dropdown-toggle">
                                     <i class="fas fa-credit-card"></i> Payments</a>
                                 <ul class="collapse list-unstyled submenu" id="Payments">
-                                    <li><a href="<?php echo base_url('processing'); ?>">Payment Processing</a></li>
-                                    <li><a href="<?php echo base_url('revenue'); ?>">Revenue Reports</a></li>
-                                </ul>
-                            </li>
-                            <li id="reportMenuItem">
-                                <a href="#Report" data-toggle="collapse" aria-expanded="false" class="dropdown-toggle">
-                                    <i class="fas fa-address-book"></i> Reports</a>
-                                <ul class="collapse list-unstyled submenu" id="Report">
-                                    <li><a href="<?php echo base_url('advance'); ?>">Advance Reports</a></li>
-                                    <li><a href="<?php echo base_url('night'); ?>">Night Reports</a></li>
-                                    <li><a href="<?php echo base_url('analytics'); ?>">Analytics</a></li>
+                                    <li><a href="<?php echo base_url('Superadmin/PaymentProcessing'); ?>">Payment Processing</a></li>
+                                    <li><a href="<?php echo base_url('Superadmin/revenuereport'); ?>">Revenue Reports</a></li>
                                 </ul>
                             </li>
                             <li id="settingsMenuItem">
-                                <a href="#settings" data-toggle="collapse" aria-expanded="false"
-                                    class="dropdown-toggle">
+                                <a href="#settings" data-toggle="collapse" aria-expanded="false" class="dropdown-toggle">
                                     <i class="fas fa-cog"></i> Settings</a>
                                 <ul class="collapse list-unstyled submenu" id="settings">
-                                    <li><a href="<?php echo base_url('setting'); ?>">General Settings</a></li>
-                                    <li><a href="<?php echo base_url('monetization'); ?>">Monetization</a></li>
+                                    <li><a href="<?php echo base_url('Superadmin/generalsettings'); ?>">General Settings</a></li>
+                                    <li><a href="<?php echo base_url('Superadmin/monetizationsettings'); ?>">Monetization</a></li>
                                 </ul>
+                            </li>
+                            <li id="reportMenuItem">
+                                <a href="<?php echo base_url('Superadmin/report'); ?>"><i class="fas fa-file-alt"></i> Report</a>
                             </li>
                         </ul>
                     </div>
@@ -714,5 +707,4 @@
         });
     </script>
 </body>
-
 </html>

@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Session History</title>
+    <title>Revenue Report</title>
     <link rel="icon" href="<?php echo base_url('Images\logo.png'); ?>" type="image/png">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
@@ -60,7 +60,7 @@
             font-weight: bold;
         }
 
-        /* Session History Dashboard Styles */
+        /* Revenue Report Dashboard Styles */
         .dashboard-container {
             width: 100%;
             max-width: 1200px;
@@ -164,7 +164,7 @@
             display: none;
         }
 
-        .sessions-table {
+        .revenue-table {
             width: 100%;
             border-collapse: collapse;
             background: #ffffff;
@@ -172,14 +172,14 @@
             overflow: hidden;
         }
 
-        .sessions-table th, .sessions-table td {
+        .revenue-table th, .revenue-table td {
             padding: 15px;
             text-align: left;
             color: #333;
             border-bottom: 1px solid #e0e0e0;
         }
 
-        .sessions-table th {
+        .revenue-table th {
             background: #f5f7fa;
             color: #333;
             font-weight: 700;
@@ -187,11 +187,11 @@
             letter-spacing: 1px;
         }
 
-        .sessions-table tr:hover {
+        .revenue-table tr:hover {
             background: #f9f9f9;
         }
 
-        .status-completed {
+        .status-paid {
             color: #28a745;
             font-weight: 600;
             background: rgba(40, 167, 69, 0.1);
@@ -203,6 +203,14 @@
             color: #dc3545;
             font-weight: 600;
             background: rgba(220, 53, 69, 0.1);
+            padding: 4px 8px;
+            border-radius: 12px;
+        }
+
+        .status-pending {
+            color: #ffc107;
+            font-weight: 600;
+            background: rgba(255, 193, 7, 0.1);
             padding: 4px 8px;
             border-radius: 12px;
         }
@@ -226,7 +234,7 @@
         }
 
         /* Modal Styles */
-        .session-modal {
+        .revenue-modal {
             display: none;
             position: fixed;
             top: 0;
@@ -240,7 +248,7 @@
             align-items: center;
         }
 
-        .session-modal.active {
+        .revenue-modal.active {
             display: flex;
         }
 
@@ -313,8 +321,23 @@
             background: #5a6268;
         }
 
-        .sessions-table-wrapper {
+        .revenue-table-wrapper {
             overflow-x: auto;
+        }
+
+        .revenue-summary {
+            background: #f8f9fa;
+            padding: 15px;
+            border-radius: 10px;
+            margin-bottom: 20px;
+            font-size: 16px;
+            font-weight: 600;
+            color: #333;
+        }
+
+        .revenue-summary span {
+            color: #1a73e8;
+            font-weight: 800;
         }
 
         /* Responsive Styles */
@@ -363,7 +386,7 @@
                 padding: 10px 20px;
             }
 
-            .sessions-table th, .sessions-table td {
+            .revenue-table th, .revenue-table td {
                 padding: 10px;
                 font-size: 13px;
             }
@@ -375,6 +398,10 @@
             .action-btn {
                 padding: 6px 12px;
                 font-size: 13px;
+            }
+
+            .revenue-summary {
+                font-size: 14px;
             }
         }
 
@@ -397,13 +424,13 @@
                 padding: 8px 15px;
             }
 
-            .sessions-table {
+            .revenue-table {
                 display: block;
                 overflow-x: auto;
                 white-space: nowrap;
             }
 
-            .sessions-table th, .sessions-table td {
+            .revenue-table th, .revenue-table td {
                 min-width: 100px;
                 font-size: 12px;
                 padding: 8px;
@@ -429,11 +456,15 @@
                 max-width: 95%;
                 padding: 15px;
             }
+
+            .revenue-summary {
+                font-size: 13px;
+            }
         }
 
         /* Blur Sidebar and Content when Modal is Active */
-        .session-modal.active ~ .wrapper #sidebar,
-        .session-modal.active ~ .wrapper .content {
+        .revenue-modal.active ~ .wrapper #sidebar,
+        .revenue-modal.active ~ .wrapper .content {
             filter: blur(5px);
             transition: filter 0.3s ease;
         }
@@ -460,8 +491,11 @@
             <div class="container-fluid">
                 <div id="datetime"></div>
                 <div class="dashboard-container">
+                    <div class="revenue-summary" id="totalRevenue">
+                        <!-- Total revenue will be calculated and inserted by JavaScript -->
+                    </div>
                     <div class="dashboard-header">
-                        <h2 class="dashboard-title">Session History</h2>
+                        <h2 class="dashboard-title">Revenue Report History</h2>
                         <div>
                             <button class="filter-btn" id="filterBtn"><i class="fas fa-filter me-2"></i>Filter</button>
                             <button class="clear-filter-btn" id="clearFilterBtn"><i class="fas fa-times me-2"></i>Clear Filters</button>
@@ -479,104 +513,94 @@
                             <div class="error-message" id="endDateError">End date must be after start date.</div>
                         </div>
                         <div class="form-group">
-                            <label for="status">Status</label>
-                            <select id="status" name="status" class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500">
+                            <label for="paymentStatus">Payment Status</label>
+                            <select id="paymentStatus" name="paymentStatus" class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500">
                                 <option value="">All Statuses</option>
-                                <option value="Completed">Completed</option>
+                                <option value="Paid">Paid</option>
+                                <option value="Pending">Pending</option>
                                 <option value="Failed">Failed</option>
                             </select>
-                            <div class="error-message" id="statusError">Please select a valid status.</div>
+                            <div class="error-message" id="paymentStatusError">Please select a valid status.</div>
                         </div>
                         <div class="form-group">
                             <label for="user">User</label>
                             <input type="text" id="user" name="user" maxlength="50" class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500">
-                            <div class="error-message" id="userError">User name must be 2-50 characters.</div>
+                            <div class="error-message" id="userError">User name must be 2-50 characters (letters, spaces, dots, hyphens).</div>
                         </div>
                         <div class="form-actions">
                             <button type="submit" class="filter-btn" onclick="applyFilters()">Apply Filters</button>
                             <button type="button" class="clear-filter-btn" onclick="toggleFilterForm()">Cancel</button>
                         </div>
                     </div>
-                    <div class="sessions-table-wrapper">
-                        <table class="sessions-table">
+                    <div class="revenue-table-wrapper">
+                        <table class="revenue-table">
                             <thead>
                                 <tr>
+                                    <th>Payment ID</th>
                                     <th>Session ID</th>
                                     <th>Charger ID</th>
                                     <th>User</th>
-                                    <th>Vehicle</th>
-                                    <th>Status</th>
-                                    <th>Start Time</th>
-                                    <th>End Time</th>
-                                    <th>Energy Delivered</th>
-                                    <th>Cost</th>
+                                    <th>Amount</th>
+                                    <th>Payment Status</th>
+                                    <th>Payment Date</th>
                                     <th>Actions</th>
                                 </tr>
                             </thead>
-                            <tbody id="sessionsTbody">
+                            <tbody id="revenueTbody">
                                 <?php
-                                // Sample session history data
-                                $sessions = [
+                                // Sample revenue data (same as payment data for consistency)
+                                $revenues = [
                                     [
-                                        'id' => 1001,
+                                        'payment_id' => 3001,
+                                        'session_id' => 1001,
                                         'charger_id' => 1,
                                         'user' => 'John Doe',
-                                        'vehicle' => 'Tesla Model 3',
-                                        'status' => 'Completed',
-                                        'start_time' => '2025-09-12 14:30:25',
-                                        'end_time' => '2025-09-12 15:30:25',
-                                        'energy_delivered' => '18.5 kWh',
-                                        'cost' => '$3.70'
+                                        'amount' => 25.50,
+                                        'payment_status' => 'Paid',
+                                        'payment_date' => '2025-09-12 15:45:00'
                                     ],
                                     [
-                                        'id' => 1002,
+                                        'payment_id' => 3002,
+                                        'session_id' => 1002,
                                         'charger_id' => 2,
                                         'user' => 'Jane Smith',
-                                        'vehicle' => 'Nissan Leaf',
-                                        'status' => 'Completed',
-                                        'start_time' => '2025-09-11 13:45:10',
-                                        'end_time' => '2025-09-11 14:20:45',
-                                        'energy_delivered' => '15.2 kWh',
-                                        'cost' => '$3.04'
+                                        'amount' => 20.00,
+                                        'payment_status' => 'Paid',
+                                        'payment_date' => '2025-09-11 14:30:00'
                                     ],
                                     [
-                                        'id' => 1003,
+                                        'payment_id' => 3003,
+                                        'session_id' => 1003,
                                         'charger_id' => 4,
                                         'user' => 'Mike Johnson',
-                                        'vehicle' => 'Chevrolet Bolt',
-                                        'status' => 'Failed',
-                                        'start_time' => '2025-09-10 15:10:30',
-                                        'end_time' => '2025-09-10 15:15:30',
-                                        'energy_delivered' => '0 kWh',
-                                        'cost' => '$0.00'
+                                        'amount' => 0.00,
+                                        'payment_status' => 'Failed',
+                                        'payment_date' => '2025-09-10 15:15:30'
                                     ],
                                     [
-                                        'id' => 1004,
+                                        'payment_id' => 3004,
+                                        'session_id' => 1004,
                                         'charger_id' => 3,
                                         'user' => 'Sarah Wilson',
-                                        'vehicle' => 'BMW i3',
-                                        'status' => 'Completed',
-                                        'start_time' => '2025-09-09 12:15:00',
-                                        'end_time' => '2025-09-09 13:00:00',
-                                        'energy_delivered' => '12.8 kWh',
-                                        'cost' => '$2.56'
+                                        'amount' => 18.75,
+                                        'payment_status' => 'Pending',
+                                        'payment_date' => '2025-09-09 13:00:00'
                                     ]
                                 ];
 
-                                foreach ($sessions as $session) {
-                                    $statusClass = strtolower($session['status']) === 'completed' ? 'status-completed' : 'status-failed';
-                                    echo "<tr data-session-id='" . $session['id'] . "'>";
-                                    echo "<td><strong>#" . $session['id'] . "</strong></td>";
-                                    echo "<td>Charger " . $session['charger_id'] . "</td>";
-                                    echo "<td>" . htmlspecialchars($session['user']) . "</td>";
-                                    echo "<td>" . htmlspecialchars($session['vehicle']) . "</td>";
-                                    echo "<td><span class='$statusClass'>" . $session['status'] . "</span></td>";
-                                    echo "<td>" . date('Y-m-d H:i:s', strtotime($session['start_time'])) . "</td>";
-                                    echo "<td>" . date('Y-m-d H:i:s', strtotime($session['end_time'])) . "</td>";
-                                    echo "<td>" . $session['energy_delivered'] . "</td>";
-                                    echo "<td>" . $session['cost'] . "</td>";
+                                foreach ($revenues as $revenue) {
+                                    $statusClass = strtolower($revenue['payment_status']) === 'paid' ? 'status-paid' :
+                                                  (strtolower($revenue['payment_status']) === 'failed' ? 'status-failed' : 'status-pending');
+                                    echo "<tr data-payment-id='" . $revenue['payment_id'] . "'>";
+                                    echo "<td><strong>#" . $revenue['payment_id'] . "</strong></td>";
+                                    echo "<td>#" . $revenue['session_id'] . "</td>";
+                                    echo "<td>Charger " . $revenue['charger_id'] . "</td>";
+                                    echo "<td>" . htmlspecialchars($revenue['user']) . "</td>";
+                                    echo "<td>$" . number_format($revenue['amount'], 2) . "</td>";
+                                    echo "<td><span class='$statusClass'>" . $revenue['payment_status'] . "</span></td>";
+                                    echo "<td>" . date('Y-m-d H:i:s', strtotime($revenue['payment_date'])) . "</td>";
                                     echo "<td>";
-                                    echo "<button class='action-btn' onclick='viewSession(" . json_encode($session) . ")'>View</button>";
+                                    echo "<button class='action-btn' onclick='viewRevenue(" . json_encode($revenue) . ")'>View</button>";
                                     echo "</td>";
                                     echo "</tr>";
                                 }
@@ -589,15 +613,15 @@
         </div>
     </div>
 
-    <!-- Session Details Modal -->
-    <div id="sessionModal" class="session-modal">
+    <!-- Revenue Details Modal -->
+    <div id="revenueModal" class="revenue-modal">
         <div class="modal-content">
-            <div class="modal-header" id="sessionModalTitle">Session Details</div>
-            <div class="detail-grid" id="sessionDetails">
+            <div class="modal-header" id="revenueModalTitle">Revenue Details</div>
+            <div class="detail-grid" id="revenueDetails">
                 <!-- Dynamic content populated by JavaScript -->
             </div>
             <div class="form-actions">
-                <button type="button" class="close-btn" onclick="closeSessionModal()">Close</button>
+                <button type="button" class="close-btn" onclick="closeRevenueModal()">Close</button>
             </div>
         </div>
     </div>
@@ -614,34 +638,43 @@
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
     <script>
-        // Sessions data
-        let sessions = <?php echo json_encode($sessions); ?>;
-        let filteredSessions = [...sessions];
+        // Revenue data
+        let revenues = <?php echo json_encode($revenues); ?>;
+        let filteredRevenues = [...revenues];
 
-        // Render sessions table
-        function renderSessionsTable() {
-            const tbody = document.getElementById('sessionsTbody');
+        // Calculate and display total revenue
+        function updateTotalRevenue() {
+            const total = filteredRevenues
+                .filter(revenue => revenue.payment_status.toLowerCase() === 'paid')
+                .reduce((sum, revenue) => sum + Number(revenue.amount), 0)
+                .toFixed(2);
+            document.getElementById('totalRevenue').innerHTML = `Total Revenue (Paid): <span>$${total}</span>`;
+        }
+
+        // Render revenue table
+        function renderRevenueTable() {
+            const tbody = document.getElementById('revenueTbody');
             tbody.innerHTML = '';
-            filteredSessions.forEach(session => {
-                const statusClass = session.status.toLowerCase() === 'completed' ? 'status-completed' : 'status-failed';
+            filteredRevenues.forEach(revenue => {
+                const statusClass = revenue.payment_status.toLowerCase() === 'paid' ? 'status-paid' :
+                                   revenue.payment_status.toLowerCase() === 'failed' ? 'status-failed' : 'status-pending';
                 const tr = document.createElement('tr');
-                tr.setAttribute('data-session-id', session.id);
+                tr.setAttribute('data-payment-id', revenue.payment_id);
                 tr.innerHTML = `
-                    <td><strong>#${session.id}</strong></td>
-                    <td>Charger ${session.charger_id}</td>
-                    <td>${session.user}</td>
-                    <td>${session.vehicle}</td>
-                    <td><span class="${statusClass}">${session.status}</span></td>
-                    <td>${new Date(session.start_time).toLocaleString('en-IN')}</td>
-                    <td>${new Date(session.end_time).toLocaleString('en-IN')}</td>
-                    <td>${session.energy_delivered}</td>
-                    <td>${session.cost}</td>
+                    <td><strong>#${revenue.payment_id}</strong></td>
+                    <td>#${revenue.session_id}</td>
+                    <td>Charger ${revenue.charger_id}</td>
+                    <td>${revenue.user}</td>
+                    <td>$${Number(revenue.amount).toFixed(2)}</td>
+                    <td><span class="${statusClass}">${revenue.payment_status}</span></td>
+                    <td>${new Date(revenue.payment_date).toLocaleString('en-IN')}</td>
                     <td>
-                        <button class="action-btn" onclick="viewSession(${JSON.stringify(session).replace(/"/g, '&quot;')})">View</button>
+                        <button class="action-btn" onclick="viewRevenue(${JSON.stringify(revenue).replace(/"/g, '&quot;')})">View</button>
                     </td>
                 `;
                 tbody.appendChild(tr);
             });
+            updateTotalRevenue();
         }
 
         // Toggle Filter Form
@@ -655,40 +688,40 @@
             if (validateFilterForm()) {
                 const startDate = document.getElementById('startDate').value;
                 const endDate = document.getElementById('endDate').value;
-                const status = document.getElementById('status').value;
+                const paymentStatus = document.getElementById('paymentStatus').value;
                 const user = document.getElementById('user').value.trim().toLowerCase();
 
-                filteredSessions = sessions.filter(session => {
+                filteredRevenues = revenues.filter(revenue => {
                     let isMatch = true;
 
                     if (startDate) {
-                        const sessionStart = new Date(session.start_time);
+                        const paymentDate = new Date(revenue.payment_date);
                         const filterStart = new Date(startDate);
                         filterStart.setHours(0, 0, 0, 0);
-                        isMatch = isMatch && sessionStart >= filterStart;
+                        isMatch = isMatch && paymentDate >= filterStart;
                     }
                     if (endDate) {
-                        const sessionEnd = new Date(session.end_time);
+                        const paymentDate = new Date(revenue.payment_date);
                         const filterEnd = new Date(endDate);
                         filterEnd.setHours(23, 59, 59, 999);
-                        isMatch = isMatch && sessionEnd <= filterEnd;
+                        isMatch = isMatch && paymentDate <= filterEnd;
                     }
-                    if (status) {
-                        isMatch = isMatch && session.status === status;
+                    if (paymentStatus) {
+                        isMatch = isMatch && revenue.payment_status === paymentStatus;
                     }
                     if (user) {
-                        isMatch = isMatch && session.user.toLowerCase().includes(user);
+                        isMatch = isMatch && revenue.user.toLowerCase().includes(user);
                     }
 
                     return isMatch;
                 });
 
-                renderSessionsTable();
+                renderRevenueTable();
                 toggleFilterForm();
                 Swal.fire({
                     icon: 'success',
                     title: 'Filters Applied',
-                    text: 'Session history has been filtered successfully.',
+                    text: 'Revenue report history has been filtered successfully.',
                     timer: 1500,
                     showConfirmButton: false
                 });
@@ -699,9 +732,9 @@
         function clearFilters() {
             const filterForm = document.getElementById('filterForm');
             filterForm.reset();
-            filteredSessions = [...sessions];
+            filteredRevenues = [...revenues];
             clearErrors();
-            renderSessionsTable();
+            renderRevenueTable();
             if (filterForm.style.display === 'flex') {
                 toggleFilterForm();
             }
@@ -719,15 +752,15 @@
             const startDateInput = document.getElementById('startDate');
             const endDateInput = document.getElementById('endDate');
             const userInput = document.getElementById('user');
-            const statusInput = document.getElementById('status');
+            const paymentStatusInput = document.getElementById('paymentStatus');
             let isValid = true;
 
             clearErrors();
 
-            const currentDate = new Date('2025-09-12');
+            const currentDate = new Date('2025-09-12T17:34:00+05:30');
 
             // Validate at least one filter is provided
-            if (!startDateInput.value && !endDateInput.value && !statusInput.value && !userInput.value) {
+            if (!startDateInput.value && !endDateInput.value && !paymentStatusInput.value && !userInput.value) {
                 showError(startDateInput, 'At least one filter must be provided.');
                 isValid = false;
             }
@@ -758,9 +791,12 @@
             }
 
             // Validate user
-            if (userInput.value && (userInput.value.length < 2 || userInput.value.length > 50)) {
-                showError(userInput, 'User name must be 2-50 characters.');
-                isValid = false;
+            if (userInput.value) {
+                const userRegex = /^[a-zA-Z\s.-]{2,50}$/;
+                if (!userRegex.test(userInput.value)) {
+                    showError(userInput, 'User name must be 2-50 characters (letters, spaces, dots, hyphens).');
+                    isValid = false;
+                }
             }
 
             return isValid;
@@ -788,62 +824,63 @@
             inputs.forEach(input => input.classList.remove('error'));
         }
 
-        // Open Session Modal
-        function viewSession(session) {
-            document.getElementById('sessionModalTitle').textContent = `Session #${session.id} Details`;
-            const detailsContainer = document.getElementById('sessionDetails');
+        // Open Revenue Modal
+        function viewRevenue(revenue) {
+            document.getElementById('revenueModalTitle').textContent = `Revenue #${revenue.payment_id} Details`;
+            const detailsContainer = document.getElementById('revenueDetails');
+            const transactionFee = (revenue.amount * 0.02).toFixed(2); // 2% fee for demonstration
             detailsContainer.innerHTML = `
                 <div class="detail-item">
+                    <div class="detail-label">Payment ID</div>
+                    <div class="detail-value">#${revenue.payment_id}</div>
+                </div>
+                <div class="detail-item">
+                    <div class="detail-label">Session ID</div>
+                    <div class="detail-value">#${revenue.session_id}</div>
+                </div>
+                <div class="detail-item">
                     <div class="detail-label">Charger ID</div>
-                    <div class="detail-value">Charger ${session.charger_id}</div>
+                    <div class="detail-value">Charger ${revenue.charger_id}</div>
                 </div>
                 <div class="detail-item">
                     <div class="detail-label">User Name</div>
-                    <div class="detail-value">${session.user}</div>
+                    <div class="detail-value">${revenue.user}</div>
                 </div>
                 <div class="detail-item">
-                    <div class="detail-label">Vehicle Model</div>
-                    <div class="detail-value">${session.vehicle}</div>
+                    <div class="detail-label">Amount</div>
+                    <div class="detail-value">$${Number(revenue.amount).toFixed(2)}</div>
                 </div>
                 <div class="detail-item">
-                    <div class="detail-label">Status</div>
-                    <div class="detail-value">${session.status}</div>
+                    <div class="detail-label">Transaction Fee (2%)</div>
+                    <div class="detail-value">$${transactionFee}</div>
                 </div>
                 <div class="detail-item">
-                    <div class="detail-label">Start Time</div>
-                    <div class="detail-value">${new Date(session.start_time).toLocaleString('en-IN')}</div>
+                    <div class="detail-label">Total Charged</div>
+                    <div class="detail-value">$${Number(revenue.amount + Number(transactionFee)).toFixed(2)}</div>
                 </div>
                 <div class="detail-item">
-                    <div class="detail-label">End Time</div>
-                    <div class="detail-value">${new Date(session.end_time).toLocaleString('en-IN')}</div>
+                    <div class="detail-label">Payment Status</div>
+                    <div class="detail-value">${revenue.payment_status}</div>
                 </div>
                 <div class="detail-item">
-                    <div class="detail-label">Duration</div>
-                    <div class="detail-value">${Math.round((new Date(session.end_time) - new Date(session.start_time)) / 60000)} minutes</div>
-                </div>
-                <div class="detail-item">
-                    <div class="detail-label">Energy Delivered</div>
-                    <div class="detail-value">${session.energy_delivered}</div>
-                </div>
-                <div class="detail-item">
-                    <div class="detail-label">Cost</div>
-                    <div class="detail-value">${session.cost}</div>
+                    <div class="detail-label">Payment Date</div>
+                    <div class="detail-value">${new Date(revenue.payment_date).toLocaleString('en-IN')}</div>
                 </div>
             `;
 
-            document.getElementById('sessionModal').classList.add('active');
+            document.getElementById('revenueModal').classList.add('active');
         }
 
-        // Close Session Modal
-        function closeSessionModal() {
-            document.getElementById('sessionModal').classList.remove('active');
+        // Close Revenue Modal
+        function closeRevenueModal() {
+            document.getElementById('revenueModal').classList.remove('active');
         }
 
         // Close modal on outside click
         window.onclick = function(event) {
-            const modal = document.getElementById('sessionModal');
+            const modal = document.getElementById('revenueModal');
             if (event.target === modal) {
-                closeSessionModal();
+                closeRevenueModal();
             }
         }
 
@@ -861,8 +898,13 @@
                 input.addEventListener('input', function(e) {
                     if (!isValidDate(e.target.value) && e.target.type === 'date') {
                         showError(e.target, `Please select a valid ${e.target.id === 'startDate' ? 'start' : 'end'} date.`);
-                    } else if (e.target.id === 'user' && e.target.value && (e.target.value.length < 2 || e.target.value.length > 50)) {
-                        showError(e.target, 'User name must be 2-50 characters.');
+                    } else if (e.target.id === 'user') {
+                        const userRegex = /^[a-zA-Z\s.-]{2,50}$/;
+                        if (e.target.value && !userRegex.test(e.target.value)) {
+                            showError(e.target, 'User name must be 2-50 characters (letters, spaces, dots, hyphens).');
+                        } else {
+                            hideError(e.target);
+                        }
                     } else {
                         hideError(e.target);
                     }
@@ -870,7 +912,7 @@
             });
 
             // Initial render
-            renderSessionsTable();
+            renderRevenueTable();
         });
 
         // DateTime Update

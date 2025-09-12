@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Session History</title>
+    <title>Payment Processing</title>
     <link rel="icon" href="<?php echo base_url('Images\logo.png'); ?>" type="image/png">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
@@ -60,7 +60,7 @@
             font-weight: bold;
         }
 
-        /* Session History Dashboard Styles */
+        /* Payment Processing Dashboard Styles */
         .dashboard-container {
             width: 100%;
             max-width: 1200px;
@@ -164,7 +164,7 @@
             display: none;
         }
 
-        .sessions-table {
+        .payments-table {
             width: 100%;
             border-collapse: collapse;
             background: #ffffff;
@@ -172,14 +172,14 @@
             overflow: hidden;
         }
 
-        .sessions-table th, .sessions-table td {
+        .payments-table th, .payments-table td {
             padding: 15px;
             text-align: left;
             color: #333;
             border-bottom: 1px solid #e0e0e0;
         }
 
-        .sessions-table th {
+        .payments-table th {
             background: #f5f7fa;
             color: #333;
             font-weight: 700;
@@ -187,11 +187,11 @@
             letter-spacing: 1px;
         }
 
-        .sessions-table tr:hover {
+        .payments-table tr:hover {
             background: #f9f9f9;
         }
 
-        .status-completed {
+        .status-paid {
             color: #28a745;
             font-weight: 600;
             background: rgba(40, 167, 69, 0.1);
@@ -203,6 +203,14 @@
             color: #dc3545;
             font-weight: 600;
             background: rgba(220, 53, 69, 0.1);
+            padding: 4px 8px;
+            border-radius: 12px;
+        }
+
+        .status-pending {
+            color: #ffc107;
+            font-weight: 600;
+            background: rgba(255, 193, 7, 0.1);
             padding: 4px 8px;
             border-radius: 12px;
         }
@@ -226,7 +234,7 @@
         }
 
         /* Modal Styles */
-        .session-modal {
+        .payment-modal {
             display: none;
             position: fixed;
             top: 0;
@@ -240,7 +248,7 @@
             align-items: center;
         }
 
-        .session-modal.active {
+        .payment-modal.active {
             display: flex;
         }
 
@@ -313,7 +321,7 @@
             background: #5a6268;
         }
 
-        .sessions-table-wrapper {
+        .payments-table-wrapper {
             overflow-x: auto;
         }
 
@@ -363,7 +371,7 @@
                 padding: 10px 20px;
             }
 
-            .sessions-table th, .sessions-table td {
+            .payments-table th, .payments-table td {
                 padding: 10px;
                 font-size: 13px;
             }
@@ -397,13 +405,13 @@
                 padding: 8px 15px;
             }
 
-            .sessions-table {
+            .payments-table {
                 display: block;
                 overflow-x: auto;
                 white-space: nowrap;
             }
 
-            .sessions-table th, .sessions-table td {
+            .payments-table th, .payments-table td {
                 min-width: 100px;
                 font-size: 12px;
                 padding: 8px;
@@ -432,8 +440,8 @@
         }
 
         /* Blur Sidebar and Content when Modal is Active */
-        .session-modal.active ~ .wrapper #sidebar,
-        .session-modal.active ~ .wrapper .content {
+        .payment-modal.active ~ .wrapper #sidebar,
+        .payment-modal.active ~ .wrapper .content {
             filter: blur(5px);
             transition: filter 0.3s ease;
         }
@@ -448,7 +456,7 @@
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet"
           integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
-    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;700;800&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;700;800&display=swa p" rel="stylesheet">
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 </head>
 
@@ -461,7 +469,7 @@
                 <div id="datetime"></div>
                 <div class="dashboard-container">
                     <div class="dashboard-header">
-                        <h2 class="dashboard-title">Session History</h2>
+                        <h2 class="dashboard-title">Payment Processing History</h2>
                         <div>
                             <button class="filter-btn" id="filterBtn"><i class="fas fa-filter me-2"></i>Filter</button>
                             <button class="clear-filter-btn" id="clearFilterBtn"><i class="fas fa-times me-2"></i>Clear Filters</button>
@@ -479,104 +487,94 @@
                             <div class="error-message" id="endDateError">End date must be after start date.</div>
                         </div>
                         <div class="form-group">
-                            <label for="status">Status</label>
-                            <select id="status" name="status" class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500">
+                            <label for="paymentStatus">Payment Status</label>
+                            <select id="paymentStatus" name="paymentStatus" class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500">
                                 <option value="">All Statuses</option>
-                                <option value="Completed">Completed</option>
+                                <option value="Paid">Paid</option>
+                                <option value="Pending">Pending</option>
                                 <option value="Failed">Failed</option>
                             </select>
-                            <div class="error-message" id="statusError">Please select a valid status.</div>
+                            <div class="error-message" id="paymentStatusError">Please select a valid status.</div>
                         </div>
                         <div class="form-group">
                             <label for="user">User</label>
                             <input type="text" id="user" name="user" maxlength="50" class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500">
-                            <div class="error-message" id="userError">User name must be 2-50 characters.</div>
+                            <div class="error-message" id="userError">User name must be 2-50 characters (letters, spaces, dots, hyphens).</div>
                         </div>
                         <div class="form-actions">
                             <button type="submit" class="filter-btn" onclick="applyFilters()">Apply Filters</button>
                             <button type="button" class="clear-filter-btn" onclick="toggleFilterForm()">Cancel</button>
                         </div>
                     </div>
-                    <div class="sessions-table-wrapper">
-                        <table class="sessions-table">
+                    <div class="payments-table-wrapper">
+                        <table class="payments-table">
                             <thead>
                                 <tr>
+                                    <th>Payment ID</th>
                                     <th>Session ID</th>
                                     <th>Charger ID</th>
                                     <th>User</th>
-                                    <th>Vehicle</th>
-                                    <th>Status</th>
-                                    <th>Start Time</th>
-                                    <th>End Time</th>
-                                    <th>Energy Delivered</th>
-                                    <th>Cost</th>
+                                    <th>Amount</th>
+                                    <th>Payment Status</th>
+                                    <th>Payment Date</th>
                                     <th>Actions</th>
                                 </tr>
                             </thead>
-                            <tbody id="sessionsTbody">
+                            <tbody id="paymentsTbody">
                                 <?php
-                                // Sample session history data
-                                $sessions = [
+                                // Sample payment data
+                                $payments = [
                                     [
-                                        'id' => 1001,
+                                        'payment_id' => 3001,
+                                        'session_id' => 1001,
                                         'charger_id' => 1,
                                         'user' => 'John Doe',
-                                        'vehicle' => 'Tesla Model 3',
-                                        'status' => 'Completed',
-                                        'start_time' => '2025-09-12 14:30:25',
-                                        'end_time' => '2025-09-12 15:30:25',
-                                        'energy_delivered' => '18.5 kWh',
-                                        'cost' => '$3.70'
+                                        'amount' => 25.50,
+                                        'payment_status' => 'Paid',
+                                        'payment_date' => '2025-09-12 15:45:00'
                                     ],
                                     [
-                                        'id' => 1002,
+                                        'payment_id' => 3002,
+                                        'session_id' => 1002,
                                         'charger_id' => 2,
                                         'user' => 'Jane Smith',
-                                        'vehicle' => 'Nissan Leaf',
-                                        'status' => 'Completed',
-                                        'start_time' => '2025-09-11 13:45:10',
-                                        'end_time' => '2025-09-11 14:20:45',
-                                        'energy_delivered' => '15.2 kWh',
-                                        'cost' => '$3.04'
+                                        'amount' => 20.00,
+                                        'payment_status' => 'Paid',
+                                        'payment_date' => '2025-09-11 14:30:00'
                                     ],
                                     [
-                                        'id' => 1003,
+                                        'payment_id' => 3003,
+                                        'session_id' => 1003,
                                         'charger_id' => 4,
                                         'user' => 'Mike Johnson',
-                                        'vehicle' => 'Chevrolet Bolt',
-                                        'status' => 'Failed',
-                                        'start_time' => '2025-09-10 15:10:30',
-                                        'end_time' => '2025-09-10 15:15:30',
-                                        'energy_delivered' => '0 kWh',
-                                        'cost' => '$0.00'
+                                        'amount' => 0.00,
+                                        'payment_status' => 'Failed',
+                                        'payment_date' => '2025-09-10 15:15:30'
                                     ],
                                     [
-                                        'id' => 1004,
+                                        'payment_id' => 3004,
+                                        'session_id' => 1004,
                                         'charger_id' => 3,
                                         'user' => 'Sarah Wilson',
-                                        'vehicle' => 'BMW i3',
-                                        'status' => 'Completed',
-                                        'start_time' => '2025-09-09 12:15:00',
-                                        'end_time' => '2025-09-09 13:00:00',
-                                        'energy_delivered' => '12.8 kWh',
-                                        'cost' => '$2.56'
+                                        'amount' => 18.75,
+                                        'payment_status' => 'Pending',
+                                        'payment_date' => '2025-09-09 13:00:00'
                                     ]
                                 ];
 
-                                foreach ($sessions as $session) {
-                                    $statusClass = strtolower($session['status']) === 'completed' ? 'status-completed' : 'status-failed';
-                                    echo "<tr data-session-id='" . $session['id'] . "'>";
-                                    echo "<td><strong>#" . $session['id'] . "</strong></td>";
-                                    echo "<td>Charger " . $session['charger_id'] . "</td>";
-                                    echo "<td>" . htmlspecialchars($session['user']) . "</td>";
-                                    echo "<td>" . htmlspecialchars($session['vehicle']) . "</td>";
-                                    echo "<td><span class='$statusClass'>" . $session['status'] . "</span></td>";
-                                    echo "<td>" . date('Y-m-d H:i:s', strtotime($session['start_time'])) . "</td>";
-                                    echo "<td>" . date('Y-m-d H:i:s', strtotime($session['end_time'])) . "</td>";
-                                    echo "<td>" . $session['energy_delivered'] . "</td>";
-                                    echo "<td>" . $session['cost'] . "</td>";
+                                foreach ($payments as $payment) {
+                                    $statusClass = strtolower($payment['payment_status']) === 'paid' ? 'status-paid' :
+                                                  (strtolower($payment['payment_status']) === 'failed' ? 'status-failed' : 'status-pending');
+                                    echo "<tr data-payment-id='" . $payment['payment_id'] . "'>";
+                                    echo "<td><strong>#" . $payment['payment_id'] . "</strong></td>";
+                                    echo "<td>#" . $payment['session_id'] . "</td>";
+                                    echo "<td>Charger " . $payment['charger_id'] . "</td>";
+                                    echo "<td>" . htmlspecialchars($payment['user']) . "</td>";
+                                    echo "<td>$" . number_format($payment['amount'], 2) . "</td>";
+                                    echo "<td><span class='$statusClass'>" . $payment['payment_status'] . "</span></td>";
+                                    echo "<td>" . date('Y-m-d H:i:s', strtotime($payment['payment_date'])) . "</td>";
                                     echo "<td>";
-                                    echo "<button class='action-btn' onclick='viewSession(" . json_encode($session) . ")'>View</button>";
+                                    echo "<button class='action-btn' onclick='viewPayment(" . json_encode($payment) . ")'>View</button>";
                                     echo "</td>";
                                     echo "</tr>";
                                 }
@@ -589,15 +587,15 @@
         </div>
     </div>
 
-    <!-- Session Details Modal -->
-    <div id="sessionModal" class="session-modal">
+    <!-- Payment Details Modal -->
+    <div id="paymentModal" class="payment-modal">
         <div class="modal-content">
-            <div class="modal-header" id="sessionModalTitle">Session Details</div>
-            <div class="detail-grid" id="sessionDetails">
+            <div class="modal-header" id="paymentModalTitle">Payment Details</div>
+            <div class="detail-grid" id="paymentDetails">
                 <!-- Dynamic content populated by JavaScript -->
             </div>
             <div class="form-actions">
-                <button type="button" class="close-btn" onclick="closeSessionModal()">Close</button>
+                <button type="button" class="close-btn" onclick="closePaymentModal()">Close</button>
             </div>
         </div>
     </div>
@@ -614,30 +612,29 @@
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
     <script>
-        // Sessions data
-        let sessions = <?php echo json_encode($sessions); ?>;
-        let filteredSessions = [...sessions];
+        // Payments data
+        let payments = <?php echo json_encode($payments); ?>;
+        let filteredPayments = [...payments];
 
-        // Render sessions table
-        function renderSessionsTable() {
-            const tbody = document.getElementById('sessionsTbody');
+        // Render payments table
+        function renderPaymentsTable() {
+            const tbody = document.getElementById('paymentsTbody');
             tbody.innerHTML = '';
-            filteredSessions.forEach(session => {
-                const statusClass = session.status.toLowerCase() === 'completed' ? 'status-completed' : 'status-failed';
+            filteredPayments.forEach(payment => {
+                const statusClass = payment.payment_status.toLowerCase() === 'paid' ? 'status-paid' :
+                                   payment.payment_status.toLowerCase() === 'failed' ? 'status-failed' : 'status-pending';
                 const tr = document.createElement('tr');
-                tr.setAttribute('data-session-id', session.id);
+                tr.setAttribute('data-payment-id', payment.payment_id);
                 tr.innerHTML = `
-                    <td><strong>#${session.id}</strong></td>
-                    <td>Charger ${session.charger_id}</td>
-                    <td>${session.user}</td>
-                    <td>${session.vehicle}</td>
-                    <td><span class="${statusClass}">${session.status}</span></td>
-                    <td>${new Date(session.start_time).toLocaleString('en-IN')}</td>
-                    <td>${new Date(session.end_time).toLocaleString('en-IN')}</td>
-                    <td>${session.energy_delivered}</td>
-                    <td>${session.cost}</td>
+                    <td><strong>#${payment.payment_id}</strong></td>
+                    <td>#${payment.session_id}</td>
+                    <td>Charger ${payment.charger_id}</td>
+                    <td>${payment.user}</td>
+                    <td>$${Number(payment.amount).toFixed(2)}</td>
+                    <td><span class="${statusClass}">${payment.payment_status}</span></td>
+                    <td>${new Date(payment.payment_date).toLocaleString('en-IN')}</td>
                     <td>
-                        <button class="action-btn" onclick="viewSession(${JSON.stringify(session).replace(/"/g, '&quot;')})">View</button>
+                        <button class="action-btn" onclick="viewPayment(${JSON.stringify(payment).replace(/"/g, '&quot;')})">View</button>
                     </td>
                 `;
                 tbody.appendChild(tr);
@@ -655,40 +652,40 @@
             if (validateFilterForm()) {
                 const startDate = document.getElementById('startDate').value;
                 const endDate = document.getElementById('endDate').value;
-                const status = document.getElementById('status').value;
+                const paymentStatus = document.getElementById('paymentStatus').value;
                 const user = document.getElementById('user').value.trim().toLowerCase();
 
-                filteredSessions = sessions.filter(session => {
+                filteredPayments = payments.filter(payment => {
                     let isMatch = true;
 
                     if (startDate) {
-                        const sessionStart = new Date(session.start_time);
+                        const paymentDate = new Date(payment.payment_date);
                         const filterStart = new Date(startDate);
                         filterStart.setHours(0, 0, 0, 0);
-                        isMatch = isMatch && sessionStart >= filterStart;
+                        isMatch = isMatch && paymentDate >= filterStart;
                     }
                     if (endDate) {
-                        const sessionEnd = new Date(session.end_time);
+                        const paymentDate = new Date(payment.payment_date);
                         const filterEnd = new Date(endDate);
                         filterEnd.setHours(23, 59, 59, 999);
-                        isMatch = isMatch && sessionEnd <= filterEnd;
+                        isMatch = isMatch && paymentDate <= filterEnd;
                     }
-                    if (status) {
-                        isMatch = isMatch && session.status === status;
+                    if (paymentStatus) {
+                        isMatch = isMatch && payment.payment_status === paymentStatus;
                     }
                     if (user) {
-                        isMatch = isMatch && session.user.toLowerCase().includes(user);
+                        isMatch = isMatch && payment.user.toLowerCase().includes(user);
                     }
 
                     return isMatch;
                 });
 
-                renderSessionsTable();
+                renderPaymentsTable();
                 toggleFilterForm();
                 Swal.fire({
                     icon: 'success',
                     title: 'Filters Applied',
-                    text: 'Session history has been filtered successfully.',
+                    text: 'Payment processing history has been filtered successfully.',
                     timer: 1500,
                     showConfirmButton: false
                 });
@@ -699,9 +696,9 @@
         function clearFilters() {
             const filterForm = document.getElementById('filterForm');
             filterForm.reset();
-            filteredSessions = [...sessions];
+            filteredPayments = [...payments];
             clearErrors();
-            renderSessionsTable();
+            renderPaymentsTable();
             if (filterForm.style.display === 'flex') {
                 toggleFilterForm();
             }
@@ -719,15 +716,15 @@
             const startDateInput = document.getElementById('startDate');
             const endDateInput = document.getElementById('endDate');
             const userInput = document.getElementById('user');
-            const statusInput = document.getElementById('status');
+            const paymentStatusInput = document.getElementById('paymentStatus');
             let isValid = true;
 
             clearErrors();
 
-            const currentDate = new Date('2025-09-12');
+            const currentDate = new Date('2025-09-12T17:30:00+05:30');
 
             // Validate at least one filter is provided
-            if (!startDateInput.value && !endDateInput.value && !statusInput.value && !userInput.value) {
+            if (!startDateInput.value && !endDateInput.value && !paymentStatusInput.value && !userInput.value) {
                 showError(startDateInput, 'At least one filter must be provided.');
                 isValid = false;
             }
@@ -758,9 +755,12 @@
             }
 
             // Validate user
-            if (userInput.value && (userInput.value.length < 2 || userInput.value.length > 50)) {
-                showError(userInput, 'User name must be 2-50 characters.');
-                isValid = false;
+            if (userInput.value) {
+                const userRegex = /^[a-zA-Z\s.-]{2,50}$/;
+                if (!userRegex.test(userInput.value)) {
+                    showError(userInput, 'User name must be 2-50 characters (letters, spaces, dots, hyphens).');
+                    isValid = false;
+                }
             }
 
             return isValid;
@@ -788,62 +788,63 @@
             inputs.forEach(input => input.classList.remove('error'));
         }
 
-        // Open Session Modal
-        function viewSession(session) {
-            document.getElementById('sessionModalTitle').textContent = `Session #${session.id} Details`;
-            const detailsContainer = document.getElementById('sessionDetails');
+        // Open Payment Modal
+        function viewPayment(payment) {
+            document.getElementById('paymentModalTitle').textContent = `Payment #${payment.payment_id} Details`;
+            const detailsContainer = document.getElementById('paymentDetails');
+            const transactionFee = (payment.amount * 0.02).toFixed(2); // 2% fee for demonstration
             detailsContainer.innerHTML = `
                 <div class="detail-item">
+                    <div class="detail-label">Payment ID</div>
+                    <div class="detail-value">#${payment.payment_id}</div>
+                </div>
+                <div class="detail-item">
+                    <div class="detail-label">Session ID</div>
+                    <div class="detail-value">#${payment.session_id}</div>
+                </div>
+                <div class="detail-item">
                     <div class="detail-label">Charger ID</div>
-                    <div class="detail-value">Charger ${session.charger_id}</div>
+                    <div class="detail-value">Charger ${payment.charger_id}</div>
                 </div>
                 <div class="detail-item">
                     <div class="detail-label">User Name</div>
-                    <div class="detail-value">${session.user}</div>
+                    <div class="detail-value">${payment.user}</div>
                 </div>
                 <div class="detail-item">
-                    <div class="detail-label">Vehicle Model</div>
-                    <div class="detail-value">${session.vehicle}</div>
+                    <div class="detail-label">Amount</div>
+                    <div class="detail-value">$${Number(payment.amount).toFixed(2)}</div>
                 </div>
                 <div class="detail-item">
-                    <div class="detail-label">Status</div>
-                    <div class="detail-value">${session.status}</div>
+                    <div class="detail-label">Transaction Fee (2%)</div>
+                    <div class="detail-value">$${transactionFee}</div>
                 </div>
                 <div class="detail-item">
-                    <div class="detail-label">Start Time</div>
-                    <div class="detail-value">${new Date(session.start_time).toLocaleString('en-IN')}</div>
+                    <div class="detail-label">Total Charged</div>
+                    <div class="detail-value">$${Number(payment.amount + Number(transactionFee)).toFixed(2)}</div>
                 </div>
                 <div class="detail-item">
-                    <div class="detail-label">End Time</div>
-                    <div class="detail-value">${new Date(session.end_time).toLocaleString('en-IN')}</div>
+                    <div class="detail-label">Payment Status</div>
+                    <div class="detail-value">${payment.payment_status}</div>
                 </div>
                 <div class="detail-item">
-                    <div class="detail-label">Duration</div>
-                    <div class="detail-value">${Math.round((new Date(session.end_time) - new Date(session.start_time)) / 60000)} minutes</div>
-                </div>
-                <div class="detail-item">
-                    <div class="detail-label">Energy Delivered</div>
-                    <div class="detail-value">${session.energy_delivered}</div>
-                </div>
-                <div class="detail-item">
-                    <div class="detail-label">Cost</div>
-                    <div class="detail-value">${session.cost}</div>
+                    <div class="detail-label">Payment Date</div>
+                    <div class="detail-value">${new Date(payment.payment_date).toLocaleString('en-IN')}</div>
                 </div>
             `;
 
-            document.getElementById('sessionModal').classList.add('active');
+            document.getElementById('paymentModal').classList.add('active');
         }
 
-        // Close Session Modal
-        function closeSessionModal() {
-            document.getElementById('sessionModal').classList.remove('active');
+        // Close Payment Modal
+        function closePaymentModal() {
+            document.getElementById('paymentModal').classList.remove('active');
         }
 
         // Close modal on outside click
         window.onclick = function(event) {
-            const modal = document.getElementById('sessionModal');
+            const modal = document.getElementById('paymentModal');
             if (event.target === modal) {
-                closeSessionModal();
+                closePaymentModal();
             }
         }
 
@@ -861,8 +862,13 @@
                 input.addEventListener('input', function(e) {
                     if (!isValidDate(e.target.value) && e.target.type === 'date') {
                         showError(e.target, `Please select a valid ${e.target.id === 'startDate' ? 'start' : 'end'} date.`);
-                    } else if (e.target.id === 'user' && e.target.value && (e.target.value.length < 2 || e.target.value.length > 50)) {
-                        showError(e.target, 'User name must be 2-50 characters.');
+                    } else if (e.target.id === 'user') {
+                        const userRegex = /^[a-zA-Z\s.-]{2,50}$/;
+                        if (e.target.value && !userRegex.test(e.target.value)) {
+                            showError(e.target, 'User name must be 2-50 characters (letters, spaces, dots, hyphens).');
+                        } else {
+                            hideError(e.target);
+                        }
                     } else {
                         hideError(e.target);
                     }
@@ -870,7 +876,7 @@
             });
 
             // Initial render
-            renderSessionsTable();
+            renderPaymentsTable();
         });
 
         // DateTime Update
