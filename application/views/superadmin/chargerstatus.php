@@ -6,181 +6,303 @@
     <title>EV Charging Station - Charger Status</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-    <style>
-        body {
-            font-family: 'Montserrat', sans-serif;
-            background: linear-gradient(135deg, #f5f7fa, #c3cfe2);
-            margin: 0;
-            padding-top: 0;
-            overflow-x: hidden;
-        }
+  <style>
+    body {
+    font-family: 'Montserrat', sans-serif;
+    background: linear-gradient(135deg, #f5f7fa, #c3cfe2);
+    margin: 0;
+    padding-top: 0;
+    overflow-x: hidden;
+    font-size: 14px;  /* Reduced from default 16px */
+}
 
-        .wrapper {
-            display: flex;
-            width: 100%;
-            transition: all 0.3s ease;
-        }
+.wrapper {
+    display: flex;
+    width: 100%;
+    transition: all 0.3s ease;
+}
 
-        .content {
-            flex: 1;
-            margin-left: 280px;
-            width: calc(100% - 280px);
-            transition: margin-left 0.3s ease, width 0.3s ease;
-            padding: 0;
-        }
+.content {
+    flex: 1;
+    margin-left: 280px;
+    width: calc(100% - 280px);
+    transition: margin-left 0.3s ease, width 0.3s ease;
+    padding: 0;
+}
 
-        #sidebar.active ~ .content {
-            margin-left: 0;
-            width: 100%;
-        }
+#sidebar.active ~ .content {
+    margin-left: 0;
+    width: 100%;
+}
 
-        .charger-card {
-            transition: transform 0.3s ease, box-shadow 0.3s ease;
-            background: linear-gradient(135deg, rgba(255, 255, 255, 0.95), rgba(255, 255, 255, 0.8));
-            backdrop-filter: blur(10px);
-        }
+.charger-card {
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    background: linear-gradient(135deg, rgba(255, 255, 255, 0.95), rgba(255, 255, 255, 0.8));
+    backdrop-filter: blur(10px);
+}
 
-        .charger-card:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 12px 20px rgba(0, 0, 0, 0.15);
-        }
+.charger-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 12px 20px rgba(0, 0, 0, 0.15);
+}
 
-        .status-dot {
-            width: 12px;
-            height: 12px;
-            border-radius: 50%;
-            display: inline-block;
-            margin-right: 8px;
-        }
+.charger-card h3 {
+    font-size: 14px;  /* Reduced from 20px */
+}
 
-        .status-available { background-color: #22c55e; }
-        .status-inuse { background-color: #f59e0b; }
-        .status-outofservice { background-color: #ef4444; }
+.charger-card p {
+    font-size: 12px;  /* Reduced from default */
+}
 
-        /* Modal Styles */
-        .modal {
-            display: none;
-            position: fixed;
-            z-index: 50;
-            left: 0;
-            top: 0;
-            width: 100%;
-            height: 100%;
-            overflow: hidden;
-            background-color: rgba(0, 0, 0, 0.5);
-            backdrop-filter: blur(5px);
-        }
+.charger-card span {
+    font-size: 10px;  /* Reduced from 14px */
+}
 
-        .modal-content {
-            background-color: #fefefe;
-            margin: 5% auto;
-            padding: 0;
-            border: none;
-            border-radius: 12px;
-            width: 90%;
-            max-width: 500px;
-            max-height: 80vh;
-            overflow-y: auto;
-            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.2);
-            scrollbar-width: none; /* Firefox */
-            -ms-overflow-style: none; /* IE and Edge */
-        }
+.charger-card button {
+    font-size: 12px;  /* Reduced from default */
+}
 
-        .modal-content::-webkit-scrollbar {
-            display: none; /* Chrome, Safari, Opera */
-        }
+.status-dot {
+    width: 12px;
+    height: 12px;
+    border-radius: 50%;
+    display: inline-block;
+    margin-right: 8px;
+}
 
-        .close {
-            color: #aaa;
-            float: right;
-            font-size: 28px;
-            font-weight: bold;
-            padding: 10px;
-            cursor: pointer;
-        }
+.status-available { background-color: #22c55e; }
+.status-inuse { background-color: #f59e0b; }
+.status-outofservice { background-color: #ef4444; }
 
-        .close:hover,
-        .close:focus {
-            color: #000;
-        }
+/* Modal Styles */
+.modal {
+    display: none;
+    position: fixed;
+    z-index: 50;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
+    background-color: rgba(0, 0, 0, 0.5);
+    backdrop-filter: blur(5px);
+}
 
-        .progress-bar {
-            width: 100%;
-            height: 20px;
-            background-color: #f3f4f6;
-            border-radius: 10px;
-            overflow: hidden;
-        }
+.modal-content {
+    background-color: #fefefe;
+    margin: 5% auto;
+    padding: 0;
+    border: none;
+    border-radius: 12px;
+    width: 90%;
+    max-width: 500px;
+    max-height: 80vh;
+    overflow-y: auto;
+    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.2);
+    scrollbar-width: none; /* Firefox */
+    -ms-overflow-style: none; /* IE and Edge */
+}
 
-        .progress-fill {
-            height: 100%;
-            background: linear-gradient(90deg, #22c55e, #16a34a);
-            width: 0%;
-            transition: width 0.3s ease;
-        }
+.modal-content::-webkit-scrollbar {
+    display: none; /* Chrome, Safari, Opera */
+}
 
-        /* Form Validation Styles */
-        input:invalid {
-            border-color: #ef4444;
-        }
+.close {
+    color: #aaa;
+    float: right;
+    font-size: 24px;  /* Reduced from 28px */
+    font-weight: bold;
+    padding: 10px;
+    cursor: pointer;
+}
 
-        input:valid {
-            border-color: #22c55e;
-        }
+.close:hover,
+.close:focus {
+    color: #000;
+}
 
-        .error-message {
-            color: #ef4444;
-            font-size: 0.875rem;
-            margin-top: 0.25rem;
-            display: none;
-        }
+.progress-bar {
+    width: 100%;
+    height: 20px;
+    background-color: #f3f4f6;
+    border-radius: 10px;
+    overflow: hidden;
+}
 
-        /* Ensure form fields fit within modal */
-        .modal-content form {
-            padding: 1.5rem;
-        }
+.progress-fill {
+    height: 100%;
+    background: linear-gradient(90deg, #22c55e, #16a34a);
+    width: 0%;
+    transition: width 0.3s ease;
+}
 
-        .modal-content input,
-        .modal-content select,
-        .modal-content textarea {
-            width: 100%;
-            box-sizing: border-box;
-        }
+/* Form Validation Styles */
+input:invalid {
+    border-color: #ef4444;
+}
 
-        @media (max-width: 768px) {
-            .content {
-                margin-left: 250px;
-                width: calc(100% - 250px);
-            }
+input:valid {
+    border-color: #22c55e;
+}
 
-            #sidebar.active ~ .content {
-                margin-left: 0;
-                width: 100%;
-            }
+.error-message {
+    color: #ef4444;
+    font-size: 10px;  /* Reduced from 0.875rem (14px) */
+    margin-top: 0.25rem;
+    display: none;
+}
 
-            .modal-content {
-                width: 95%;
-                margin: 10% auto;
-            }
-        }
+/* Ensure form fields fit within modal */
+.modal-content form {
+    padding: 1.5rem;
+}
 
-        @media (max-width: 480px) {
-            .content {
-                margin-left: 0;
-                width: 100%;
-            }
+.modal-content input,
+.modal-content select,
+.modal-content textarea {
+    width: 100%;
+    box-sizing: border-box;
+    font-size: 12px;  /* Reduced from default */
+}
 
-            .charger-card {
-                padding: 1rem;
-            }
+.modal-content label {
+    font-size: 12px;  /* Reduced from 14px */
+}
 
-            .modal-content {
-                width: 98%;
-                margin: 5% auto;
-                max-height: 85vh;
-            }
-        }
-    </style>
+.modal-content h3 {
+    font-size: 14px;  /* Reduced from 20px */
+}
+
+.modal-content h4 {
+    font-size: 12px;  /* Reduced from 16px */
+}
+
+.modal-content p {
+    font-size: 10px;  /* Reduced from 14px */
+}
+
+.modal-content button {
+    font-size: 12px;  /* Reduced from default */
+}
+
+@media (max-width: 768px) {
+    .content {
+        margin-left: 250px;
+        width: calc(100% - 250px);
+    }
+
+    #sidebar.active ~ .content {
+        margin-left: 0;
+        width: 100%;
+    }
+
+    .modal-content {
+        width: 95%;
+        margin: 10% auto;
+    }
+
+    .modal-content h3 {
+        font-size: 12px;  /* Reduced from 20px */
+    }
+
+    .modal-content h4 {
+        font-size: 11px;  /* Reduced from 16px */
+    }
+
+    .modal-content label {
+        font-size: 11px;  /* Reduced from 14px */
+    }
+
+    .modal-content input,
+    .modal-content select,
+    .modal-content textarea {
+        font-size: 11px;  /* Reduced from default */
+    }
+
+    .modal-content p {
+        font-size: 9px;  /* Reduced from 14px */
+    }
+
+    .modal-content button {
+        font-size: 11px;  /* Reduced from default */
+    }
+
+    .charger-card h3 {
+        font-size: 12px;  /* Reduced from 20px */
+    }
+
+    .charger-card p {
+        font-size: 11px;  /* Reduced from default */
+    }
+
+    .charger-card span {
+        font-size: 9px;  /* Reduced from 14px */
+    }
+
+    .charger-card button {
+        font-size: 11px;  /* Reduced from default */
+    }
+}
+
+@media (max-width: 480px) {
+    .content {
+        margin-left: 0;
+        width: 100%;
+    }
+
+    .charger-card {
+        padding: 1rem;
+    }
+
+    .modal-content {
+        width: 98%;
+        margin: 5% auto;
+        max-height: 85vh;
+    }
+
+    .modal-content h3 {
+        font-size: 11px;  /* Reduced from 20px */
+    }
+
+    .modal-content h4 {
+        font-size: 10px;  /* Reduced from 16px */
+    }
+
+    .modal-content label {
+        font-size: 10px;  /* Reduced from 14px */
+    }
+
+    .modal-content input,
+    .modal-content select,
+    .modal-content textarea {
+        font-size: 10px;  /* Reduced from default */
+    }
+
+    .modal-content p {
+        font-size: 8px;  /* Reduced from 14px */
+    }
+
+    .modal-content button {
+        font-size: 10px;  /* Reduced from default */
+    }
+
+    .charger-card h3 {
+        font-size: 11px;  /* Reduced from 20px */
+    }
+
+    .charger-card p {
+        font-size: 10px;  /* Reduced from default */
+    }
+
+    .charger-card span {
+        font-size: 8px;  /* Reduced from 14px */
+    }
+
+    .charger-card button {
+        font-size: 10px;  /* Reduced from default */
+    }
+}
+  </style>
 </head>
 <body class="bg-gray-100 font-sans">
     <?php $this->load->view('base/base') ?>

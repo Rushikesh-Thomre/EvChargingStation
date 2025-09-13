@@ -7,393 +7,400 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
     <style>
-        body {
-            font-family: 'Montserrat', sans-serif !important;
-            background: #fafafa;
-            margin: 0;
-            overflow-x: hidden;
-        }
+    body {
+    font-family: 'Montserrat', sans-serif !important;
+    background: #fafafa;
+    margin: 0;
+    overflow-x: hidden;
+    font-size: 14px;  /* Reduced from default 16px */
+}
 
-        .wrapper {
-            overflow-y: auto;
-            display: flex;
-            width: 100%;
-        }
+.wrapper {
+    overflow-y: auto;
+    display: flex;
+    width: 100%;
+}
 
-        .logo {
-            background-color: #f1f1f1;
-            width: 100%;
-            padding: 10px 0;
-            text-align: center;
-        }
+.logo {
+    background-color: #f1f1f1;
+    width: 100%;
+    padding: 10px 0;
+    text-align: center;
+}
 
-        .logo img {
-            width: 220px;
-            margin: 0 auto;
-        }
+.logo img {
+    width: 220px;
+    margin: 0 auto;
+}
 
-        .line {
-            width: 100%;
-            height: 1px;
-            border-bottom: 1px dashed #ddd;
-            margin: 40px 0;
-        }
+.line {
+    width: 100%;
+    height: 1px;
+    border-bottom: 1px dashed #ddd;
+    margin: 40px 0;
+}
 
-        .content {
-            width: 100%;
-            padding: 10px;
-           
-            transition: all 0.3s;
-        }
+.content {
+    width: 100%;
+    padding: 10px;
+    transition: all 0.3s;
+}
 
-        #datetime {
-            font-size: 14px;
-            color: #333;
-            padding: 10px 0;
-            background: #e6f0ff;
-            margin-top: 50px;
-            text-align: center;
-            border-radius: 5px;
-        }
+#datetime {
+    font-size: 12px;  /* Reduced from 14px */
+    color: #333;
+    padding: 10px 0;
+    background: #e6f0ff;
+    margin-top: 50px;
+    text-align: center;
+    border-radius: 5px;
+}
 
-        #datetime span {
-            font-weight: bold;
-        }
+#datetime span {
+    font-weight: bold;
+}
 
-        /* Software Updates Dashboard Styles */
-        .dashboard-container {
-            width: 100%;
-            max-width: 1200px;
-            margin: 0 auto;
-            padding: 25px;
-            background: #ffffff;
-            border-radius: 15px;
-            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
-            display: flex;
-            flex-direction: column;
-            gap: 25px;
-        }
+/* Software Updates Dashboard Styles */
+.dashboard-container {
+    width: 100%;
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 25px;
+    background: #ffffff;
+    border-radius: 15px;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+    display: flex;
+    flex-direction: column;
+    gap: 25px;
+}
 
-        .dashboard-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 20px;
-        }
+.dashboard-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+}
 
-        .dashboard-title {
-            font-size: 24px;
-            font-weight: 800;
-            color: #1a73e8;
-        }
+.dashboard-title {
+    font-size: 18px;  /* Reduced from 24px */
+    font-weight: 800;
+    color: #1a73e8;
+}
 
-        .check-updates-btn {
-            min-width: 180px;
-            font-size: 16px;
-            padding: 12px 25px;
-            background: #1a73e8;
-            color: #ffffff;
-            border: none;
-            border-radius: 10px;
-            transition: background 0.3s ease;
-            text-decoration: none;
-            display: inline-flex;
-            align-items: center;
-            justify-content: center;
-            font-weight: 600;
-            text-transform: uppercase;
-        }
+.check-updates-btn {
+    min-width: 180px;
+    font-size: 12px;  /* Reduced from 16px */
+    padding: 12px 25px;
+    background: #1a73e8;
+    color: #ffffff;
+    border: none;
+    border-radius: 10px;
+    transition: background 0.3s ease;
+    text-decoration: none;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 600;
+    text-transform: uppercase;
+}
 
-        .check-updates-btn:hover {
-            background: #1557b0;
-        }
+.check-updates-btn:hover {
+    background: #1557b0;
+}
 
-        .updates-table {
-            width: 100%;
-            border-collapse: collapse;
-            background: #ffffff;
-            border-radius: 10px;
-            overflow: hidden;
-        }
+.updates-table {
+    width: 100%;
+    border-collapse: collapse;
+    background: #ffffff;
+    border-radius: 10px;
+    overflow: hidden;
+}
 
-        .updates-table th, .updates-table td {
-            padding: 15px;
-            text-align: left;
-            color: #333;
-            border-bottom: 1px solid #e0e0e0;
-        }
+.updates-table th, .updates-table td {
+    padding: 15px;
+    text-align: left;
+    color: #333;
+    border-bottom: 1px solid #e0e0e0;
+    font-size: 12px;  /* Reduced from default */
+}
 
-        .updates-table th {
-            background: #f5f7fa;
-            color: #333;
-            font-weight: 700;
-            text-transform: uppercase;
-            letter-spacing: 1px;
-        }
+.updates-table th {
+    background: #f5f7fa;
+    color: #333;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
 
-        .updates-table tr:hover {
-            background: #f9f9f9;
-        }
+.updates-table tr:hover {
+    background: #f9f9f9;
+}
 
-        .action-btn {
-            padding: 8px 15px;
-            margin: 0 5px;
-            border: none;
-            border-radius: 5px;
-            cursor: pointer;
-            font-size: 14px;
-            transition: background 0.3s ease;
-        }
+.action-btn {
+    padding: 8px 15px;
+    margin: 0 5px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 12px;  /* Reduced from 14px */
+    transition: background 0.3s ease;
+}
 
-        .install-btn {
-            background: #1a73e8;
-            color: #fff;
-        }
+.install-btn {
+    background: #1a73e8;
+    color: #fff;
+}
 
-        .install-btn:hover {
-            background: #1557b0;
-        }
+.install-btn:hover {
+    background: #1557b0;
+}
 
-        .view-btn {
-            background: #6c757d;
-            color: #fff;
-        }
+.view-btn {
+    background: #6c757d;
+    color: #fff;
+}
 
-        .view-btn:hover {
-            background: #5a6268;
-        }
+.view-btn:hover {
+    background: #5a6268;
+}
 
-        .status-completed {
-            color: #28a745;
-            font-weight: 600;
-        }
+.status-completed {
+    color: #28a745;
+    font-weight: 600;
+    font-size: 12px;  /* Reduced from default */
+}
 
-        .status-pending {
-            color: #ffc107;
-            font-weight: 600;
-        }
+.status-pending {
+    color: #ffc107;
+    font-weight: 600;
+    font-size: 12px;  /* Reduced from default */
+}
 
-        .status-failed {
-            color: #dc3545;
-            font-weight: 600;
-        }
+.status-failed {
+    color: #dc3545;
+    font-weight: 600;
+    font-size: 12px;  /* Reduced from default */
+}
 
-        /* Modal Styles */
-        .modal {
-            display: none;
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: rgba(0, 0, 0, 0.5);
-            backdrop-filter: blur(5px);
-            z-index: 1000;
-            justify-content: center;
-            align-items: center;
-        }
+/* Modal Styles */
+.modal {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.5);
+    backdrop-filter: blur(5px);
+    z-index: 1000;
+    justify-content: center;
+    align-items: center;
+}
 
-        .modal.active {
-            display: flex;
-        }
+.modal.active {
+    display: flex;
+}
 
-        .modal-content {
-            background: #ffffff;
-            padding: 20px;
-            border-radius: 10px;
-            width: 100%;
-            max-width: 500px;
-            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
-        }
+.modal-content {
+    background: #ffffff;
+    padding: 20px;
+    border-radius: 10px;
+    width: 100%;
+    max-width: 500px;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+}
 
-        .modal-header {
-            font-size: 18px;
-            font-weight: 700;
-            color: #1a73e8;
-            margin-bottom: 20px;
-        }
+.modal-header {
+    font-size: 14px;  /* Reduced from 18px */
+    font-weight: 700;
+    color: #1a73e8;
+    margin-bottom: 20px;
+}
 
-        .form-group {
-            margin-bottom: 15px;
-        }
+.form-group {
+    margin-bottom: 15px;
+}
 
-        .form-group label {
-            display: block;
-            font-weight: 600;
-            margin-bottom: 5px;
-            color: #333;
-        }
+.form-group label {
+    display: block;
+    font-weight: 600;
+    margin-bottom: 5px;
+    color: #333;
+    font-size: 12px;  /* Reduced from default */
+}
 
-        .form-group input,
-        .form-group textarea {
-            width: 100%;
-            padding: 10px;
-            border: 1px solid #e0e0e0;
-            border-radius: 5px;
-            font-size: 14px;
-        }
+.form-group input,
+.form-group textarea {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #e0e0e0;
+    border-radius: 5px;
+    font-size: 12px;  /* Reduced from 14px */
+}
 
-        .form-group input:disabled,
-        .form-group textarea:disabled {
-            background: #f5f5f5;
-            cursor: not-allowed;
-        }
+.form-group input:disabled,
+.form-group textarea:disabled {
+    background: #f5f5f5;
+    cursor: not-allowed;
+}
 
-        .form-actions {
-            display: flex;
-            gap: 10px;
-        }
+.form-actions {
+    display: flex;
+    gap: 10px;
+}
 
-        .close-btn {
-            padding: 10px 20px;
-            border: none;
-            border-radius: 5px;
-            font-size: 14px;
-            cursor: pointer;
-            transition: background 0.3s ease;
-            background: #6c757d;
-            color: #fff;
-        }
+.close-btn {
+    padding: 10px 20px;
+    border: none;
+    border-radius: 5px;
+    font-size: 12px;  /* Reduced from 14px */
+    cursor: pointer;
+    transition: background 0.3s ease;
+    background: #6c757d;
+    color: #fff;
+}
 
-        .close-btn:hover {
-            background: #5a6268;
-        }
+.close-btn:hover {
+    background: #5a6268;
+}
 
-        /* Progress Bar for SweetAlert2 */
-        .progress-bar {
-            width: 100%;
-            height: 10px;
-            background: #e0e0e0;
-            border-radius: 5px;
-            margin-top: 15px;
-            overflow: hidden;
-        }
+/* Progress Bar for SweetAlert2 */
+.progress-bar {
+    width: 100%;
+    height: 10px;
+    background: #e0e0e0;
+    border-radius: 5px;
+    margin-top: 15px;
+    overflow: hidden;
+}
 
-        .progress {
-            width: 0;
-            height: 100%;
-            background: #1a73e8;
-            transition: width 3s ease;
-        }
+.progress {
+    width: 0;
+    height: 100%;
+    background: #1a73e8;
+    transition: width 3s ease;
+}
 
-        /* Responsive Styles */
-        @media (max-width: 1024px) {
-            .dashboard-container {
-                padding: 20px;
-            }
+/* Responsive Styles */
+@media (max-width: 1024px) {
+    .dashboard-container {
+        padding: 20px;
+    }
 
-            .dashboard-header {
-                flex-direction: column;
-                gap: 15px;
-            }
+    .dashboard-header {
+        flex-direction: column;
+        gap: 15px;
+    }
 
-            .dashboard-title {
-                font-size: 22px;
-            }
+    .dashboard-title {
+        font-size: 16px;  /* Reduced from 22px */
+    }
 
-            .check-updates-btn {
-                min-width: 160px;
-                font-size: 15px;
-                padding: 10px 20px;
-            }
+    .check-updates-btn {
+        min-width: 160px;
+        font-size: 11px;  /* Reduced from 15px */
+        padding: 10px 20px;
+    }
 
-            .updates-table th, .updates-table td {
-                padding: 12px;
-            }
+    .updates-table th, .updates-table td {
+        padding: 12px;
+        font-size: 11px;  /* Reduced from default */
+    }
 
-            .modal-content {
-                max-width: 90%;
-            }
-        }
+    .modal-content {
+        max-width: 90%;
+    }
+}
 
-        @media (max-width: 768px) {
-            .dashboard-container {
-                padding: 15px;
-            }
+@media (max-width: 768px) {
+    .dashboard-container {
+        padding: 15px;
+    }
 
-            .dashboard-title {
-                font-size: 20px;
-            }
+    .dashboard-title {
+        font-size: 14px;  /* Reduced from 20px */
+    }
 
-            .check-updates-btn {
-                min-width: 140px;
-                font-size: 14px;
-                padding: 10px 20px;
-            }
+    .check-updates-btn {
+        min-width: 140px;
+        font-size: 10px;  /* Reduced from 14px */
+        padding: 10px 20px;
+    }
 
-            .updates-table th, .updates-table td {
-                padding: 10px;
-                font-size: 13px;
-            }
+    .updates-table th, .updates-table td {
+        padding: 10px;
+        font-size: 10px;  /* Reduced from 13px */
+    }
 
-            .form-group input,
-            .form-group textarea {
-                font-size: 13px;
-            }
+    .form-group input,
+    .form-group textarea {
+        font-size: 11px;  /* Reduced from 13px */
+    }
 
-            .action-btn {
-                padding: 6px 12px;
-                font-size: 13px;
-            }
-        }
+    .action-btn {
+        padding: 6px 12px;
+        font-size: 10px;  /* Reduced from 13px */
+    }
+}
 
-        @media (max-width: 480px) {
-            .dashboard-container {
-                padding: 10px;
-            }
+@media (max-width: 480px) {
+    .dashboard-container {
+        padding: 10px;
+    }
 
-            .dashboard-header {
-                flex-direction: column;
-                gap: 10px;
-            }
+    .dashboard-header {
+        flex-direction: column;
+        gap: 10px;
+    }
 
-            .dashboard-title {
-                font-size: 18px;
-            }
+    .dashboard-title {
+        font-size: 12px;  /* Reduced from 18px */
+    }
 
-            .check-updates-btn {
-                min-width: 120px;
-                font-size: 12px;
-                padding: 8px 15px;
-            }
+    .check-updates-btn {
+        min-width: 120px;
+        font-size: 9px;  /* Reduced from 12px */
+        padding: 8px 15px;
+    }
 
-            .updates-table {
-                display: block;
-                overflow-x: auto;
-                white-space: nowrap;
-            }
+    .updates-table {
+        display: block;
+        overflow-x: auto;
+        white-space: nowrap;
+    }
 
-            .updates-table th, .updates-table td {
-                min-width: 100px;
-                font-size: 12px;
-                padding: 8px;
-            }
+    .updates-table th, .updates-table td {
+        min-width: 100px;
+        font-size: 9px;  /* Reduced from 12px */
+        padding: 8px;
+    }
 
-            .form-group input,
-            .form-group textarea {
-                font-size: 12px;
-            }
+    .form-group input,
+    .form-group textarea {
+        font-size: 10px;  /* Reduced from 12px */
+    }
 
-            .action-btn {
-                padding: 5px 10px;
-                font-size: 12px;
-            }
+    .action-btn {
+        padding: 5px 10px;
+        font-size: 9px;  /* Reduced from 12px */
+    }
 
-            .form-actions {
-                flex-direction: column;
-                gap: 8px;
-            }
+    .form-actions {
+        flex-direction: column;
+        gap: 8px;
+    }
 
-            .close-btn {
-                width: 100%;
-                padding: 8px;
-            }
+    .close-btn {
+        width: 100%;
+        padding: 8px;
+        font-size: 10px;  /* Reduced from implied 14px */
+    }
 
-            .modal-content {
-                max-width: 95%;
-                padding: 15px;
-            }
-        }
+    .modal-content {
+        max-width: 95%;
+        padding: 15px;
+    }
+}
     </style>
 
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet"

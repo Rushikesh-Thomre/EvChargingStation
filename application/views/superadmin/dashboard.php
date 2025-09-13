@@ -8,184 +8,222 @@
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700&display=swap" rel="stylesheet">
+ 
     <style>
-        :root {
-            --primary: #0B2F8B;
-            --secondary: #4A90E2;
-            --success: #28a745;
-            --danger: #dc3545;
-            --warning: #ffc107;
-            --info: #17a2b8;
-            --light: #f8f9fa;
-            --dark: #343a40;
-            --white: #ffffff;
-            --shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-            --border-radius: 10px;
-            --transition: all 0.3s ease;
-        }
-        body {
-            font-family: 'Montserrat', sans-serif;
-            background: #f5f7fa;
-            margin: 0;
-            color: var(--dark);
-        }
-        .wrapper {
-            display: flex;
-            width: 100%;
-            flex-direction: column;
-        }
-        .content {
-            width: 100%;
-            padding: 20px;
-            transition: var(--transition);
-        }
-        #datetime {
-            font-size: 14px;
-            color: var(--white);
-            padding: 8px 0;
-            background: var(--primary);
-            margin: 0;
-            text-align: center;
-            border-radius: var(--border-radius);
-        }
-        .dashboard-container {
-            width: 100%;
-            padding: 20px;
-            background: var(--white);
-            border-radius: var(--border-radius);
-            box-shadow: var(--shadow);
-            margin-top: 20px;
-        }
-        .dashboard-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 20px;
-        }
-        .dashboard-title {
-            font-size: 24px;
-            font-weight: 700;
-            color: var(--primary);
-        }
-        .dashboard-row {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 20px;
-            margin-bottom: 20px;
-        }
-        .card {
-            flex: 1;
-            min-width: 250px;
-            background: var(--white);
-            border-radius: var(--border-radius);
-            box-shadow: var(--shadow);
-            padding: 20px;
-            transition: var(--transition);
-            cursor: pointer;
-            border: 1px solid #eee;
-        }
-        .card:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
-        }
-        .card-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 15px;
-        }
-        .card-title {
-            font-size: 18px;
-            font-weight: 600;
-            color: var(--primary);
-        }
-        .card-value {
-            font-size: 32px;
-            font-weight: 700;
-            color: var(--primary);
-            margin: 10px 0;
-        }
-        .card-subtitle {
-            font-size: 14px;
-            color: var(--dark);
-            margin-bottom: 10px;
-        }
-        .card-icon {
-            font-size: 24px;
-            color: var(--secondary);
-        }
-        .chart-container {
-            height: 200px;
-            margin-top: 15px;
-        }
-        .modal {
-            display: none;
-            position: fixed;
-            z-index: 1000;
-            left: 0;
-            top: 0;
-            width: 100%;
-            height: 100%;
-            overflow: auto;
-            background-color: rgba(0, 0, 0, 0.5);
-        }
-        .modal-content {
-            background-color: var(--white);
-            margin: 5% auto;
-            padding: 30px;
-            border-radius: var(--border-radius);
-            width: 80%;
-            max-width: 1000px;
-            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
-            border: none;
-        }
-        .modal-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 20px;
-            padding-bottom: 15px;
-            border-bottom: 1px solid #eee;
-        }
-        .modal-title {
-            font-size: 24px;
-            font-weight: 600;
-            color: var(--primary);
-        }
-        .close {
-            color: var(--dark);
-            font-size: 28px;
-            font-weight: bold;
-            cursor: pointer;
-        }
-        .close:hover {
-            color: var(--danger);
-        }
-        .modal-body {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 20px;
-        }
-        .modal-section {
-            flex: 1;
-            min-width: 300px;
-        }
-        .modal-chart-container {
-            height: 300px;
-            margin-top: 20px;
-        }
-        @media (max-width: 768px) {
-            .dashboard-row {
-                flex-direction: column;
-            }
-            .modal-body {
-                flex-direction: column;
-            }
-            .modal-content {
-                width: 95%;
-                margin: 10% auto;
-            }
-        }
+:root {
+    --primary: #0B2F8B;
+    --secondary: #4A90E2;
+    --success: #28a745;
+    --danger: #dc3545;
+    --warning: #ffc107;
+    --info: #17a2b8;
+    --light: #f8f9fa;
+    --dark: #343a40;
+    --white: #ffffff;
+    --shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    --border-radius: 10px;
+    --transition: all 0.3s ease;
+}
+
+body {
+    font-family: 'Montserrat', sans-serif;
+    background: #f5f7fa;
+    margin: 0;
+    color: var(--dark);
+    font-size: 14px;  /* Reduced from default 16px */
+}
+
+.wrapper {
+    display: flex;
+    width: 100%;
+    flex-direction: column;
+}
+
+.content {
+    width: 100%;
+    padding: 20px;
+    transition: var(--transition);
+}
+
+#datetime {
+    font-size: 12px;  /* Reduced from 14px */
+    color: var(--white);
+    padding: 8px 0;
+    background: var(--primary);
+    margin: 0;
+    text-align: center;
+    border-radius: var(--border-radius);
+}
+
+.dashboard-container {
+    width: 100%;
+    padding: 20px;
+    background: var(--white);
+    border-radius: var(--border-radius);
+    box-shadow: var(--shadow);
+    margin-top: 20px;
+}
+
+.dashboard-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+}
+
+.dashboard-title {
+    font-size: 18px;  /* Reduced from 24px */
+    font-weight: 700;
+    color: var(--primary);
+}
+
+.dashboard-row {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 20px;
+    margin-bottom: 20px;
+}
+
+.card {
+    flex: 1;
+    min-width: 250px;
+    background: var(--white);
+    border-radius: var(--border-radius);
+    box-shadow: var(--shadow);
+    padding: 20px;
+    transition: var(--transition);
+    cursor: pointer;
+    border: 1px solid #eee;
+}
+
+.card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+}
+
+.card-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 15px;
+}
+
+.card-title {
+    font-size: 14px;  /* Reduced from 18px */
+    font-weight: 600;
+    color: var(--primary);
+}
+
+.card-value {
+    font-size: 24px;  /* Reduced from 32px */
+    font-weight: 700;
+    color: var(--primary);
+    margin: 10px 0;
+}
+
+.card-subtitle {
+    font-size: 12px;  /* Reduced from 14px */
+    color: var(--dark);
+    margin-bottom: 10px;
+}
+
+.card-icon {
+    font-size: 24px;
+    color: var(--secondary);
+}
+
+.chart-container {
+    height: 200px;
+    margin-top: 15px;
+}
+
+.modal {
+    display: none;
+    position: fixed;
+    z-index: 1000;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    overflow: auto;
+    background-color: rgba(0, 0, 0, 0.5);
+}
+
+.modal-content {
+    background-color: var(--white);
+    margin: 5% auto;
+    padding: 30px;
+    border-radius: var(--border-radius);
+    width: 80%;
+    max-width: 1000px;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+    border: none;
+}
+
+.modal-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+    padding-bottom: 15px;
+    border-bottom: 1px solid #eee;
+}
+
+.modal-title {
+    font-size: 18px;  /* Reduced from 24px */
+    font-weight: 600;
+    color: var(--primary);
+}
+
+.close {
+    color: var(--dark);
+    font-size: 28px;
+    font-weight: bold;
+    cursor: pointer;
+}
+
+.close:hover {
+    color: var(--danger);
+}
+
+.modal-body {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 20px;
+}
+
+.modal-section {
+    flex: 1;
+    min-width: 300px;
+}
+
+.modal-section h4 {
+    font-size: 14px;  /* Reduced for headings */
+}
+
+.modal-section p, .modal-section ul li {
+    font-size: 12px;  /* Reduced for body text */
+}
+
+.modal-chart-container {
+    height: 300px;
+    margin-top: 20px;
+}
+
+@media (max-width: 768px) {
+    .dashboard-row {
+        flex-direction: column;
+    }
+
+    .modal-body {
+        flex-direction: column;
+    }
+
+    .modal-content {
+        width: 95%;
+        margin: 10% auto;
+    }
+}
     </style>
 </head>
 <body>
