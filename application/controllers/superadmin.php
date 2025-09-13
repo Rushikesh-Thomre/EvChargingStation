@@ -55,4 +55,7 @@ public function softwareupdates(){
 	public function monetizationsettings(){
 		$this->load->view('Superadmin/monetizationsettings');
 	}
+	public function login(){
+		$this->load->view('Superadmin/login');
+	}
 }
