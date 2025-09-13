@@ -42,7 +42,7 @@
         .content {
             width: 100%;
             padding: 10px;
-            min-height: 100vh;
+           
             transition: all 0.3s;
         }
 

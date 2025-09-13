@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <title>EV Charging Dashboard</title>
-    <link rel="icon" href="<?php echo base_url('Images\logo.png'); ?>" type="image/png">
+    <link rel="icon" href="<?php echo base_url('Images/logo.png'); ?>" type="image/png">
 
     <style>
         body {
@@ -13,20 +13,20 @@
         }
 
         .wrapper {
-            overflow-y: auto;
             display: flex;
             width: 100%;
+            flex-direction: column; /* Ensure vertical stacking */
         }
 
         .logo {
             background-color: #f1f1f1;
             width: 100%;
-            padding: 10px 0;
+            padding: 5px 0; /* Reduced padding */
             text-align: center;
         }
 
         .logo img {
-            width: 220px;
+            width: 200px; /* Slightly reduced logo size */
             margin: 0 auto;
         }
 
@@ -34,22 +34,26 @@
             width: 100%;
             height: 1px;
             border-bottom: 1px dashed #ddd;
-            margin: 40px 0;
+            margin: 10px 0; /* Reduced margin to minimize space */
         }
 
         .content {
             width: 100%;
-            padding: 10px;
-            /* min-height: 100vh; */
+            padding: 0; /* Removed padding to reduce space */
             transition: all 0.3s;
+        }
+
+        .container-fluid {
+            padding: 0; /* Remove Bootstrap default padding */
         }
 
         #datetime {
             font-size: 14px;
             color: #fff;
-            padding: 10px 0;
+            padding: 8px 0; /* Reduced padding */
             background: #0B2F8B;
-            margin-top: 50px;
+            margin: 0; /* Removed margin-top to eliminate gap */
+            text-align: center;
         }
 
         #datetime span {
@@ -59,7 +63,7 @@
         /* Dashboard Specific Styles with Glassy Effect */
         .dashboard-container {
             width: 100%;
-            padding: 20px;
+            padding: 15px; /* Reduced padding */
             background: rgba(255, 255, 255, 0.15);
             backdrop-filter: blur(10px);
             -webkit-backdrop-filter: blur(10px);
@@ -68,13 +72,13 @@
             box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
             display: flex;
             flex-direction: column;
-            gap: 20px;
+            gap: 15px; /* Reduced gap */
         }
 
         .dashboard-row {
             display: flex;
             flex-wrap: wrap;
-            gap: 20px;
+            gap: 15px; /* Reduced gap */
             justify-content: space-between;
         }
 
@@ -87,16 +91,16 @@
             background: rgba(255, 255, 255, 0.1);
             backdrop-filter: blur(8px);
             -webkit-backdrop-filter: blur(8px);
-            padding: 15px;
+            padding: 10px; /* Reduced padding */
             transition: transform 0.3s ease, box-shadow 0.3s ease;
         }
 
         .custom-station1 h5, .custom-station2 h5, .custom-station3 h5, .custom-station4 h5 {
             font-size: 16px;
             font-weight: bold;
-            margin-bottom: 10px;
+            margin-bottom: 8px; /* Reduced margin */
             color: white;
-            padding: 8px;
+            padding: 6px; /* Reduced padding */
             border-radius: 6px 6px 0 0;
         }
 
@@ -124,16 +128,16 @@
             display: flex;
             flex-wrap: wrap;
             justify-content: center;
-            gap: 15px;
+            gap: 10px; /* Reduced gap */
         }
 
         .custom-box {
             border: 1px solid rgba(0, 0, 255, 0.2);
             border-radius: 8px;
-            padding: 10px;
+            padding: 8px; /* Reduced padding */
             text-align: center;
             min-width: 100px;
-            flex: 1 1 calc(33.33% - 15px);
+            flex: 1 1 calc(33.33% - 10px);
             background: rgba(255, 255, 255, 0.05);
             backdrop-filter: blur(6px);
             -webkit-backdrop-filter: blur(6px);
@@ -153,13 +157,13 @@
         .custom-button-container {
             display: flex;
             justify-content: center;
-            margin-top: 15px;
+            margin-top: 10px; /* Reduced margin */
         }
 
         .custom-button {
             min-width: 150px;
             font-size: 14px;
-            padding: 10px 20px;
+            padding: 8px 16px; /* Reduced padding */
             background: rgba(134, 126, 248, 0.3);
             backdrop-filter: blur(8px);
             -webkit-backdrop-filter: blur(8px);
@@ -182,7 +186,7 @@
 
         @media (max-width: 1024px) {
             .custom-box {
-                flex: 1 1 calc(50% - 15px);
+                flex: 1 1 calc(50% - 10px);
             }
         }
 
@@ -197,7 +201,7 @@
 
             .custom-station1 h5, .custom-station2 h5, .custom-station3 h5, .custom-station4 h5 {
                 font-size: 14px;
-                padding: 6px;
+                padding: 5px;
             }
 
             .custom-bold-number {
@@ -210,8 +214,6 @@
                 padding: 6px 10px;
             }
         }
-
-       
     </style>
 
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet"
@@ -221,16 +223,15 @@
 </head>
 
 <body>
-   
     <?php $this->load->view('base/base') ?>
 
     <div class="wrapper">
-        <div class="content" id="abc">
+        <div class="content">
             <div class="container-fluid">
                 <div id="datetime"></div>
                 <!-- Dashboard Content -->
                 <div class="dashboard-container">
-                    <h2 style="text-align: center; font-weight: bold; margin-bottom: 15px; font-size: 20px;">EV Charging Station Dashboard</h2>
+                    <h2 style="text-align: center; font-weight: bold; margin-bottom: 10px; font-size: 20px;">EV Charging Station Dashboard</h2>
                     
                     <div class="dashboard-row">
                         <div class="custom-station1">
@@ -304,7 +305,7 @@
     <script>
         function updateDateTime() {
             const datetimeElement = document.getElementById("datetime");
-            const currentTime = new Date('2025-09-10T17:29:00+05:30'); // Set to 05:29 PM IST, September 10, 2025
+            const currentTime = new Date();
             const options = { weekday: 'long', year: 'numeric', month: 'numeric', day: 'numeric' };
             const options2 = { hour: '2-digit', minute: '2-digit', hour12: true };
             const formattedDate = currentTime.toLocaleDateString('en-IN', options);
@@ -314,7 +315,7 @@
         }
 
         updateDateTime();
-        setInterval(updateDateTime, 1000); // Update every second for real-time effect
+        setInterval(updateDateTime, 1000);
     </script>
 </body>
 </html>

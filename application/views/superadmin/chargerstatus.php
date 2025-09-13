@@ -18,7 +18,6 @@
         .wrapper {
             display: flex;
             width: 100%;
-            min-height: 100vh;
             transition: all 0.3s ease;
         }
 
