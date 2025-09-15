@@ -7,412 +7,433 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
     <style>
-        body {
-            font-family: 'Montserrat', sans-serif !important;
-            background: #fafafa;
-            margin: 0;
-            overflow-x: hidden;
-        }
-
-        .wrapper {
-            overflow-y: auto;
-            display: flex;
-            width: 100%;
-        }
-
-        .logo {
-            background-color: #f1f1f1;
-            width: 100%;
-            padding: 10px 0;
-            text-align: center;
-        }
-
-        .logo img {
-            width: 220px;
-            margin: 0 auto;
-        }
-
-        .line {
-            width: 100%;
-            height: 1px;
-            border-bottom: 1px dashed #ddd;
-            margin: 40px 0;
-        }
-
-        .content {
-            width: 100%;
-            padding: 10px;
-            transition: all 0.3s;
-        }
-
-        #datetime {
-            font-size: 14px;
-            color: #333;
-            padding: 10px 0;
-            background: #e6f0ff;
-            margin-top: 50px;
-            text-align: center;
-            border-radius: 5px;
-        }
-
-        #datetime span {
-            font-weight: bold;
-        }
-
-        /* User Data Management Dashboard Styles */
-        .dashboard-container {
-            width: 100%;
-            max-width: 1200px;
-            margin: 0 auto;
-            padding: 25px;
-            background: #ffffff;
-            border-radius: 15px;
-            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
-            display: flex;
-            flex-direction: column;
-            gap: 25px;
-        }
-
-        .dashboard-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 20px;
-        }
-
-        .dashboard-title {
-            font-size: 24px;
-            font-weight: 800;
-            color: #1a73e8;
-        }
-
-        .add-data-btn {
-            min-width: 180px;
-            font-size: 16px;
-            padding: 12px 25px;
-            background: #1a73e8;
-            color: #ffffff;
-            border: none;
-            border-radius: 10px;
-            transition: background 0.3s ease;
-            text-decoration: none;
-            display: inline-flex;
-            align-items: center;
-            justify-content: center;
-            font-weight: 600;
-            text-transform: uppercase;
-        }
-
-        .add-data-btn:hover {
-            background: #1557b0;
-        }
-
-        .user-data-table {
-            width: 100%;
-            border-collapse: collapse;
-            background: #ffffff;
-            border-radius: 10px;
-            overflow: hidden;
-        }
-
-        .user-data-table th, .user-data-table td {
-            padding: 15px;
-            text-align: left;
-            color: #333;
-            border-bottom: 1px solid #e0e0e0;
-        }
-
-        .user-data-table th {
-            background: #f5f7fa;
-            color: #333;
-            font-weight: 700;
-            text-transform: uppercase;
-            letter-spacing: 1px;
-        }
-
-        .user-data-table tr:hover {
-            background: #f9f9f9;
-        }
-
-        .action-btn {
-            padding: 8px 15px;
-            margin: 0 5px;
-            border: none;
-            border-radius: 5px;
-            cursor: pointer;
-            font-size: 14px;
-            transition: background 0.3s ease;
-        }
-
-        .edit-btn {
-            background: #1a73e8;
-            color: #fff;
-        }
-
-        .edit-btn:hover {
-            background: #1557b0;
-        }
-
-        .delete-btn {
-            background: #dc3545;
-            color: #fff;
-        }
-
-        .delete-btn:hover {
-            background: #c82333;
-        }
-
-        .view-btn {
-            background: #6c757d;
-            color: #fff;
-        }
-
-        .view-btn:hover {
-            background: #5a6268;
-        }
-
-        /* Form and Modal Styles */
-        .data-form-container {
-            display: none;
-            background: #ffffff;
-            padding: 20px;
-            border-radius: 10px;
-            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
-            margin-top: 20px;
-        }
-
-        .data-form-container.active {
-            display: block;
-        }
-
-        .form-group {
-            margin-bottom: 15px;
-        }
-
-        .form-group label {
-            display: block;
-            font-weight: 600;
-            margin-bottom: 5px;
-            color: #333;
-        }
-
-        .form-group input,
-        .form-group textarea {
-            width: 100%;
-            padding: 10px;
-            border: 1px solid #e0e0e0;
-            border-radius: 5px;
-            font-size: 14px;
-        }
-
-        .form-group input:disabled,
-        .form-group textarea:disabled {
-            background: #f5f5f5;
-            cursor: not-allowed;
-        }
-
-        .form-group input.error,
-        .form-group textarea.error {
-            border-color: #dc3545;
-        }
-
-        .error-message {
-            color: #dc3545;
-            font-size: 12px;
-            margin-top: 5px;
-            display: none;
-        }
-
-        .form-actions {
-            display: flex;
-            gap: 10px;
-        }
-
-        .submit-btn,
-        .cancel-btn,
-        .close-btn {
-            padding: 10px 20px;
-            border: none;
-            border-radius: 5px;
-            font-size: 14px;
-            cursor: pointer;
-            transition: background 0.3s ease;
-        }
-
-        .submit-btn {
-            background: #1a73e8;
-            color: #fff;
-        }
-
-        .submit-btn:hover {
-            background: #1557b0;
-        }
-
-        .cancel-btn,
-        .close-btn {
-            background: #6c757d;
-            color: #fff;
-        }
-
-        .cancel-btn:hover,
-        .close-btn:hover {
-            background: #5a6268;
-        }
-
-        /* Modal Styles */
-        .modal {
-            display: none;
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: rgba(0, 0, 0, 0.5);
-            z-index: 1000;
-            justify-content: center;
-            align-items: center;
-        }
-
-        .modal.active {
-            display: flex;
-        }
-
-        .modal-content {
-            background: #ffffff;
-            padding: 20px;
-            border-radius: 10px;
-            width: 100%;
-            max-width: 500px;
-            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
-        }
-
-        .modal-header {
-            font-size: 18px;
-            font-weight: 700;
-            color: #1a73e8;
-            margin-bottom: 20px;
-        }
-
-        /* Responsive Styles */
-        @media (max-width: 1024px) {
-            .dashboard-container {
-                padding: 20px;
-            }
-
-            .dashboard-header {
-                flex-direction: column;
-                gap: 15px;
-            }
-
-            .dashboard-title {
-                font-size: 22px;
-            }
-
-            .add-data-btn {
-                min-width: 160px;
-                font-size: 15px;
-                padding: 10px 20px;
-            }
-
-            .user-data-table th, .user-data-table td {
-                padding: 12px;
-            }
-
-            .modal-content {
-                max-width: 90%;
-            }
-        }
-
-        @media (max-width: 768px) {
-            .dashboard-container {
-                padding: 15px;
-            }
-
-            .dashboard-title {
-                font-size: 20px;
-            }
-
-            .add-data-btn {
-                min-width: 140px;
-                font-size: 14px;
-                padding: 10px 20px;
-            }
-
-            .user-data-table th, .user-data-table td {
-                padding: 10px;
-                font-size: 13px;
-            }
-
-            .form-group input,
-            .form-group textarea {
-                font-size: 13px;
-            }
-
-            .action-btn {
-                padding: 6px 12px;
-                font-size: 13px;
-            }
-        }
-
-        @media (max-width: 480px) {
-            .dashboard-container {
-                padding: 10px;
-            }
-
-            .dashboard-header {
-                flex-direction: column;
-                gap: 10px;
-            }
-
-            .dashboard-title {
-                font-size: 18px;
-            }
-
-            .add-data-btn {
-                min-width: 120px;
-                font-size: 12px;
-                padding: 8px 15px;
-            }
-
-            .user-data-table {
-                display: block;
-                overflow-x: auto;
-                white-space: nowrap;
-            }
-
-            .user-data-table th, .user-data-table td {
-                min-width: 100px;
-                font-size: 12px;
-                padding: 8px;
-            }
-
-            .form-group input,
-            .form-group textarea {
-                font-size: 12px;
-            }
-
-            .action-btn {
-                padding: 5px 10px;
-                font-size: 12px;
-            }
-
-            .form-actions {
-                flex-direction: column;
-                gap: 8px;
-            }
-
-            .submit-btn,
-            .cancel-btn,
-            .close-btn {
-                width: 100%;
-                padding: 8px;
-            }
-
-            .modal-content {
-                max-width: 95%;
-                padding: 15px;
-            }
-        }
+     body {
+    font-family: 'Montserrat', sans-serif !important;
+    background: #fafafa;
+    margin: 0;
+    overflow-x: hidden;
+    font-size: 12px;
+}
+
+.wrapper {
+    overflow-y: auto;
+    display: flex;
+    width: 100%;
+}
+
+.logo {
+    background-color: #f1f1f1;
+    width: 100%;
+    padding: 8px 0;
+    text-align: center;
+}
+
+.logo img {
+    width: 180px;
+    margin: 0 auto;
+}
+
+.line {
+    width: 100%;
+    height: 1px;
+    border-bottom: 1px dashed #ddd;
+    margin: 30px 0;
+}
+
+.content {
+    width: 100%;
+    padding: 8px;
+    transition: all 0.3s;
+}
+
+#datetime {
+    font-size: 12px;
+    color: #333;
+    padding: 8px 0;
+    background: #e6f0ff;
+    margin-top: 40px;
+    text-align: center;
+    border-radius: 4px;
+}
+
+#datetime span {
+    font-weight: bold;
+}
+
+/* User Data Management Dashboard Styles */
+.dashboard-container {
+    width: 100%;
+    max-width: 1000px;
+    margin: 0 auto;
+    padding: 20px;
+    background: #ffffff;
+    border-radius: 12px;
+    box-shadow: 0 3px 15px rgba(0, 0, 0, 0.1);
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+.dashboard-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 15px;
+}
+
+.dashboard-title {
+    font-size: 20px;
+    font-weight: 800;
+    color: #1a73e8;
+}
+
+.add-data-btn {
+    min-width: 150px;
+    font-size: 14px;
+    padding: 10px 20px;
+    background: #1a73e8;
+    color: #ffffff;
+    border: none;
+    border-radius: 8px;
+    transition: background 0.3s ease;
+    text-decoration: none;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 600;
+    text-transform: uppercase;
+}
+
+.add-data-btn:hover {
+    background: #1557b0;
+}
+
+.user-data-table {
+    width: 100%;
+    border-collapse: collapse;
+    background: #ffffff;
+    border-radius: 8px;
+    overflow: hidden;
+}
+
+.user-data-table th, .user-data-table td {
+    padding: 12px;
+    text-align: left;
+    color: #333;
+    border-bottom: 1px solid #e0e0e0;
+    font-size: 12px;
+}
+
+.user-data-table th {
+    background: #f5f7fa;
+    color: #333;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.8px;
+}
+
+.user-data-table tr:hover {
+    background: #f9f9f9;
+}
+
+.action-btn {
+    padding: 6px 12px;
+    margin: 0 4px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 12px;
+    transition: background 0.3s ease;
+}
+
+.edit-btn {
+    background: #1a73e8;
+    color: #fff;
+}
+
+.edit-btn:hover {
+    background: #1557b0;
+}
+
+.delete-btn {
+    background: #dc3545;
+    color: #fff;
+}
+
+.delete-btn:hover {
+    background: #c82333;
+}
+
+.view-btn {
+    background: #6c757d;
+    color: #fff;
+}
+
+.view-btn:hover {
+    background: #5a6268;
+}
+
+/* Form and Modal Styles */
+.data-form-modal {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.5);
+    backdrop-filter: blur(4px);
+    z-index: 1000;
+    justify-content: center;
+    align-items: center;
+}
+
+.data-form-modal.active {
+    display: flex;
+}
+
+.data-form-container {
+    background: #ffffff;
+    padding: 15px;
+    border-radius: 8px;
+    box-shadow: 0 3px 12px rgba(0, 0, 0, 0.1);
+    width: 100%;
+    max-width: 450px;
+}
+
+.form-group {
+    margin-bottom: 12px;
+}
+
+.form-group label {
+    display: block;
+    font-weight: 600;
+    margin-bottom: 4px;
+    color: #333;
+    font-size: 12px;
+}
+
+.form-group input,
+.form-group textarea {
+    width: 100%;
+    padding: 8px;
+    border: 1px solid #e0e0e0;
+    border-radius: 4px;
+    font-size: 12px;
+}
+
+.form-group input:disabled,
+.form-group textarea:disabled {
+    background: #f5f5f5;
+    cursor: not-allowed;
+}
+
+.form-group input.error,
+.form-group textarea.error {
+    border-color: #dc3545;
+}
+
+.error-message {
+    color: #dc3545;
+    font-size: 10px;
+    margin-top: 4px;
+    display: none;
+}
+
+.form-actions {
+    display: flex;
+    gap: 8px;
+}
+
+.submit-btn,
+.cancel-btn,
+.close-btn {
+    padding: 8px 15px;
+    border: none;
+    border-radius: 4px;
+    font-size: 12px;
+    cursor: pointer;
+    transition: background 0.3s ease;
+}
+
+.submit-btn {
+    background: #1a73e8;
+    color: #fff;
+}
+
+.submit-btn:hover {
+    background: #1557b0;
+}
+
+.cancel-btn,
+.close-btn {
+    background: #6c757d;
+    color: #fff;
+}
+
+.cancel-btn:hover,
+.close-btn:hover {
+    background: #5a6268;
+}
+
+/* Modal Styles */
+.modal {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.5);
+    backdrop-filter: blur(4px);
+    z-index: 1000;
+    justify-content: center;
+    align-items: center;
+}
+
+.modal.active {
+    display: flex;
+}
+
+.modal-content {
+    background: #ffffff;
+    padding: 15px;
+    border-radius: 8px;
+    width: 100%;
+    max-width: 450px;
+    box-shadow: 0 3px 12px rgba(0, 0, 0, 0.2);
+}
+
+.modal-header {
+    font-size: 16px;
+    font-weight: 700;
+    color: #1a73e8;
+    margin-bottom: 15px;
+}
+
+/* Responsive Styles */
+@media (max-width: 1024px) {
+    .dashboard-container {
+        padding: 15px;
+    }
+
+    .dashboard-header {
+        flex-direction: column;
+        gap: 12px;
+    }
+
+    .dashboard-title {
+        font-size: 18px;
+    }
+
+    .add-data-btn {
+        min-width: 140px;
+        font-size: 13px;
+        padding: 8px 15px;
+    }
+
+    .user-data-table th, .user-data-table td {
+        padding: 10px;
+        font-size: 11px;
+    }
+
+    .modal-content,
+    .data-form-container {
+        max-width: 90%;
+    }
+}
+
+@media (max-width: 768px) {
+    .dashboard-container {
+        padding: 12px;
+    }
+
+    .dashboard-title {
+        font-size: 16px;
+    }
+
+    .add-data-btn {
+        min-width: 120px;
+        font-size: 12px;
+        padding: 8px 15px;
+    }
+
+    .user-data-table th, .user-data-table td {
+        padding: 8px;
+        font-size: 11px;
+    }
+
+    .form-group input,
+    .form-group textarea {
+        font-size: 11px;
+    }
+
+    .action-btn {
+        padding: 5px 10px;
+        font-size: 11px;
+    }
+}
+
+@media (max-width: 480px) {
+    .dashboard-container {
+        padding: 8px;
+    }
+
+    .dashboard-header {
+        flex-direction: column;
+        gap: 8px;
+    }
+
+    .dashboard-title {
+        font-size: 14px;
+    }
+
+    .add-data-btn {
+        min-width: 100px;
+        font-size: 11px;
+        padding: 6px 12px;
+    }
+
+    .user-data-table {
+        display: block;
+        overflow-x: auto;
+        white-space: nowrap;
+    }
+
+    .user-data-table th, .user-data-table td {
+        min-width: 80px;
+        font-size: 10px;
+        padding: 6px;
+    }
+
+    .form-group input,
+    .form-group textarea {
+        font-size: 10px;
+    }
+
+    .action-btn {
+        padding: 4px 8px;
+        font-size: 10px;
+    }
+
+    .form-actions {
+        flex-direction: column;
+        gap: 6px;
+    }
+
+    .submit-btn,
+    .cancel-btn,
+    .close-btn {
+        width: 100%;
+        padding: 6px;
+    }
+
+    .modal-content,
+    .data-form-container {
+        max-width: 95%;
+        padding: 12px;
+    }
+}
     </style>
 
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet"
@@ -434,38 +455,42 @@
                         <h2 class="dashboard-title">User Data Management</h2>
                         <a href="#" class="add-data-btn" id="addDataBtn">Add User Data</a>
                     </div>
-                    <div class="data-form-container" id="dataForm">
-                        <form id="userDataForm">
-                            <div class="form-group">
-                                <label for="userId">User ID</label>
-                                <input type="text" id="userId" name="userId" required aria-describedby="userIdError">
-                                <div class="error-message" id="userIdError">User ID is required and must be a number.</div>
-                            </div>
-                            <div class="form-group">
-                                <label for="username">Username</label>
-                                <input type="text" id="username" name="username" required aria-describedby="usernameError">
-                                <div class="error-message" id="usernameError">Username is required (3-20 characters).</div>
-                            </div>
-                            <div class="form-group">
-                                <label for="email">Email</label>
-                                <input type="email" id="email" name="email" required aria-describedby="emailError">
-                                <div class="error-message" id="emailError">Valid email is required.</div>
-                            </div>
-                            <div class="form-group">
-                                <label for="phone">Phone Number</label>
-                                <input type="text" id="phone" name="phone" required aria-describedby="phoneError">
-                                <div class="error-message" id="phoneError">Valid phone number is required (e.g., +1234567890).</div>
-                            </div>
-                            <div class="form-group">
-                                <label for="preferences">Preferences</label>
-                                <textarea id="preferences" name="preferences" rows="4" aria-describedby="preferencesError"></textarea>
-                                <div class="error-message" id="preferencesError">Preferences must be less than 500 characters.</div>
-                            </div>
-                            <div class="form-actions">
-                                <button type="submit" class="submit-btn">Submit</button>
-                                <button type="button" class="cancel-btn" id="cancelForm">Cancel</button>
-                            </div>
-                        </form>
+                    <!-- Add User Data Modal -->
+                    <div class="data-form-modal" id="dataFormModal">
+                        <div class="data-form-container">
+                            <div class="modal-header">Add User Data</div>
+                            <form id="userDataForm">
+                                <div class="form-group">
+                                    <label for="userId">User ID</label>
+                                    <input type="text" id="userId" name="userId" required aria-describedby="userIdError">
+                                    <div class="error-message" id="userIdError">User ID is required and must be a number.</div>
+                                </div>
+                                <div class="form-group">
+                                    <label for="username">Username</label>
+                                    <input type="text" id="username" name="username" required aria-describedby="usernameError">
+                                    <div class="error-message" id="usernameError">Username is required (3-20 characters).</div>
+                                </div>
+                                <div class="form-group">
+                                    <label for="email">Email</label>
+                                    <input type="email" id="email" name="email" required aria-describedby="emailError">
+                                    <div class="error-message" id="emailError">Valid email is required.</div>
+                                </div>
+                                <div class="form-group">
+                                    <label for="phone">Phone Number</label>
+                                    <input type="text" id="phone" name="phone" required aria-describedby="phoneError">
+                                    <div class="error-message" id="phoneError">Valid phone number is required (e.g., +1234567890).</div>
+                                </div>
+                                <div class="form-group">
+                                    <label for="preferences">Preferences</label>
+                                    <textarea id="preferences" name="preferences" rows="4" aria-describedby="preferencesError"></textarea>
+                                    <div class="error-message" id="preferencesError">Preferences must be less than 500 characters.</div>
+                                </div>
+                                <div class="form-actions">
+                                    <button type="submit" class="submit-btn">Submit</button>
+                                    <button type="button" class="cancel-btn" id="cancelForm">Cancel</button>
+                                </div>
+                            </form>
+                        </div>
                     </div>
                     <!-- View/Edit Modal -->
                     <div class="modal" id="viewEditModal">
@@ -589,7 +614,7 @@
         document.addEventListener("DOMContentLoaded", function () {
             // Form toggle and validation for Add User Data form
             const addDataBtn = document.getElementById("addDataBtn");
-            const dataForm = document.getElementById("dataForm");
+            const dataFormModal = document.getElementById("dataFormModal");
             const cancelFormBtn = document.getElementById("cancelForm");
             const form = document.getElementById("userDataForm");
             const modal = document.getElementById("viewEditModal");
@@ -598,14 +623,14 @@
 
             addDataBtn.addEventListener("click", function (e) {
                 e.preventDefault();
-                dataForm.classList.toggle("active");
+                dataFormModal.classList.add("active");
                 form.reset();
                 clearErrors();
-                document.getElementById("dataForm").dataset.mode = "add";
+                form.dataset.mode = "add";
             });
 
             cancelFormBtn.addEventListener("click", function () {
-                dataForm.classList.remove("active");
+                dataFormModal.classList.remove("active");
                 form.reset();
                 clearErrors();
             });
@@ -659,7 +684,7 @@
                         confirmButtonColor: '#1a73e8'
                     });
                     form.reset();
-                    dataForm.classList.remove("active");
+                    dataFormModal.classList.remove("active");
                 }
             });
 
@@ -820,7 +845,15 @@
                 });
             };
 
-            // Close modal when clicking outside
+            // Close modals when clicking outside
+            dataFormModal.addEventListener("click", function (e) {
+                if (e.target === dataFormModal) {
+                    dataFormModal.classList.remove("active");
+                    form.reset();
+                    clearErrors();
+                }
+            });
+
             modal.addEventListener("click", function (e) {
                 if (e.target === modal) {
                     closeModal();
