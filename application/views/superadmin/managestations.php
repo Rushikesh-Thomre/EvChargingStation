@@ -428,13 +428,22 @@
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <script>
         $(document).ready(function () {
-            // Toggle sidebar
+            // Toggle sidebar for desktop
             $('#sidebarToggle').on('click', function (e) {
                 e.preventDefault();
                 $('#sidebar').toggleClass('active');
                 $('#abc').toggleClass('expanded');
                 const toggleIcon = $(this).find('i');
                 toggleIcon.toggleClass('fa-chevron-left fa-chevron-right'); // Toggle between left and right arrows
+            });
+
+            // Toggle sidebar for mobile
+            $('#navbarToggle').on('click', function (e) {
+                e.preventDefault();
+                $('#sidebar').toggleClass('active');
+                $('#abc').toggleClass('expanded');
+                const toggleIcon = $(this).find('i');
+                toggleIcon.toggleClass('fa-bars fa-times'); // Toggle between hamburger and close icons
             });
 
             // Handle dropdown toggle

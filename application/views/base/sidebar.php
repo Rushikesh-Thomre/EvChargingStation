@@ -8,7 +8,7 @@
     z-index: 1000;
     background: white;
     color: black;
-    transition: width 0.3s ease;
+    transition: width 0.3s ease, left 0.3s ease;
     box-shadow: 2px 0 5px rgba(0, 0, 0, 0.1);
     overflow-y: auto;
     scrollbar-width: none;
@@ -21,21 +21,18 @@
     width: 80px;
 }
 #sidebar .sidebar-header {
-   
     text-align: center;
     transition: padding 0.3s ease; /* Smooth padding transition */
 }
-/* #sidebar.active .sidebar-header {
-    padding: 15px 4px; /* Reduced padding for minimized state */
-} */
 #sidebar .sidebar-header img {
     max-width: 80%; /* Matches reference code for maximized state */
     height: 155px; /* Matches reference code for prominent logo */
     transition: all 0.3s ease; /* Smooth transition for size and height */
 }
 #sidebar.active .sidebar-header img {
-   max-width: 72px;
+    max-width: 72px;
     height: 109px;
+    margin-top: 17px;
 }
 #sidebar.active ul.components li a {
     font-size: 0;
@@ -48,9 +45,6 @@
 #sidebar.active ul ul {
     display: none;
 }
-/* #sidebar ul.components {
-    padding: 10px 0;
-} */
 #sidebar ul li {
     margin-bottom: 5px;
 }
@@ -130,11 +124,12 @@ ul ul a:hover {
     }
     #sidebar:not(.active) {
         width: 100%;
+        left: 0;
     }
     #sidebar.active .sidebar-header img {
         max-width: 20px; /* Small size for tablet when minimized */
-        /* height: 20px; */
-        margin-top:27px
+        height: 20px;
+        margin-top: 27px;
     }
     #sidebar.active ul.components li a {
         font-size: 0;
@@ -147,6 +142,9 @@ ul ul a:hover {
     #sidebar.active ul ul {
         display: none;
     }
+    .sidebar-toggle {
+        display: none; /* Hide sidebar toggle button in mobile view */
+    }
 }
 @media (max-width: 480px) {
     #sidebar {
@@ -156,12 +154,8 @@ ul ul a:hover {
         width: 60px;
     }
     #sidebar.active .sidebar-header img {
-        max-width: 15px; /* Small size for small screens when minimized */
-        height: 15px; /* Matches minimized size */
-    }
-    .sidebar-toggle {
-        font-size: 18px;
-        padding: 3px;
+        max-width: 44px; /* Small size for small screens when minimized */
+        height: 50px; /* Matches minimized size */
     }
 }
 </style>

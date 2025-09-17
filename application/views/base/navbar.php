@@ -13,22 +13,48 @@
         left: 0;
         z-index: 1001;
     }
+    .navbar-toggle {
+        background: none;
+        border: none;
+        font-size: 20px;
+        color: black;
+        cursor: pointer;
+        padding: 5px;
+        transition: all 0.3s ease;
+        display: none; /* Hidden by default */
+    }
+    .navbar-toggle:hover {
+        color: #0B2F8B;
+    }
     @media (max-width: 768px) {
         .navbar {
-            justify-content: center;
-            flex-direction: column;
+            justify-content: space-between; /* Adjusted for toggle button */
+            flex-direction: row; /* Keep row layout */
             gap: 10px;
+        }
+        .navbar-toggle {
+            display: block; /* Show toggle button in mobile view */
+            position: absolute;
+            left: 10px; /* Left side of navbar */
+            top: 50%;
+            transform: translateY(-50%);
         }
         .navbar-brand {
             font-size: 1.2em;
+            margin: 0 auto; /* Center the brand */
         }
         .navbar div {
-            text-align: center;
+            text-align: right;
+            margin-right: 10px;
         }
     }
     @media (max-width: 480px) {
         .navbar {
             padding: 8px;
+        }
+        .navbar-toggle {
+            font-size: 18px;
+            padding: 3px;
         }
         .navbar-brand {
             font-size: 1em;
@@ -44,6 +70,9 @@
 </style>
 <div class="container-fluid">
     <div class="navbar text-center">
+        <button type="button" id="navbarToggle" class="navbar-toggle">
+            <i class="fas fa-bars"></i> <!-- Hamburger icon for mobile -->
+        </button>
         <a class="navbar-brand d-block" id="navbarHeading" style="font-weight: 900; color: black; margin: 0 auto;">
             EV Charging Dashboard
         </a>

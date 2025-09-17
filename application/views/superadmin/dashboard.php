@@ -5,381 +5,521 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>EV Charging Dashboard</title>
     <link rel="icon" href="<?php echo base_url('Images/logo.png'); ?>" type="image/png">
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
-    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700&display=swap" rel="stylesheet">
- 
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;800&display=swap" rel="stylesheet">
     <style>
-:root {
-    --primary: #0B2F8B;
-    --secondary: #4A90E2;
-    --success: #28a745;
-    --danger: #dc3545;
-    --warning: #ffc107;
-    --info: #17a2b8;
-    --light: #f8f9fa;
-    --dark: #343a40;
-    --white: #ffffff;
-    --shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-    --border-radius: 10px;
-    --transition: all 0.3s ease;
-}
+        :root {
+            --primary: #1a73e8;
+            --secondary: #4A90E2;
+            --success: #28a745;
+            --danger: #dc3545;
+            --warning: #ffc107;
+            --info: #17a2b8;
+            --light: #f8f9fa;
+            --dark: #333;
+            --white: #ffffff;
+            --shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+            --border-radius: 10px;
+            --transition: all 0.3s ease;
+        }
 
-body {
-    font-family: 'Montserrat', sans-serif;
-    background: #f5f7fa;
-    margin: 0;
-    color: var(--dark);
-    font-size: 14px;  /* Reduced from default 16px */
-}
+        body {
+            font-family: 'Montserrat', sans-serif !important;
+            background: #fafafa;
+            margin: 0;
+            overflow-x: hidden;
+            font-size: 14px;
+        }
 
-.wrapper {
-    display: flex;
-    width: 100%;
-    flex-direction: column;
-}
+        .wrapper {
+            display: flex;
+            width: 100%;
+            min-height: calc(100vh - 60px);
+            margin-top: 60px;
+        }
 
-.content {
-    width: 100%;
-    padding: 20px;
-    transition: var(--transition);
-}
+        .content {
+            margin-left: 280px;
+            width: calc(100% - 280px);
+            padding: 10px;
+            transition: var(--transition);
+            min-height: calc(100vh - 60px);
+        }
 
-#datetime {
-    font-size: 12px;  /* Reduced from 14px */
-    color: var(--white);
-    padding: 8px 0;
-    background: var(--primary);
-    margin: 0;
-    text-align: center;
-    border-radius: var(--border-radius);
-}
+        .content.expanded {
+            margin-left: 80px;
+            width: calc(100% - 80px);
+        }
 
-.dashboard-container {
-    width: 100%;
-    padding: 20px;
-    background: var(--white);
-    border-radius: var(--border-radius);
-    box-shadow: var(--shadow);
-    margin-top: 20px;
-}
+        #datetime {
+            font-size: 12px;
+            color: #333;
+            padding: 10px 0;
+            background: #e6f0ff;
+            margin-top: 10px;
+            text-align: center;
+            border-radius: 5px;
+        }
 
-.dashboard-header {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    margin-bottom: 20px;
-}
+        #datetime span {
+            font-weight: bold;
+        }
 
-.dashboard-title {
-    font-size: 18px;  /* Reduced from 24px */
-    font-weight: 700;
-    color: var(--primary);
-}
+        .dashboard-container {
+            width: 100%;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 25px;
+            background: var(--white);
+            border-radius: var(--border-radius);
+            box-shadow: var(--shadow);
+            display: flex;
+            flex-direction: column;
+            gap: 25px;
+        }
 
-.dashboard-row {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 20px;
-    margin-bottom: 20px;
-}
+        .dashboard-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+        }
 
-.card {
-    flex: 1;
-    min-width: 250px;
-    background: var(--white);
-    border-radius: var(--border-radius);
-    box-shadow: var(--shadow);
-    padding: 20px;
-    transition: var(--transition);
-    cursor: pointer;
-    border: 1px solid #eee;
-}
+        .dashboard-title {
+            font-size: 18px;
+            font-weight: 800;
+            color: var(--primary);
+        }
 
-.card:hover {
-    transform: translateY(-5px);
-    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
-}
+        .dashboard-row {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 20px;
+            margin-bottom: 20px;
+        }
 
-.card-header {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    margin-bottom: 15px;
-}
+        .card {
+            flex: 1;
+            min-width: 250px;
+            background: var(--white);
+            border-radius: var(--border-radius);
+            box-shadow: var(--shadow);
+            padding: 20px;
+            transition: var(--transition);
+            cursor: pointer;
+            border: 1px solid #e0e0e0;
+        }
 
-.card-title {
-    font-size: 14px;  /* Reduced from 18px */
-    font-weight: 600;
-    color: var(--primary);
-}
+        .card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+        }
 
-.card-value {
-    font-size: 24px;  /* Reduced from 32px */
-    font-weight: 700;
-    color: var(--primary);
-    margin: 10px 0;
-}
+        .card-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 15px;
+        }
 
-.card-subtitle {
-    font-size: 12px;  /* Reduced from 14px */
-    color: var(--dark);
-    margin-bottom: 10px;
-}
+        .card-title {
+            font-size: 14px;
+            font-weight: 600;
+            color: var(--primary);
+        }
 
-.card-icon {
-    font-size: 24px;
-    color: var(--secondary);
-}
+        .card-value {
+            font-size: 24px;
+            font-weight: 700;
+            color: var(--primary);
+            margin: 10px 0;
+        }
 
-.chart-container {
-    height: 200px;
-    margin-top: 15px;
-}
+        .card-subtitle {
+            font-size: 12px;
+            color: var(--dark);
+            margin-bottom: 10px;
+        }
 
-.modal {
-    display: none;
-    position: fixed;
-    z-index: 1000;
-    left: 0;
-    top: 0;
-    width: 100%;
-    height: 100%;
-    overflow: auto;
-    background-color: rgba(0, 0, 0, 0.5);
-}
+        .card-icon {
+            font-size: 24px;
+            color: var(--secondary);
+        }
 
-.modal-content {
-    background-color: var(--white);
-    margin: 5% auto;
-    padding: 30px;
-    border-radius: var(--border-radius);
-    width: 80%;
-    max-width: 1000px;
-    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
-    border: none;
-}
+        .chart-container {
+            height: 200px;
+            margin-top: 15px;
+            width: 100%;
+        }
 
-.modal-header {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    margin-bottom: 20px;
-    padding-bottom: 15px;
-    border-bottom: 1px solid #eee;
-}
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 1002;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.5);
+            backdrop-filter: blur(5px);
+            justify-content: center;
+            align-items: center;
+        }
 
-.modal-title {
-    font-size: 18px;  /* Reduced from 24px */
-    font-weight: 600;
-    color: var(--primary);
-}
+        .modal-content {
+            background: var(--white);
+            padding: 20px;
+            border-radius: var(--border-radius);
+            width: 100%;
+            max-width: 1000px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+            max-height: 80vh;
+            overflow-y: auto;
+            scrollbar-width: none;
+            -ms-overflow-style: none;
+        }
 
-.close {
-    color: var(--dark);
-    font-size: 28px;
-    font-weight: bold;
-    cursor: pointer;
-}
+        .modal-content::-webkit-scrollbar {
+            display: none;
+        }
 
-.close:hover {
-    color: var(--danger);
-}
+        .modal-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+            padding-bottom: 15px;
+            border-bottom: 1px solid #e0e0e0;
+        }
 
-.modal-body {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 20px;
-}
+        .modal-title {
+            font-size: 14px;
+            font-weight: 700;
+            color: var(--primary);
+        }
 
-.modal-section {
-    flex: 1;
-    min-width: 300px;
-}
+        .close {
+            color: var(--dark);
+            font-size: 24px;
+            font-weight: bold;
+            cursor: pointer;
+        }
 
-.modal-section h4 {
-    font-size: 14px;  /* Reduced for headings */
-}
+        .close:hover {
+            color: var(--danger);
+        }
 
-.modal-section p, .modal-section ul li {
-    font-size: 12px;  /* Reduced for body text */
-}
+        .modal-body {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 20px;
+        }
 
-.modal-chart-container {
-    height: 300px;
-    margin-top: 20px;
-}
+        .modal-section {
+            flex: 1;
+            min-width: 300px;
+        }
 
-@media (max-width: 768px) {
-    .dashboard-row {
-        flex-direction: column;
-    }
+        .modal-section h4 {
+            font-size: 14px;
+            font-weight: 600;
+            color: var(--primary);
+        }
 
-    .modal-body {
-        flex-direction: column;
-    }
+        .modal-section p, .modal-section ul li {
+            font-size: 12px;
+            color: var(--dark);
+        }
 
-    .modal-content {
-        width: 95%;
-        margin: 10% auto;
-    }
-}
+        .modal-chart-container {
+            height: 300px;
+            margin-top: 20px;
+            width: 100%;
+        }
+
+        .modal.active ~ .wrapper #sidebar,
+        .modal.active ~ .wrapper .content {
+            filter: blur(5px);
+            transition: filter 0.3s ease;
+        }
+
+        #sidebar,
+        .content {
+            filter: none;
+            transition: filter 0.3s ease;
+        }
+
+        @media (max-width: 991px) {
+            .content {
+                margin-left: 0;
+                width: 100%;
+            }
+
+            .content.expanded {
+                margin-left: 80px;
+                width: calc(100% - 80px);
+            }
+
+            .dashboard-container {
+                padding: 15px;
+            }
+
+            .dashboard-title {
+                font-size: 14px;
+            }
+
+            .dashboard-row {
+                flex-direction: column;
+                gap: 15px;
+            }
+
+            .card {
+                min-width: 100%;
+            }
+
+            .modal-content {
+                max-width: 95%;
+                padding: 15px;
+            }
+
+            .modal-body {
+                flex-direction: column;
+                gap: 15px;
+            }
+
+            .modal-section {
+                min-width: 100%;
+            }
+        }
+
+        @media (max-width: 576px) {
+            .content {
+                padding: 5px;
+            }
+
+            .content.expanded {
+                margin-left: 60px;
+                width: calc(100% - 60px);
+            }
+
+            .dashboard-container {
+                padding: 10px;
+            }
+
+            .dashboard-header {
+                flex-direction: column;
+                gap: 10px;
+                align-items: flex-start;
+            }
+
+            .dashboard-title {
+                font-size: 12px;
+            }
+
+            .card {
+                min-width: 100%;
+                padding: 15px;
+            }
+
+            .card-title {
+                font-size: 12px;
+            }
+
+            .card-value {
+                font-size: 20px;
+            }
+
+            .card-subtitle, .modal-section p, .modal-section ul li {
+                font-size: 10px;
+            }
+
+            .card-icon {
+                font-size: 20px;
+            }
+
+            .chart-container {
+                height: 150px;
+            }
+
+            .modal-chart-container {
+                height: 200px;
+            }
+
+            .modal-content {
+                padding: 10px;
+                max-width: 90%;
+            }
+
+            .modal-title {
+                font-size: 12px;
+            }
+
+            .modal-section h4 {
+                font-size: 12px;
+            }
+        }
     </style>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 </head>
 <body>
-    <?php $this->load->view('base/base') ?>
+    <?php $this->load->view('base/navbar'); ?>
     <div class="wrapper">
-        <div class="content">
-            <div id="datetime"></div>
-            <div class="dashboard-container">
-                <div class="dashboard-header">
-                    <h2 class="dashboard-title">EV Charging Station Dashboard</h2>
-                </div>
-                <div class="dashboard-row">
-                    <!-- Total Chargers Card -->
-                    <div class="card" onclick="showModal('totalChargers')">
-                        <div class="card-header">
-                            <h5 class="card-title">Total Chargers</h5>
-                            <i class="fas fa-charging-station card-icon"></i>
+        <?php $this->load->view('base/sidebar'); ?>
+        <div class="content" id="abc">
+            <div class="container-fluid">
+                <div id="datetime"></div>
+                <div class="dashboard-container">
+                    <div class="dashboard-header">
+                        <h2 class="dashboard-title">EV Charging Station Dashboard</h2>
+                    </div>
+                    <div class="dashboard-row">
+                        <!-- Total Chargers Card -->
+                        <div class="card" onclick="showModal('totalChargers')">
+                            <div class="card-header">
+                                <h5 class="card-title">Total Chargers</h5>
+                                <i class="fas fa-charging-station card-icon"></i>
+                            </div>
+                            <div class="card-value">204000</div>
+                            <div class="card-subtitle">99.5% Operational</div>
+                            <div class="chart-container">
+                                <canvas id="totalChargersChart"></canvas>
+                            </div>
                         </div>
-                        <div class="card-value">204000</div>
-                        <div class="card-subtitle">99.5% Operational</div>
-                        <div class="chart-container">
-                            <canvas id="totalChargersChart"></canvas>
+                        <!-- Available Chargers Card -->
+                        <div class="card" onclick="showModal('availableChargers')">
+                            <div class="card-header">
+                                <h5 class="card-title">Available Chargers</h5>
+                                <i class="fas fa-plug card-icon" style="color: var(--success);"></i>
+                            </div>
+                            <div class="card-value">183600</div>
+                            <div class="card-subtitle">90% Availability</div>
+                            <div class="chart-container">
+                                <canvas id="availableChargersChart"></canvas>
+                            </div>
+                        </div>
+                        <!-- In Use Chargers Card -->
+                        <div class="card" onclick="showModal('inUseChargers')">
+                            <div class="card-header">
+                                <h5 class="card-title">In Use Chargers</h5>
+                                <i class="fas fa-bolt card-icon" style="color: var(--warning);"></i>
+                            </div>
+                            <div class="card-value">10200</div>
+                            <div class="card-subtitle">20% Utilization</div>
+                            <div class="chart-container">
+                                <canvas id="inUseChargersChart"></canvas>
+                            </div>
+                        </div>
+                        <!-- Unavailable Chargers Card -->
+                        <div class="card" onclick="showModal('unavailableChargers')">
+                            <div class="card-header">
+                                <h5 class="card-title">Unavailable Chargers</h5>
+                                <i class="fas fa-exclamation-triangle card-icon" style="color: var(--danger);"></i>
+                            </div>
+                            <div class="card-value">2040</div>
+                            <div class="card-subtitle">1% Downtime</div>
+                            <div class="chart-container">
+                                <canvas id="unavailableChargersChart"></canvas>
+                            </div>
                         </div>
                     </div>
-                    <!-- Available Chargers Card -->
-                    <div class="card" onclick="showModal('availableChargers')">
-                        <div class="card-header">
-                            <h5 class="card-title">Available Chargers</h5>
-                            <i class="fas fa-plug card-icon" style="color: var(--success);"></i>
+                    <!-- Station Details Row -->
+                    <div class="dashboard-row">
+                        <!-- Tesla Station Card -->
+                        <div class="card" onclick="showModal('teslaStation')">
+                            <div class="card-header">
+                                <h5 class="card-title">Tesla Station</h5>
+                                <i class="fas fa-car card-icon"></i>
+                            </div>
+                            <div class="card-subtitle">Type: DC</div>
+                            <div class="card-value">2.5 miles</div>
+                            <div class="card-subtitle">Price: $0.35/kWh</div>
+                            <div class="card-subtitle">Slots: 12</div>
                         </div>
-                        <div class="card-value">183600</div>
-                        <div class="card-subtitle">90% Availability</div>
-                        <div class="chart-container">
-                            <canvas id="availableChargersChart"></canvas>
+                        <!-- Benz Station Card -->
+                        <div class="card" onclick="showModal('benzStation')">
+                            <div class="card-header">
+                                <h5 class="card-title">Benz Station</h5>
+                                <i class="fas fa-car card-icon"></i>
+                            </div>
+                            <div class="card-subtitle">Type: DC</div>
+                            <div class="card-value">3.8 miles</div>
+                            <div class="card-subtitle">Price: $0.42/kWh</div>
+                            <div class="card-subtitle">Slots: 8</div>
                         </div>
-                    </div>
-                    <!-- In Use Chargers Card -->
-                    <div class="card" onclick="showModal('inUseChargers')">
-                        <div class="card-header">
-                            <h5 class="card-title">In Use Chargers</h5>
-                            <i class="fas fa-bolt card-icon" style="color: var(--warning);"></i>
+                        <!-- Nissan Station Card -->
+                        <div class="card" onclick="showModal('nissanStation')">
+                            <div class="card-header">
+                                <h5 class="card-title">Nissan Station</h5>
+                                <i class="fas fa-car card-icon"></i>
+                            </div>
+                            <div class="card-subtitle">Type: DC</div>
+                            <div class="card-value">2.6 miles</div>
+                            <div class="card-subtitle">Price: $0.28/kWh</div>
+                            <div class="card-subtitle">Slots: 10</div>
                         </div>
-                        <div class="card-value">10200</div>
-                        <div class="card-subtitle">20% Utilization</div>
-                        <div class="chart-container">
-                            <canvas id="inUseChargersChart"></canvas>
-                        </div>
-                    </div>
-                    <!-- Unavailable Chargers Card -->
-                    <div class="card" onclick="showModal('unavailableChargers')">
-                        <div class="card-header">
-                            <h5 class="card-title">Unavailable Chargers</h5>
-                            <i class="fas fa-exclamation-triangle card-icon" style="color: var(--danger);"></i>
-                        </div>
-                        <div class="card-value">2040</div>
-                        <div class="card-subtitle">1% Downtime</div>
-                        <div class="chart-container">
-                            <canvas id="unavailableChargersChart"></canvas>
-                        </div>
-                    </div>
-                </div>
-                <!-- Station Details Row -->
-                <div class="dashboard-row">
-                    <!-- Tesla Station Card -->
-                    <div class="card" onclick="showModal('teslaStation')">
-                        <div class="card-header">
-                            <h5 class="card-title">Tesla Station</h5>
-                            <i class="fas fa-car card-icon"></i>
-                        </div>
-                        <div class="card-subtitle">Type: DC</div>
-                        <div class="card-value">2.5 miles</div>
-                        <div class="card-subtitle">Price: $0.35/kWh</div>
-                        <div class="card-subtitle">Slots: 12</div>
-                    </div>
-                    <!-- Benz Station Card -->
-                    <div class="card" onclick="showModal('benzStation')">
-                        <div class="card-header">
-                            <h5 class="card-title">Benz Station</h5>
-                            <i class="fas fa-car card-icon"></i>
-                        </div>
-                        <div class="card-subtitle">Type: DC</div>
-                        <div class="card-value">3.8 miles</div>
-                        <div class="card-subtitle">Price: $0.42/kWh</div>
-                        <div class="card-subtitle">Slots: 8</div>
-                    </div>
-                    <!-- Nissan Station Card -->
-                    <div class="card" onclick="showModal('nissanStation')">
-                        <div class="card-header">
-                            <h5 class="card-title">Nissan Station</h5>
-                            <i class="fas fa-car card-icon"></i>
-                        </div>
-                        <div class="card-subtitle">Type: DC</div>
-                        <div class="card-value">2.6 miles</div>
-                        <div class="card-subtitle">Price: $0.28/kWh</div>
-                        <div class="card-subtitle">Slots: 10</div>
-                    </div>
-                    <!-- SUV Station Card -->
-                    <div class="card" onclick="showModal('suvStation')">
-                        <div class="card-header">
-                            <h5 class="card-title">SUV Station</h5>
-                            <i class="fas fa-car card-icon"></i>
-                        </div>
-                        <div class="card-subtitle">Type: DC</div>
-                        <div class="card-value">1.6 miles</div>
-                        <div class="card-subtitle">Price: $0.22/kWh</div>
-                        <div class="card-subtitle">Slots: 16</div>
-                    </div>
-                </div>
-                <!-- Station Usage and Location Row -->
-                <div class="dashboard-row">
-                    <!-- Station Usage Card -->
-                    <div class="card" onclick="showModal('stationUsage')">
-                        <div class="card-header">
-                            <h5 class="card-title">Station Usage</h5>
-                            <i class="fas fa-chart-line card-icon"></i>
-                        </div>
-                        <div class="card-subtitle">Last 30 Days</div>
-                        <div class="modal-chart-container">
-                            <canvas id="stationUsageChart"></canvas>
+                        <!-- SUV Station Card -->
+                        <div class="card" onclick="showModal('suvStation')">
+                            <div class="card-header">
+                                <h5 class="card-title">SUV Station</h5>
+                                <i class="fas fa-car card-icon"></i>
+                            </div>
+                            <div class="card-subtitle">Type: DC</div>
+                            <div class="card-value">1.6 miles</div>
+                            <div class="card-subtitle">Price: $0.22/kWh</div>
+                            <div class="card-subtitle">Slots: 16</div>
                         </div>
                     </div>
-                    <!-- Station Location Card -->
-                    <div class="card" onclick="showModal('stationLocation')">
-                        <div class="card-header">
-                            <h5 class="card-title">Station Location</h5>
-                            <i class="fas fa-map-marker-alt card-icon"></i>
+                    <!-- Station Usage and Location Row -->
+                    <div class="dashboard-row">
+                        <!-- Station Usage Card -->
+                        <div class="card" onclick="showModal('stationUsage')">
+                            <div class="card-header">
+                                <h5 class="card-title">Station Usage</h5>
+                                <i class="fas fa-chart-line card-icon"></i>
+                            </div>
+                            <div class="card-subtitle">Last 30 Days</div>
+                            <div class="modal-chart-container">
+                                <canvas id="stationUsageChart"></canvas>
+                            </div>
                         </div>
-                        <div class="modal-chart-container">
-                            <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3022.215393916234!2d-73.987844924164!3d40.7484409713896!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x89c259a9b3117469%3A0xd134e199a405a163!2sEmpire%20State%20Building!5e0!3m2!1sen!2sus!4v1712345678910!5m2!1sen!2sus" width="100%" height="300" style="border:0; border-radius: var(--border-radius);" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
+                        <!-- Station Location Card -->
+                        <div class="card" onclick="showModal('stationLocation')">
+                            <div class="card-header">
+                                <h5 class="card-title">Station Location</h5>
+                                <i class="fas fa-map-marker-alt card-icon"></i>
+                            </div>
+                            <div class="modal-chart-container">
+                                <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3022.215393916234!2d-73.987844924164!3d40.7484409713896!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x89c259a9b3117469%3A0xd134e199a405a163!2sEmpire%20State%20Building!5e0!3m2!1sen!2sus!4v1712345678910!5m2!1sen!2sus" width="100%" height="300" style="border:0; border-radius: var(--border-radius);" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
+                            </div>
                         </div>
                     </div>
-                </div>
-                <!-- Environment and Revenue Row -->
-                <div class="dashboard-row">
-                    <!-- Environment Card -->
-                    <div class="card" onclick="showModal('environment')">
-                        <div class="card-header">
-                            <h5 class="card-title">Environment</h5>
-                            <i class="fas fa-leaf card-icon" style="color: var(--success);"></i>
+                    <!-- Environment and Revenue Row -->
+                    <div class="dashboard-row">
+                        <!-- Environment Card -->
+                        <div class="card" onclick="showModal('environment')">
+                            <div class="card-header">
+                                <h5 class="card-title">Environment</h5>
+                                <i class="fas fa-leaf card-icon" style="color: var(--success);"></i>
+                            </div>
+                            <div class="card-subtitle">You've avoided</div>
+                            <div class="card-value">20,000,000</div>
+                            <div class="card-subtitle">metric tons of CO2</div>
+                            <div class="card-subtitle">that's like planting</div>
+                            <div class="card-value">1,000,000</div>
+                            <div class="card-subtitle">trees and saving them for 10 years</div>
                         </div>
-                        <div class="card-subtitle">You've avoided</div>
-                        <div class="card-value">20,000,000</div>
-                        <div class="card-subtitle">metric tons of CO2</div>
-                        <div class="card-subtitle">that's like planting</div>
-                        <div class="card-value">1,000,000</div>
-                        <div class="card-subtitle">trees and saving them for 10 years</div>
-                    </div>
-                    <!-- Total Revenue Card -->
-                    <div class="card" onclick="showModal('totalRevenue')">
-                        <div class="card-header">
-                            <h5 class="card-title">Total Revenue</h5>
-                            <i class="fas fa-dollar-sign card-icon" style="color: var(--success);"></i>
-                        </div>
-                        <div class="card-subtitle">Last Month</div>
-                        <div class="modal-chart-container">
-                            <canvas id="totalRevenueChart"></canvas>
+                        <!-- Total Revenue Card -->
+                        <div class="card" onclick="showModal('totalRevenue')">
+                            <div class="card-header">
+                                <h5 class="card-title">Total Revenue</h5>
+                                <i class="fas fa-dollar-sign card-icon" style="color: var(--success);"></i>
+                            </div>
+                            <div class="card-subtitle">Last Month</div>
+                            <div class="modal-chart-container">
+                                <canvas id="totalRevenueChart"></canvas>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -782,15 +922,71 @@ body {
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <script>
+        // Sidebar Toggle
+        $(document).ready(function () {
+            // Toggle sidebar for desktop
+            $('#sidebarToggle').on('click', function (e) {
+                e.preventDefault();
+                $('#sidebar').toggleClass('active');
+                $('#abc').toggleClass('expanded');
+                const toggleIcon = $(this).find('i');
+                toggleIcon.toggleClass('fa-chevron-left fa-chevron-right');
+            });
+
+            // Toggle sidebar for mobile
+            $('#navbarToggle').on('click', function (e) {
+                e.preventDefault();
+                $('#sidebar').toggleClass('active');
+                $('#abc').toggleClass('expanded');
+                const toggleIcon = $(this).find('i');
+                toggleIcon.toggleClass('fa-bars fa-times');
+            });
+
+            // Handle dropdown toggle
+            $('.dropdown-toggle').on('click', function(e) {
+                e.preventDefault();
+                if (!$('#sidebar').hasClass('active')) {
+                    var target = $(this).data('target');
+                    $('.list-unstyled').not(target).removeClass('show');
+                    $(target).toggleClass('show');
+                    $(this).attr('aria-expanded', $(this).attr('aria-expanded') === 'true' ? 'false' : 'true');
+                }
+            });
+
+            // Update navbar heading based on clicked link
+            const sidebarLinks = document.querySelectorAll("#sidebar a:not(.dropdown-toggle)");
+            sidebarLinks.forEach(link => {
+                link.addEventListener("click", function () {
+                    if (!$('#sidebar').hasClass('active')) {
+                        const sectionName = link.textContent.trim();
+                        document.getElementById("navbarHeading").textContent = sectionName;
+                        localStorage.setItem("sectionName", sectionName);
+                    }
+                });
+            });
+
+            // Set default section name
+            if (window.location.pathname === "/" || window.location.pathname === "<?php echo base_url('login'); ?>") {
+                localStorage.setItem("sectionName", "Dashboard");
+                document.getElementById("navbarHeading").textContent = "Dashboard";
+            } else {
+                const savedSection = localStorage.getItem("sectionName");
+                if (savedSection) {
+                    document.getElementById("navbarHeading").textContent = savedSection;
+                }
+            }
+        });
+
         // Update DateTime
         function updateDateTime() {
             const datetimeElement = document.getElementById("datetime");
             const currentTime = new Date();
-            const options = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
+            const options = { weekday: 'long', year: 'numeric', month: 'numeric', day: 'numeric' };
             const options2 = { hour: '2-digit', minute: '2-digit', hour12: true };
-            const formattedDate = currentTime.toLocaleDateString('en-US', options);
-            const formattedTime = currentTime.toLocaleTimeString('en-US', options2).toUpperCase();
-            datetimeElement.textContent = `${formattedDate} | ${formattedTime}`;
+            const formattedDate = currentTime.toLocaleDateString('en-IN', options);
+            const formattedTime = currentTime.toLocaleTimeString('en-IN', options2).toUpperCase();
+            const formattedDateTime = `${formattedDate} @ ${formattedTime} IST`;
+            datetimeElement.textContent = formattedDateTime;
         }
         updateDateTime();
         setInterval(updateDateTime, 1000);
@@ -897,7 +1093,9 @@ body {
         // Show Modal
         function showModal(modalType) {
             const modalId = modalType + "Modal";
-            document.getElementById(modalId).style.display = "block";
+            const modal = document.getElementById(modalId);
+            modal.style.display = "flex";
+            modal.classList.add('active');
             // Initialize modal-specific charts
             if (modalType === 'totalChargers') {
                 initModalTotalChargersChart();
@@ -926,7 +1124,9 @@ body {
 
         // Close Modal
         function closeModal(modalId) {
-            document.getElementById(modalId).style.display = "none";
+            const modal = document.getElementById(modalId);
+            modal.style.display = "none";
+            modal.classList.remove('active');
         }
 
         // Close modal when clicking outside
@@ -935,6 +1135,7 @@ body {
             for (let modal of modals) {
                 if (event.target === modal) {
                     modal.style.display = "none";
+                    modal.classList.remove('active');
                 }
             }
         }
