@@ -3,425 +3,340 @@
 <head>
     <meta charset="UTF-8">
     <title>Manage Stations</title>
-    <link rel="icon" href="<?php echo base_url('Images\logo.png'); ?>" type="image/png">
+    <link rel="icon" href="<?php echo base_url('Images/logo.png'); ?>" type="image/png">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
- <style>
-    body {
-    font-family: 'Montserrat', sans-serif !important;
-    background: #fafafa;
-    margin: 0;
-    overflow-x: hidden;
-    font-size: 14px;  /* Reduced from default 16px */
-}
-
-.wrapper {
-    overflow-y: auto;
-    display: flex;
-    width: 100%;
-}
-
-.logo {
-    background-color: #f1f1f1;
-    width: 100%;
-    padding: 10px 0;
-    text-align: center;
-}
-
-.logo img {
-    width: 220px;
-    margin: 0 auto;
-}
-
-.line {
-    width: 100%;
-    height: 1px;
-    border-bottom: 1px dashed #ddd;
-    margin: 40px 0;
-}
-
-.content {
-    width: 100%;
-    padding: 10px;
-    transition: all 0.3s;
-}
-
-#datetime {
-    font-size: 12px;  /* Reduced from 14px */
-    color: #333;
-    padding: 10px 0;
-    background: #e6f0ff;
-    margin-top: 50px;
-    text-align: center;
-    border-radius: 5px;
-}
-
-#datetime span {
-    font-weight: bold;
-}
-
-/* Manage Stations Dashboard Styles */
-.dashboard-container {
-    width: 100%;
-    max-width: 1200px;
-    margin: 0 auto;
-    padding: 25px;
-    background: #ffffff;
-    border-radius: 15px;
-    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
-    display: flex;
-    flex-direction: column;
-    gap: 25px;
-}
-
-.dashboard-header {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    margin-bottom: 20px;
-}
-
-.dashboard-title {
-    font-size: 18px;  /* Reduced from 24px */
-    font-weight: 800;
-    color: #1a73e8;
-}
-
-.add-station-btn {
-    min-width: 180px;
-    font-size: 12px;  /* Reduced from 16px */
-    padding: 12px 25px;
-    background: #1a73e8;
-    color: #ffffff;
-    border: none;
-    border-radius: 10px;
-    transition: background 0.3s ease;
-    text-decoration: none;
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    font-weight: 600;
-    text-transform: uppercase;
-}
-
-.add-station-btn:hover {
-    background: #1557b0;
-}
-
-.stations-table {
-    width: 100%;
-    border-collapse: collapse;
-    background: #ffffff;
-    border-radius: 10px;
-    overflow: hidden;
-}
-
-.stations-table th, .stations-table td {
-    padding: 15px;
-    text-align: left;
-    color: #333;
-    border-bottom: 1px solid #e0e0e0;
-    font-size: 12px;  /* Reduced for table content */
-}
-
-.stations-table th {
-    background: #f5f7fa;
-    color: #333;
-    font-weight: 700;
-    text-transform: uppercase;
-    letter-spacing: 1px;
-}
-
-.stations-table tr:hover {
-    background: #f9f9f9;
-}
-
-.action-btn {
-    padding: 8px 15px;
-    margin: 0 5px;
-    border: none;
-    border-radius: 5px;
-    cursor: pointer;
-    font-size: 12px;  /* Reduced from 14px */
-    transition: background 0.3s ease;
-}
-
-.edit-btn {
-    background: #1a73e8;
-    color: #fff;
-}
-
-.edit-btn:hover {
-    background: #1557b0;
-}
-
-.delete-btn {
-    background: #dc3545;
-    color: #fff;
-}
-
-.delete-btn:hover {
-    background: #c82333;
-}
-
-/* Modal Styles */
-.station-modal {
-    display: none;
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background: rgba(0, 0, 0, 0.5);
-    backdrop-filter: blur(5px);
-    z-index: 1000;
-    justify-content: center;
-    align-items: center;
-}
-
-.station-modal.active {
-    display: flex;
-}
-
-.modal-content {
-    background: #ffffff;
-    padding: 20px;
-    border-radius: 10px;
-    width: 100%;
-    max-width: 500px;
-    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
-    max-height: 80vh;
-    overflow-y: auto;
-    scrollbar-width: none; /* Firefox */
-    -ms-overflow-style: none; /* IE and Edge */
-}
-
-.modal-content::-webkit-scrollbar {
-    display: none; /* Chrome, Safari, Opera */
-}
-
-.modal-header {
-    font-size: 14px;  /* Reduced from 18px */
-    font-weight: 700;
-    color: #1a73e8;
-    margin-bottom: 20px;
-}
-
-.form-group {
-    margin-bottom: 15px;
-}
-
-.form-group label {
-    display: block;
-    font-weight: 600;
-    margin-bottom: 5px;
-    color: #333;
-    font-size: 12px;  /* Reduced for labels */
-}
-
-.form-group input,
-.form-group select {
-    width: 100%;
-    padding: 10px;
-    border: 1px solid #e0e0e0;
-    border-radius: 5px;
-    font-size: 12px;  /* Reduced from 14px */
-    box-sizing: border-box;
-}
-
-.form-group input.error,
-.form-group select.error {
-    border-color: #dc3545;
-}
-
-.error-message {
-    color: #dc3545;
-    font-size: 10px;  /* Reduced from 12px */
-    margin-top: 5px;
-    display: none;
-}
-
-.form-actions {
-    display: flex;
-    gap: 10px;
-}
-
-.submit-btn,
-.cancel-btn {
-    padding: 10px 20px;
-    border: none;
-    border-radius: 5px;
-    font-size: 12px;  /* Reduced from 14px */
-    cursor: pointer;
-    transition: background 0.3s ease;
-    flex: 1;
-}
-
-.submit-btn {
-    background: #1a73e8;
-    color: #fff;
-}
-
-.submit-btn:hover {
-    background: #1557b0;
-}
-
-.cancel-btn {
-    background: #6c757d;
-    color: #fff;
-}
-
-.cancel-btn:hover {
-    background: #5a6268;
-}
-
-.stations-table-wrapper {
-    overflow-x: auto;
-}
-
-/* Blur Sidebar and Content when Modal is Active */
-.station-modal.active ~ .wrapper #sidebar,
-.station-modal.active ~ .wrapper .content {
-    filter: blur(5px);
-    transition: filter 0.3s ease;
-}
-
-/* Ensure Sidebar is not blurred when modal is not active */
-#sidebar,
-.content {
-    filter: none;
-    transition: filter 0.3s ease;
-}
-
-/* Responsive Styles */
-@media (max-width: 1024px) {
-    .dashboard-container {
-        padding: 20px;
-    }
-
-    .dashboard-header {
-        flex-direction: column;
-        gap: 15px;
-    }
-
-    .dashboard-title {
-        font-size: 16px;  /* Reduced from 22px */
-    }
-
-    .add-station-btn {
-        min-width: 160px;
-        font-size: 11px;  /* Reduced from 15px */
-        padding: 10px 20px;
-    }
-
-    .modal-content {
-        max-width: 90%;
-    }
-}
-
-@media (max-width: 768px) {
-    .dashboard-container {
-        padding: 15px;
-    }
-
-    .dashboard-title {
-        font-size: 14px;  /* Reduced from 20px */
-    }
-
-    .add-station-btn {
-        min-width: 140px;
-        font-size: 10px;  /* Reduced from 14px */
-        padding: 10px 20px;
-    }
-
-    .stations-table th, .stations-table td {
-        padding: 10px;
-        font-size: 11px;  /* Reduced from 13px */
-    }
-
-    .form-group input,
-    .form-group select {
-        font-size: 11px;  /* Reduced from 13px */
-    }
-
-    .action-btn {
-        padding: 6px 12px;
-        font-size: 11px;  /* Reduced from 13px */
-    }
-}
-
-@media (max-width: 480px) {
-    .dashboard-container {
-        padding: 10px;
-    }
-
-    .dashboard-header {
-        flex-direction: column;
-        gap: 10px;
-    }
-
-    .dashboard-title {
-        font-size: 12px;  /* Reduced from 18px */
-    }
-
-    .add-station-btn {
-        min-width: 120px;
-        font-size: 9px;  /* Reduced from 12px */
-        padding: 8px 15px;
-    }
-
-    .stations-table {
-        display: block;
-        overflow-x: auto;
-        white-space: nowrap;
-    }
-
-    .stations-table th, .stations-table td {
-        min-width: 100px;
-        font-size: 10px;  /* Reduced from 12px */
-        padding: 8px;
-    }
-
-    .form-group input,
-    .form-group select {
-        font-size: 10px;  /* Reduced from 12px */
-    }
-
-    .action-btn {
-        padding: 5px 10px;
-        font-size: 10px;  /* Reduced from 12px */
-    }
-
-    .form-actions {
-        flex-direction: column;
-        gap: 8px;
-    }
-
-    .submit-btn,
-    .cancel-btn {
-        width: 100%;
-        padding: 8px;
-        font-size: 10px;  /* Reduced from implied 14px */
-    }
-
-    .modal-content {
-        max-width: 95%;
-        padding: 15px;
-    }
-}
- </style>
-
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet"
-          integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+    <style>
+        body {
+            font-family: 'Montserrat', sans-serif !important;
+            background: #fafafa;
+            margin: 0;
+            overflow-x: hidden;
+            font-size: 14px;
+        }
+        .wrapper {
+            display: flex;
+            width: 100%;
+            min-height: calc(100vh - 60px);
+            margin-top: 60px;
+        }
+        .content {
+            margin-left: 280px;
+            width: calc(100% - 280px);
+            padding: 10px;
+            transition: all 0.3s ease;
+            min-height: calc(100vh - 60px);
+        }
+        .content.expanded {
+            margin-left: 80px;
+            width: calc(100% - 80px);
+        }
+        #datetime {
+            font-size: 12px;
+            color: #333;
+            padding: 10px 0;
+            background: #e6f0ff;
+            margin-top: 10px;
+            text-align: center;
+            border-radius: 5px;
+        }
+        #datetime span {
+            font-weight: bold;
+        }
+        .dashboard-container {
+            width: 100%;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 25px;
+            background: #ffffff;
+            border-radius: 15px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+            display: flex;
+            flex-direction: column;
+            gap: 25px;
+        }
+        .dashboard-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+        .dashboard-title {
+            font-size: 18px;
+            font-weight: 800;
+            color: #1a73e8;
+        }
+        .add-station-btn {
+            min-width: 180px;
+            font-size: 12px;
+            padding: 12px 25px;
+            background: #1a73e8;
+            color: #ffffff;
+            border: none;
+            border-radius: 10px;
+            transition: background 0.3s ease;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 600;
+            text-transform: uppercase;
+        }
+        .add-station-btn:hover {
+            background: #1557b0;
+        }
+        .stations-table {
+            width: 100%;
+            border-collapse: collapse;
+            background: #ffffff;
+            border-radius: 10px;
+            overflow: hidden;
+        }
+        .stations-table th, .stations-table td {
+            padding: 15px;
+            text-align: left;
+            color: #333;
+            border-bottom: 1px solid #e0e0e0;
+            font-size: 12px;
+        }
+        .stations-table th {
+            background: #f5f7fa;
+            color: #333;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+        .stations-table tr:hover {
+            background: #f9f9f9;
+        }
+        .action-btn {
+            padding: 8px 15px;
+            margin: 0 5px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 12px;
+            transition: background 0.3s ease;
+        }
+        .edit-btn {
+            background: #1a73e8;
+            color: #fff;
+        }
+        .edit-btn:hover {
+            background: #1557b0;
+        }
+        .delete-btn {
+            background: #dc3545;
+            color: #fff;
+        }
+        .delete-btn:hover {
+            background: #c82333;
+        }
+        .station-modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.5);
+            backdrop-filter: blur(5px);
+            z-index: 1002;
+            justify-content: center;
+            align-items: center;
+        }
+        .station-modal.active {
+            display: flex;
+        }
+        .modal-content {
+            background: #ffffff;
+            padding: 20px;
+            border-radius: 10px;
+            width: 100%;
+            max-width: 500px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+            max-height: 80vh;
+            overflow-y: auto;
+            scrollbar-width: none;
+            -ms-overflow-style: none;
+        }
+        .modal-content::-webkit-scrollbar {
+            display: none;
+        }
+        .modal-header {
+            font-size: 14px;
+            font-weight: 700;
+            color: #1a73e8;
+            margin-bottom: 20px;
+        }
+        .form-group {
+            margin-bottom: 15px;
+        }
+        .form-group label {
+            display: block;
+            font-weight: 600;
+            margin-bottom: 5px;
+            color: #333;
+            font-size: 12px;
+        }
+        .form-group input,
+        .form-group select {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #e0e0e0;
+            border-radius: 5px;
+            font-size: 12px;
+            box-sizing: border-box;
+        }
+        .form-group input.error,
+        .form-group select.error {
+            border-color: #dc3545;
+        }
+        .error-message {
+            color: #dc3545;
+            font-size: 10px;
+            margin-top: 5px;
+            display: none;
+        }
+        .form-actions {
+            display: flex;
+            gap: 10px;
+        }
+        .submit-btn,
+        .cancel-btn {
+            padding: 10px 20px;
+            border: none;
+            border-radius: 5px;
+            font-size: 12px;
+            cursor: pointer;
+            transition: background 0.3s ease;
+            flex: 1;
+        }
+        .submit-btn {
+            background: #1a73e8;
+            color: #fff;
+        }
+        .submit-btn:hover {
+            background: #1557b0;
+        }
+        .cancel-btn {
+            background: #6c757d;
+            color: #fff;
+        }
+        .cancel-btn:hover {
+            background: #5a6268;
+        }
+        .stations-table-wrapper {
+            overflow-x: auto;
+        }
+        .station-modal.active ~ .wrapper #sidebar,
+        .station-modal.active ~ .wrapper .content {
+            filter: blur(5px);
+            transition: filter 0.3s ease;
+        }
+        #sidebar,
+        .content {
+            filter: none;
+            transition: filter 0.3s ease;
+        }
+        @media (max-width: 768px) {
+            .content {
+                margin-left: 0;
+                width: 100%;
+            }
+            .content.expanded {
+                margin-left: 80px;
+                width: calc(100% - 80px);
+            }
+            .dashboard-container {
+                padding: 15px;
+            }
+            .dashboard-title {
+                font-size: 14px;
+            }
+            .add-station-btn {
+                min-width: 140px;
+                font-size: 10px;
+                padding: 10px 20px;
+            }
+            .stations-table th, .stations-table td {
+                padding: 10px;
+                font-size: 11px;
+            }
+            .form-group input,
+            .form-group select {
+                font-size: 11px;
+            }
+            .action-btn {
+                padding: 6px 12px;
+                font-size: 11px;
+            }
+        }
+        @media (max-width: 480px) {
+            .content {
+                padding: 5px;
+            }
+            .content.expanded {
+                margin-left: 60px;
+                width: calc(100% - 60px);
+            }
+            .dashboard-container {
+                padding: 10px;
+            }
+            .dashboard-header {
+                flex-direction: column;
+                gap: 10px;
+            }
+            .dashboard-title {
+                font-size: 12px;
+            }
+            .add-station-btn {
+                min-width: 120px;
+                font-size: 9px;
+                padding: 8px 15px;
+            }
+            .stations-table {
+                display: block;
+                overflow-x: auto;
+                white-space: nowrap;
+            }
+            .stations-table th, .stations-table td {
+                min-width: 100px;
+                font-size: 10px;
+                padding: 8px;
+            }
+            .form-group input,
+            .form-group select {
+                font-size: 10px;
+            }
+            .action-btn {
+                padding: 5px 10px;
+                font-size: 10px;
+            }
+            .form-actions {
+                flex-direction: column;
+                gap: 8px;
+            }
+            .submit-btn,
+            .cancel-btn {
+                width: 100%;
+                padding: 8px;
+                font-size: 10px;
+            }
+            .modal-content {
+                max-width: 95%;
+                padding: 15px;
+            }
+        }
+    </style>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;700;800&display=swap" rel="stylesheet">
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 </head>
-
 <body>
-    <?php $this->load->view('base/base') ?>
-
+    <?php $this->load->view('base/navbar'); ?>
     <div class="wrapper">
+        <?php $this->load->view('base/sidebar'); ?>
         <div class="content" id="abc">
             <div class="container-fluid">
                 <div id="datetime"></div>
@@ -441,30 +356,29 @@
                                     <th>Actions</th>
                                 </tr>
                             </thead>
-            <tbody id="stationsTbody">
-                <?php
-                $stations = [
-                    ['id' => 1, 'name' => 'Station A', 'location' => 'New Delhi', 'status' => 'Active'],
-                    ['id' => 2, 'name' => 'Station B', 'location' => 'Mumbai', 'status' => 'Offline'],
-                    ['id' => 3, 'name' => 'Station C', 'location' => 'Bangalore', 'status' => 'Active'],
-                    ['id' => 4, 'name' => 'Station D', 'location' => 'Chennai', 'status' => 'Active'],
-                    ['id' => 5, 'name' => 'Station E', 'location' => 'Hyderabad', 'status' => 'Offline']
-                ];
-
-                foreach ($stations as $station) {
-                    echo "<tr>";
-                    echo "<td>" . $station['id'] . "</td>";
-                    echo "<td>" . $station['name'] . "</td>";
-                    echo "<td>" . $station['location'] . "</td>";
-                    echo "<td>" . $station['status'] . "</td>";
-                    echo "<td>";
-                    echo "<button class='action-btn edit-btn' onclick='editStation(" . $station['id'] . ")'>Edit</button>";
-                    echo "<button class='action-btn delete-btn' onclick='deleteStation(" . $station['id'] . ")'>Delete</button>";
-                    echo "</td>";
-                    echo "</tr>";
-                }
-                ?>
-            </tbody>
+                            <tbody id="stationsTbody">
+                                <?php
+                                $stations = [
+                                    ['id' => 1, 'name' => 'Station A', 'location' => 'New Delhi', 'status' => 'Active'],
+                                    ['id' => 2, 'name' => 'Station B', 'location' => 'Mumbai', 'status' => 'Offline'],
+                                    ['id' => 3, 'name' => 'Station C', 'location' => 'Bangalore', 'status' => 'Active'],
+                                    ['id' => 4, 'name' => 'Station D', 'location' => 'Chennai', 'status' => 'Active'],
+                                    ['id' => 5, 'name' => 'Station E', 'location' => 'Hyderabad', 'status' => 'Offline']
+                                ];
+                                foreach ($stations as $station) {
+                                    echo "<tr>";
+                                    echo "<td>" . $station['id'] . "</td>";
+                                    echo "<td>" . $station['name'] . "</td>";
+                                    echo "<td>" . $station['location'] . "</td>";
+                                    echo "<td>" . $station['status'] . "</td>";
+                                    echo "<td>";
+                                    echo "<button class='action-btn edit-btn' onclick='editStation(" . $station['id'] . ")'>Edit</button>";
+                                    echo "<button class='action-btn delete-btn' onclick='deleteStation(" . $station['id'] . ")'>Delete</button>";
+                                    echo "</td>";
+                                    echo "</tr>";
+                                }
+                                ?>
+                            </tbody>
                         </table>
                     </div>
                 </div>
@@ -510,18 +424,54 @@
         </div>
     </div>
 
-    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
-            integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo"
-            crossorigin="anonymous"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js"
-            integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49"
-            crossorigin="anonymous"></script>
-    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js"
-            integrity="sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEULTy"
-            crossorigin="anonymous"></script>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-
     <script>
+        $(document).ready(function () {
+            // Toggle sidebar
+            $('#sidebarToggle').on('click', function (e) {
+                e.preventDefault();
+                $('#sidebar').toggleClass('active');
+                $('#abc').toggleClass('expanded');
+                const toggleIcon = $(this).find('i');
+                toggleIcon.toggleClass('fa-chevron-left fa-chevron-right'); // Toggle between left and right arrows
+            });
+
+            // Handle dropdown toggle
+            $('.dropdown-toggle').on('click', function(e) {
+                e.preventDefault();
+                if (!$('#sidebar').hasClass('active')) {
+                    var target = $(this).data('target');
+                    $('.list-unstyled').not(target).removeClass('show');
+                    $(target).toggleClass('show');
+                    $(this).attr('aria-expanded', $(this).attr('aria-expanded') === 'true' ? 'false' : 'true');
+                }
+            });
+
+            // Update navbar heading based on clicked link
+            const sidebarLinks = document.querySelectorAll("#sidebar a:not(.dropdown-toggle)");
+            sidebarLinks.forEach(link => {
+                link.addEventListener("click", function () {
+                    if (!$('#sidebar').hasClass('active')) {
+                        const sectionName = link.textContent.trim();
+                        document.getElementById("navbarHeading").textContent = sectionName;
+                        localStorage.setItem("sectionName", sectionName);
+                    }
+                });
+            });
+
+            // Set default section name for login or root path
+            if (window.location.pathname === "/" || window.location.pathname === "<?php echo base_url('login'); ?>") {
+                localStorage.setItem("sectionName", "Dashboard");
+                document.getElementById("navbarHeading").textContent = "Dashboard";
+            } else {
+                const savedSection = localStorage.getItem("sectionName");
+                if (savedSection) {
+                    document.getElementById("navbarHeading").textContent = savedSection;
+                }
+            }
+        });
+
         // Stations data
         let stations = <?php echo json_encode($stations); ?>;
         let currentEditId = null;
@@ -557,11 +507,12 @@
             if (mode === 'add') {
                 title.textContent = 'Add New Station';
                 document.getElementById('stationId').readOnly = false;
+                document.getElementById('editId').value = '';
                 currentEditId = null;
             } else {
                 title.textContent = 'Edit Station';
                 document.getElementById('stationId').readOnly = false;
-                const station = stations.find(s => s.id === id);
+                const station = stations.find(s => parseInt(s.id) === parseInt(id));
                 if (station) {
                     document.getElementById('editId').value = id;
                     document.getElementById('stationId').value = station.id;
@@ -600,7 +551,7 @@
                 const status = document.getElementById('status').value;
 
                 if (mode === 'add') {
-                    if (stations.some(s => s.id === stationId)) {
+                    if (stations.some(s => parseInt(s.id) === stationId)) {
                         showError(document.getElementById('stationId'), 'Station ID already exists.');
                         return;
                     }
@@ -612,12 +563,12 @@
                         confirmButtonColor: '#1a73e8'
                     });
                 } else {
-                    const idx = stations.findIndex(s => s.id === currentEditId);
+                    if (stationId !== parseInt(currentEditId) && stations.some(s => parseInt(s.id) === stationId)) {
+                        showError(document.getElementById('stationId'), 'Station ID already exists.');
+                        return;
+                    }
+                    const idx = stations.findIndex(s => parseInt(s.id) === parseInt(currentEditId));
                     if (idx !== -1) {
-                        if (stationId !== currentEditId && stations.some(s => s.id === stationId)) {
-                            showError(document.getElementById('stationId'), 'Station ID already exists.');
-                            return;
-                        }
                         stations[idx].id = stationId;
                         stations[idx].name = stationName;
                         stations[idx].location = location;
@@ -652,7 +603,7 @@
                 confirmButtonText: 'Yes, delete it!'
             }).then((result) => {
                 if (result.isConfirmed) {
-                    stations = stations.filter(s => s.id !== id);
+                    stations = stations.filter(s => parseInt(s.id) !== parseInt(id));
                     renderTable();
                     Swal.fire({
                         icon: 'success',
@@ -712,6 +663,7 @@
 
         // Event Listeners
         document.addEventListener("DOMContentLoaded", function () {
+            renderTable();
             document.getElementById("addStationBtn").addEventListener("click", function (e) {
                 e.preventDefault();
                 openModal('add');

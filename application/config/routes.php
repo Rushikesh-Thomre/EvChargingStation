@@ -55,7 +55,8 @@ $route['404_override'] = '';
 
 
 // base module
-$route['base'] = 'base/base';
+$route['navbar'] = 'base/navbar';
+$route['sidebar'] = 'base/sidebar';
 
 //Superadmin
 $route['dashboard'] = 'superadmin/dashboard';
