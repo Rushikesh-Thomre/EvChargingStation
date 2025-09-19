@@ -80,6 +80,9 @@
             <p style="font-size: 18px; font-weight: bold; color: black; margin: 10px 0;">
                 <span><?php echo isset($username) && $username === 'admin' ? 'Admin' : (isset($username) ? $username : ''); ?></span>
             </p>
+           <a href="<?php echo base_url('Superadmin/profile'); ?>">
+    <img src="<?php echo base_url('assets/Images/circle2.jpg'); ?>" alt="Profile Picture" style="width: 40px; height: 40px;" class="rounded-full ml-3 mr-2 object-cover cursor-pointer transition duration-200 hover:opacity-80">
+</a>
             <a href="<?php echo base_url('login'); ?>" class="btn btn-danger me-3" style="margin-left: 10px;">Logout</a>
         </div>
     </div>
