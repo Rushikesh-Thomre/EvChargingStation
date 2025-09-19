@@ -76,4 +76,5 @@ $route['report'] = 'superadmin/report';
 $route['generalsettings'] = 'superadmin/generalsettings';
 $route['monetizationsettings'] = 'superadmin/monetizationsettings';
 $route['login'] = 'superadmin/login';
+$route['profile'] = 'superadmin/profile';
 //

@@ -58,4 +58,7 @@ public function softwareupdates(){
 	public function login(){
 		$this->load->view('Superadmin/login');
 	}
+	public function profile(){
+		$this->load->view('Superadmin/profile');
+	}
 }
