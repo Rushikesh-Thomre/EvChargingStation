@@ -73,7 +73,7 @@
             border-radius: 8px;
             margin-bottom: 15px;
             display: grid;
-            grid-template-columns: 1fr; /* Changed to single column for vertical layout */
+            grid-template-columns: 1fr;
             gap: 12px;
             align-items: center;
         }
@@ -336,18 +336,34 @@
             const phoneInput = document.getElementById('phone');
             let isValid = true;
             clearErrors();
-            if (!nameInput.value) {
-                showError(nameInput, 'Please enter a valid name.');
+
+            // Name validation
+            if (!nameInput.value.trim()) {
+                showError(nameInput, 'Name is required.');
+                isValid = false;
+            } else if (!/^[a-zA-Z\s]{2,30}$/.test(nameInput.value.trim())) {
+                showError(nameInput, 'Name must be 2-30 characters long and contain only letters and spaces.');
                 isValid = false;
             }
-            if (!emailInput.value || !/^\S+@\S+\.\S+$/.test(emailInput.value)) {
+
+            // Email validation
+            if (!emailInput.value.trim()) {
+                showError(emailInput, 'Email is required.');
+                isValid = false;
+            } else if (!/^\S+@\S+\.\S+$/.test(emailInput.value.trim())) {
                 showError(emailInput, 'Please enter a valid email address.');
                 isValid = false;
             }
-            if (!phoneInput.value || !/^\(\d{3}\)\s\d{3}-\d{4}$/.test(phoneInput.value)) {
-                showError(phoneInput, 'Please enter a valid phone number (e.g., (405) 555-0128).');
+
+            // Phone validation (India-wise with +91)
+            if (!phoneInput.value.trim()) {
+                showError(phoneInput, 'Phone number is required.');
+                isValid = false;
+            } else if (!/^\+91[6-9]\d{9}$/.test(phoneInput.value.trim())) {
+                showError(phoneInput, 'Please enter a valid Indian phone number (e.g., +919876543210).');
                 isValid = false;
             }
+
             return isValid;
         }
         function showError(input, message) {
