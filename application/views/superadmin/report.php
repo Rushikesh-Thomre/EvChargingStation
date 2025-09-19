@@ -3,500 +3,415 @@
 <head>
     <meta charset="UTF-8">
     <title>Overall Report</title>
-    <link rel="icon" href="<?php echo base_url('Images\logo.png'); ?>" type="image/png">
+    <link rel="icon" href="<?php echo base_url('Images/logo.png'); ?>" type="image/png">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
-  <style>
-    body {
-    font-family: 'Montserrat', sans-serif !important;
-    background: #fafafa;
-    margin: 0;
-    overflow-x: hidden;
-    font-size: 12px;
-}
-
-.wrapper {
-    overflow-y: auto;
-    display: flex;
-    width: 100%;
-}
-
-.logo {
-    background-color: #f1f1f1;
-    width: 100%;
-    padding: 8px 0;
-    text-align: center;
-}
-
-.logo img {
-    width: 180px;
-    margin: 0 auto;
-}
-
-.line {
-    width: 100%;
-    height: 1px;
-    border-bottom: 1px dashed #ddd;
-    margin: 30px 0;
-}
-
-.content {
-    width: 100%;
-    padding: 8px;
-    transition: all 0.3s;
-}
-
-#datetime {
-    font-size: 12px;
-    color: #333;
-    padding: 8px 0;
-    background: #e6f0ff;
-    margin-top: 40px;
-    text-align: center;
-    border-radius: 4px;
-}
-
-#datetime span {
-    font-weight: bold;
-}
-
-/* Report Dashboard Styles */
-.dashboard-container {
-    width: 100%;
-    max-width: 1000px;
-    margin: 0 auto;
-    padding: 20px;
-    background: #ffffff;
-    border-radius: 12px;
-    box-shadow: 0 3px 15px rgba(0, 0, 0, 0.1);
-    display: flex;
-    flex-direction: column;
-    gap: 20px;
-}
-
-.dashboard-header {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    margin-bottom: 15px;
-    flex-wrap: wrap;
-    gap: 12px;
-}
-
-.dashboard-title {
-    font-size: 20px;
-    font-weight: 800;
-    color: #1a73e8;
-}
-
-.filter-btn, .clear-filter-btn {
-    min-width: 130px;
-    font-size: 14px;
-    padding: 10px 20px;
-    border: none;
-    border-radius: 8px;
-    transition: background 0.3s ease;
-    text-decoration: none;
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    font-weight: 600;
-    text-transform: uppercase;
-}
-
-.filter-btn {
-    background: #1a73e8;
-    color: #ffffff;
-}
-
-.filter-btn:hover {
-    background: #1557b0;
-}
-
-.clear-filter-btn {
-    background: #6c757d;
-    color: #ffffff;
-}
-
-.clear-filter-btn:hover {
-    background: #5a6268;
-}
-
-.filter-form {
-    background: #f8f9fa;
-    padding: 15px;
-    border-radius: 8px;
-    margin-bottom: 15px;
-    display: flex;
-    flex-wrap: wrap;
-    gap: 12px;
-}
-
-.form-group {
-    flex: 1;
-    min-width: 180px;
-}
-
-.form-group label {
-    display: block;
-    font-weight: 600;
-    margin-bottom: 4px;
-    color: #333;
-    font-size: 12px;
-}
-
-.form-group input, .form-group select {
-    width: 100%;
-    padding: 8px;
-    border: 1px solid #e0e0e0;
-    border-radius: 4px;
-    font-size: 12px;
-    box-sizing: border-box;
-}
-
-.form-group input.error, .form-group select.error {
-    border-color: #dc3545;
-}
-
-.error-message {
-    color: #dc3545;
-    font-size: 10px;
-    margin-top: 4px;
-    display: none;
-}
-
-.reports-table {
-    width: 100%;
-    border-collapse: collapse;
-    background: #ffffff;
-    border-radius: 8px;
-    overflow: hidden;
-}
-
-.reports-table th, .reports-table td {
-    padding: 12px;
-    text-align: left;
-    color: #333;
-    border-bottom: 1px solid #e0e0e0;
-    font-size: 12px;
-}
-
-.reports-table th {
-    background: #f5f7fa;
-    color: #333;
-    font-weight: 700;
-    text-transform: uppercase;
-    letter-spacing: 0.8px;
-}
-
-.reports-table tr:hover {
-    background: #f9f9f9;
-}
-
-.status-completed, .status-resolved, .status-paid {
-    color: #28a745;
-    font-weight: 600;
-    background: rgba(40, 167, 69, 0.1);
-    padding: 3px 6px;
-    border-radius: 10px;
-}
-
-.status-active, .status-failed {
-    color: #dc3545;
-    font-weight: 600;
-    background: rgba(220, 53, 69, 0.1);
-    padding: 3px 6px;
-    border-radius: 10px;
-}
-
-.status-pending {
-    color: #ffc107;
-    font-weight: 600;
-    background: rgba(255, 193, 7, 0.1);
-    padding: 3px 6px;
-    border-radius: 10px;
-}
-
-.action-btn {
-    padding: 6px 12px;
-    margin: 0 4px;
-    border: none;
-    border-radius: 4px;
-    cursor: pointer;
-    font-size: 12px;
-    transition: background 0.3s ease;
-    text-decoration: none;
-    display: inline-block;
-    background: #1a73e8;
-    color: #fff;
-}
-
-.action-btn:hover {
-    background: #1557b0;
-}
-
-/* Modal Styles */
-.report-modal {
-    display: none;
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background: rgba(0, 0, 0, 0.5);
-    backdrop-filter: blur(4px);
-    z-index: 1000;
-    justify-content: center;
-    align-items: center;
-}
-
-.report-modal.active {
-    display: flex;
-}
-
-.modal-content {
-    background: #ffffff;
-    padding: 15px;
-    border-radius: 8px;
-    width: 100%;
-    max-width: 550px;
-    box-shadow: 0 3px 12px rgba(0, 0, 0, 0.2);
-    max-height: 80vh;
-    overflow-y: auto;
-    scrollbar-width: none;
-    -ms-overflow-style: none;
-}
-
-.modal-content::-webkit-scrollbar {
-    display: none;
-}
-
-.modal-header {
-    font-size: 16px;
-    font-weight: 700;
-    color: #1a73e8;
-    margin-bottom: 15px;
-}
-
-.detail-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-    gap: 12px;
-    margin-bottom: 15px;
-}
-
-.detail-item {
-    background: #f8f9fa;
-    padding: 12px;
-    border-radius: 6px;
-}
-
-.detail-label {
-    font-weight: 600;
-    color: #333;
-    margin-bottom: 4px;
-    font-size: 12px;
-}
-
-.detail-value {
-    color: #666;
-    font-size: 12px;
-}
-
-.form-actions {
-    display: flex;
-    gap: 8px;
-    justify-content: flex-end;
-}
-
-.close-btn {
-    padding: 8px 15px;
-    border: none;
-    border-radius: 4px;
-    font-size: 12px;
-    cursor: pointer;
-    transition: background 0.3s ease;
-    background: #6c757d;
-    color: #fff;
-}
-
-.close-btn:hover {
-    background: #5a6268;
-}
-
-.reports-table-wrapper {
-    overflow-x: auto;
-}
-
-.report-summary {
-    background: #f8f9fa;
-    padding: 12px;
-    border-radius: 8px;
-    margin-bottom: 15px;
-    font-size: 14px;
-    font-weight: 600;
-    color: #333;
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
-    gap: 12px;
-}
-
-.report-summary span {
-    color: #1a73e8;
-    font-weight: 800;
-}
-
-/* Responsive Styles */
-@media (max-width: 1024px) {
-    .dashboard-container {
-        padding: 15px;
-    }
-
-    .dashboard-header {
-        flex-direction: column;
-        gap: 12px;
-        align-items: flex-start;
-    }
-
-    .filter-btn, .clear-filter-btn {
-        min-width: 140px;
-        font-size: 13px;
-        padding: 8px 15px;
-    }
-
-    .modal-content {
-        max-width: 90%;
-    }
-
-    .filter-form {
-        flex-direction: column;
-    }
-
-    .form-group {
-        min-width: 100%;
-    }
-
-    .report-summary {
-        grid-template-columns: 1fr;
-    }
-}
-
-@media (max-width: 768px) {
-    .dashboard-container {
-        padding: 12px;
-    }
-
-    .dashboard-title {
-        font-size: 16px;
-    }
-
-    .filter-btn, .clear-filter-btn {
-        min-width: 120px;
-        font-size: 12px;
-        padding: 8px 15px;
-    }
-
-    .reports-table th, .reports-table td {
-        padding: 8px;
-        font-size: 11px;
-    }
-
-    .detail-grid {
-        grid-template-columns: 1fr;
-    }
-
-    .action-btn {
-        padding: 5px 10px;
-        font-size: 11px;
-    }
-
-    .report-summary {
-        font-size: 12px;
-    }
-}
-
-@media (max-width: 480px) {
-    .dashboard-container {
-        padding: 8px;
-    }
-
-    .dashboard-header {
-        gap: 8px;
-    }
-
-    .dashboard-title {
-        font-size: 14px;
-    }
-
-    .filter-btn, .clear-filter-btn {
-        min-width: 100px;
-        font-size: 11px;
-        padding: 6px 12px;
-    }
-
-    .reports-table {
-        display: block;
-        overflow-x: auto;
-        white-space: nowrap;
-    }
-
-    .reports-table th, .reports-table td {
-        min-width: 80px;
-        font-size: 10px;
-        padding: 6px;
-    }
-
-    .action-btn {
-        padding: 4px 8px;
-        font-size: 10px;
-        margin: 2px;
-    }
-
-    .form-actions {
-        flex-direction: column;
-        gap: 6px;
-    }
-
-    .close-btn {
-        width: 100%;
-        padding: 6px;
-    }
-
-    .modal-content {
-        max-width: 95%;
-        padding: 12px;
-    }
-
-    .report-summary {
-        font-size: 11px;
-    }
-}
-
-/* Blur Sidebar and Content when Modal is Active */
-.report-modal.active ~ .wrapper #sidebar,
-.report-modal.active ~ .wrapper .content {
-    filter: blur(4px);
-    transition: filter 0.3s ease;
-}
-
-#sidebar,
-.content {
-    filter: none;
-    transition: filter 0.3s ease;
-}
-  </style>
-
+    <style>
+        body {
+            font-family: 'Montserrat', sans-serif !important;
+            background: #fafafa;
+            margin: 0;
+            overflow-x: hidden;
+            font-size: 14px;
+        }
+        .wrapper {
+            display: flex;
+            width: 100%;
+            min-height: calc(100vh - 60px);
+            margin-top: 60px;
+        }
+        .content {
+            margin-left: 280px;
+            width: calc(100% - 280px);
+            padding: 10px;
+            transition: all 0.3s ease;
+            min-height: calc(100vh - 60px);
+        }
+        .content.expanded {
+            margin-left: 80px;
+            width: calc(100% - 80px);
+        }
+        #datetime {
+            font-size: 12px;
+            color: #333;
+            padding: 10px 0;
+            background: #e6f0ff;
+            margin-top: 10px;
+            text-align: center;
+            border-radius: 5px;
+        }
+        #datetime span {
+            font-weight: bold;
+        }
+        .dashboard-container {
+            width: 100%;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 25px;
+            background: #ffffff;
+            border-radius: 15px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+            display: flex;
+            flex-direction: column;
+            gap: 25px;
+        }
+        .dashboard-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+            flex-wrap: wrap;
+            gap: 12px;
+        }
+        .dashboard-title {
+            font-size: 18px;
+            font-weight: 800;
+            color: #1a73e8;
+        }
+        .filter-btn, .clear-filter-btn {
+            min-width: 180px;
+            font-size: 12px;
+            padding: 12px 25px;
+            border: none;
+            border-radius: 10px;
+            transition: background 0.3s ease;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 600;
+            text-transform: uppercase;
+        }
+        .filter-btn {
+            background: #1a73e8;
+            color: #ffffff;
+        }
+        .filter-btn:hover {
+            background: #1557b0;
+        }
+        .clear-filter-btn {
+            background: #6c757d;
+            color: #ffffff;
+        }
+        .clear-filter-btn:hover {
+            background: #5a6268;
+        }
+        .filter-form {
+            background: #f8f9fa;
+            padding: 15px;
+            border-radius: 8px;
+            margin-bottom: 15px;
+            display: flex;
+            flex-wrap: wrap;
+            gap: 12px;
+        }
+        .form-group {
+            flex: 1;
+            min-width: 180px;
+        }
+        .form-group label {
+            display: block;
+            font-weight: 600;
+            margin-bottom: 5px;
+            color: #333;
+            font-size: 12px;
+        }
+        .form-group input, .form-group select {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #e0e0e0;
+            border-radius: 5px;
+            font-size: 12px;
+            box-sizing: border-box;
+        }
+        .form-group input.error, .form-group select.error {
+            border-color: #dc3545;
+        }
+        .error-message {
+            color: #dc3545;
+            font-size: 10px;
+            margin-top: 5px;
+            display: none;
+        }
+        .reports-table {
+            width: 100%;
+            border-collapse: collapse;
+            background: #ffffff;
+            border-radius: 10px;
+            overflow: hidden;
+        }
+        .reports-table th, .reports-table td {
+            padding: 15px;
+            text-align: left;
+            color: #333;
+            border-bottom: 1px solid #e0e0e0;
+            font-size: 12px;
+        }
+        .reports-table th {
+            background: #f5f7fa;
+            color: #333;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+        .reports-table tr:hover {
+            background: #f9f9f9;
+        }
+        .status-completed, .status-resolved, .status-paid {
+            color: #28a745;
+            font-weight: 600;
+            background: rgba(40, 167, 69, 0.1);
+            padding: 3px 6px;
+            border-radius: 10px;
+        }
+        .status-active, .status-failed {
+            color: #dc3545;
+            font-weight: 600;
+            background: rgba(220, 53, 69, 0.1);
+            padding: 3px 6px;
+            border-radius: 10px;
+        }
+        .status-pending {
+            color: #ffc107;
+            font-weight: 600;
+            background: rgba(255, 193, 7, 0.1);
+            padding: 3px 6px;
+            border-radius: 10px;
+        }
+        .action-btn {
+            padding: 8px 15px;
+            margin: 0 5px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 12px;
+            transition: background 0.3s ease;
+            background: #1a73e8;
+            color: #fff;
+        }
+        .action-btn:hover {
+            background: #1557b0;
+        }
+        .report-modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.5);
+            backdrop-filter: blur(5px);
+            z-index: 1002;
+            justify-content: center;
+            align-items: center;
+        }
+        .report-modal.active {
+            display: flex;
+        }
+        .modal-content {
+            background: #ffffff;
+            padding: 20px;
+            border-radius: 10px;
+            width: 100%;
+            max-width: 550px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+            max-height: 80vh;
+            overflow-y: auto;
+            scrollbar-width: none;
+            -ms-overflow-style: none;
+        }
+        .modal-content::-webkit-scrollbar {
+            display: none;
+        }
+        .modal-header {
+            font-size: 14px;
+            font-weight: 700;
+            color: #1a73e8;
+            margin-bottom: 20px;
+        }
+        .detail-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 12px;
+            margin-bottom: 20px;
+        }
+        .detail-item {
+            background: #f8f9fa;
+            padding: 12px;
+            border-radius: 6px;
+        }
+        .detail-label {
+            font-weight: 600;
+            color: #333;
+            margin-bottom: 4px;
+            font-size: 12px;
+        }
+        .detail-value {
+            color: #666;
+            font-size: 12px;
+        }
+        .form-actions {
+            display: flex;
+            gap: 10px;
+            justify-content: flex-end;
+        }
+        .close-btn {
+            padding: 10px 20px;
+            border: none;
+            border-radius: 5px;
+            font-size: 12px;
+            cursor: pointer;
+            transition: background 0.3s ease;
+            background: #6c757d;
+            color: #fff;
+            flex: 1;
+        }
+        .close-btn:hover {
+            background: #5a6268;
+        }
+        .reports-table-wrapper {
+            overflow-x: auto;
+        }
+        .report-summary {
+            background: #f8f9fa;
+            padding: 12px;
+            border-radius: 8px;
+            margin-bottom: 15px;
+            font-size: 14px;
+            font-weight: 600;
+            color: #333;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+            gap: 12px;
+        }
+        .report-summary span {
+            color: #1a73e8;
+            font-weight: 800;
+        }
+        .report-modal.active ~ .wrapper #sidebar,
+        .report-modal.active ~ .wrapper .content {
+            filter: blur(5px);
+            transition: filter 0.3s ease;
+        }
+        #sidebar,
+        .content {
+            filter: none;
+            transition: filter 0.3s ease;
+        }
+        @media (max-width: 768px) {
+            .content {
+                margin-left: 0;
+                width: 100%;
+            }
+            .content.expanded {
+                margin-left: 80px;
+                width: calc(100% - 80px);
+            }
+            .dashboard-container {
+                padding: 15px;
+            }
+            .dashboard-title {
+                font-size: 14px;
+            }
+            .filter-btn, .clear-filter-btn {
+                min-width: 140px;
+                font-size: 10px;
+                padding: 10px 20px;
+            }
+            .form-group input,
+            .form-group select {
+                font-size: 11px;
+            }
+            .reports-table th, .reports-table td {
+                padding: 10px;
+                font-size: 11px;
+            }
+            .action-btn {
+                padding: 6px 12px;
+                font-size: 11px;
+            }
+            .report-summary {
+                font-size: 12px;
+            }
+            .detail-grid {
+                grid-template-columns: 1fr;
+            }
+            .close-btn {
+                padding: 8px 15px;
+                font-size: 11px;
+            }
+        }
+        @media (max-width: 480px) {
+            .content {
+                padding: 5px;
+            }
+            .content.expanded {
+                margin-left: 60px;
+                width: calc(100% - 60px);
+            }
+            .dashboard-container {
+                padding: 10px;
+            }
+            .dashboard-header {
+                flex-direction: column;
+                gap: 10px;
+                align-items: flex-start;
+            }
+            .dashboard-title {
+                font-size: 12px;
+            }
+            .filter-btn, .clear-filter-btn {
+                min-width: 120px;
+                font-size: 9px;
+                padding: 8px 15px;
+            }
+            .reports-table {
+                display: block;
+                overflow-x: auto;
+                white-space: nowrap;
+            }
+            .reports-table th, .reports-table td {
+                min-width: 80px;
+                font-size: 10px;
+                padding: 8px;
+            }
+            .form-group input,
+            .form-group select {
+                font-size: 10px;
+            }
+            .action-btn {
+                padding: 5px 10px;
+                font-size: 10px;
+                margin: 2px;
+            }
+            .form-actions {
+                flex-direction: column;
+                gap: 8px;
+            }
+            .close-btn {
+                width: 100%;
+                padding: 8px;
+                font-size: 10px;
+            }
+            .modal-content {
+                max-width: 95%;
+                padding: 15px;
+            }
+            .report-summary {
+                font-size: 11px;
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet"
           integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;700;800&display=swap" rel="stylesheet">
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 </head>
-
 <body>
-    <?php $this->load->view('base/base') ?>
-
+    <?php $this->load->view('base/navbar'); ?>
     <div class="wrapper">
+        <?php $this->load->view('base/sidebar'); ?>
         <div class="content" id="abc">
             <div class="container-fluid">
                 <div id="datetime"></div>
@@ -558,7 +473,6 @@
                             </thead>
                             <tbody id="reportsTbody">
                                 <?php
-                                // Sample report data (aggregated from previous pages)
                                 $reports = [
                                     [
                                         'report_id' => 1,
@@ -661,8 +575,6 @@
             </div>
         </div>
     </div>
-
-    <!-- Report Details Modal -->
     <div id="reportModal" class="report-modal">
         <div class="modal-content">
             <div class="modal-header" id="reportModalTitle">Report Details</div>
@@ -674,10 +586,7 @@
             </div>
         </div>
     </div>
-
-    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
-            integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo"
-            crossorigin="anonymous"></script>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js"
             integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49"
             crossorigin="anonymous"></script>
@@ -685,13 +594,53 @@
             integrity="sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEULTy"
             crossorigin="anonymous"></script>
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-
     <script>
-        // Reports data
+        $(document).ready(function () {
+            $('#sidebarToggle').on('click', function (e) {
+                e.preventDefault();
+                $('#sidebar').toggleClass('active');
+                $('#abc').toggleClass('expanded');
+                const toggleIcon = $(this).find('i');
+                toggleIcon.toggleClass('fa-chevron-left fa-chevron-right');
+            });
+            $('#navbarToggle').on('click', function (e) {
+                e.preventDefault();
+                $('#sidebar').toggleClass('active');
+                $('#abc').toggleClass('expanded');
+                const toggleIcon = $(this).find('i');
+                toggleIcon.toggleClass('fa-bars fa-times');
+            });
+            $('.dropdown-toggle').on('click', function(e) {
+                e.preventDefault();
+                if (!$('#sidebar').hasClass('active')) {
+                    var target = $(this).data('target');
+                    $('.list-unstyled').not(target).removeClass('show');
+                    $(target).toggleClass('show');
+                    $(this).attr('aria-expanded', $(this).attr('aria-expanded') === 'true' ? 'false' : 'true');
+                }
+            });
+            const sidebarLinks = document.querySelectorAll("#sidebar a:not(.dropdown-toggle)");
+            sidebarLinks.forEach(link => {
+                link.addEventListener("click", function () {
+                    if (!$('#sidebar').hasClass('active')) {
+                        const sectionName = link.textContent.trim();
+                        document.getElementById("navbarHeading").textContent = sectionName;
+                        localStorage.setItem("sectionName", sectionName);
+                    }
+                });
+            });
+            if (window.location.pathname === "/" || window.location.pathname === "<?php echo base_url('login'); ?>") {
+                localStorage.setItem("sectionName", "Dashboard");
+                document.getElementById("navbarHeading").textContent = "Dashboard";
+            } else {
+                const savedSection = localStorage.getItem("sectionName");
+                if (savedSection) {
+                    document.getElementById("navbarHeading").textContent = savedSection;
+                }
+            }
+        });
         let reports = <?php echo json_encode($reports); ?>;
         let filteredReports = [...reports];
-
-        // Calculate and display summary metrics
         function updateReportSummary() {
             const totalSessions = filteredReports.filter(r => r.type === 'Session').length;
             const totalEnergy = filteredReports
@@ -703,7 +652,6 @@
                 .filter(r => r.type === 'Payment' && r.status.toLowerCase() === 'paid')
                 .reduce((sum, r) => sum + Number(r.details.amount || 0), 0)
                 .toFixed(2);
-
             document.getElementById('reportSummary').innerHTML = `
                 <div>Total Sessions: <span>${totalSessions}</span></div>
                 <div>Total Energy Consumed: <span>${totalEnergy} kWh</span></div>
@@ -711,8 +659,6 @@
                 <div>Total Revenue (Paid): <span>$${totalRevenue}</span></div>
             `;
         }
-
-        // Render reports table
         function renderReportsTable() {
             const tbody = document.getElementById('reportsTbody');
             tbody.innerHTML = '';
@@ -735,24 +681,18 @@
             });
             updateReportSummary();
         }
-
-        // Toggle Filter Form
         function toggleFilterForm() {
             const filterForm = document.getElementById('filterForm');
             filterForm.style.display = filterForm.style.display === 'none' ? 'flex' : 'none';
         }
-
-        // Apply Filters
         function applyFilters() {
             if (validateFilterForm()) {
                 const startDate = document.getElementById('startDate').value;
                 const endDate = document.getElementById('endDate').value;
                 const reportType = document.getElementById('reportType').value;
                 const user = document.getElementById('user').value.trim().toLowerCase();
-
                 filteredReports = reports.filter(report => {
                     let isMatch = true;
-
                     if (startDate) {
                         const reportDate = new Date(report.timestamp);
                         const filterStart = new Date(startDate);
@@ -771,10 +711,8 @@
                     if (user) {
                         isMatch = isMatch && report.user.toLowerCase().includes(user);
                     }
-
                     return isMatch;
                 });
-
                 renderReportsTable();
                 toggleFilterForm();
                 Swal.fire({
@@ -786,8 +724,6 @@
                 });
             }
         }
-
-        // Clear Filters
         function clearFilters() {
             const filterForm = document.getElementById('filterForm');
             filterForm.reset();
@@ -805,26 +741,18 @@
                 showConfirmButton: false
             });
         }
-
-        // Validate Filter Form
         function validateFilterForm() {
             const startDateInput = document.getElementById('startDate');
             const endDateInput = document.getElementById('endDate');
             const userInput = document.getElementById('user');
             const reportTypeInput = document.getElementById('reportType');
             let isValid = true;
-
             clearErrors();
-
-            const currentDate = new Date('2025-09-12T17:41:00+05:30');
-
-            // Validate at least one filter is provided
+            const currentDate = new Date('2025-09-19T12:24:00+05:30');
             if (!startDateInput.value && !endDateInput.value && !reportTypeInput.value && !userInput.value) {
                 showError(startDateInput, 'At least one filter must be provided.');
                 isValid = false;
             }
-
-            // Validate start date
             if (startDateInput.value) {
                 if (!isValidDate(startDateInput.value)) {
                     showError(startDateInput, 'Please select a valid start date.');
@@ -834,8 +762,6 @@
                     isValid = false;
                 }
             }
-
-            // Validate end date
             if (endDateInput.value) {
                 if (!isValidDate(endDateInput.value)) {
                     showError(endDateInput, 'Please select a valid end date.');
@@ -848,8 +774,6 @@
                     isValid = false;
                 }
             }
-
-            // Validate user
             if (userInput.value) {
                 const userRegex = /^[a-zA-Z\s.-]{2,50}$/;
                 if (!userRegex.test(userInput.value)) {
@@ -857,15 +781,12 @@
                     isValid = false;
                 }
             }
-
             return isValid;
         }
-
         function isValidDate(dateString) {
             const date = new Date(dateString);
             return date instanceof Date && !isNaN(date);
         }
-
         function showError(input, message) {
             const errorId = input.id + 'Error';
             const errorElement = document.getElementById(errorId);
@@ -875,15 +796,12 @@
                 input.classList.add('error');
             }
         }
-
         function clearErrors() {
             const errors = document.querySelectorAll('#filterForm .error-message');
             errors.forEach(error => error.style.display = 'none');
             const inputs = document.querySelectorAll('#filterForm input, #filterForm select');
             inputs.forEach(input => input.classList.remove('error'));
         }
-
-        // Open Report Modal
         function viewReport(report) {
             document.getElementById('reportModalTitle').textContent = `Report #${report.report_id} Details`;
             const detailsContainer = document.getElementById('reportDetails');
@@ -909,8 +827,6 @@
                     <div class="detail-value">${report.status}</div>
                 </div>
             `;
-
-            // Add type-specific details
             if (report.type === 'Session') {
                 detailsHTML += `
                     <div class="detail-item">
@@ -1012,33 +928,21 @@
                     </div>
                 `;
             }
-
             detailsContainer.innerHTML = detailsHTML;
             document.getElementById('reportModal').classList.add('active');
         }
-
-        // Close Report Modal
         function closeReportModal() {
             document.getElementById('reportModal').classList.remove('active');
         }
-
-        // Close modal on outside click
         window.onclick = function(event) {
             const modal = document.getElementById('reportModal');
             if (event.target === modal) {
                 closeReportModal();
             }
         }
-
-        // Event Listeners
         document.addEventListener("DOMContentLoaded", function () {
-            // Filter button
             document.getElementById('filterBtn').addEventListener('click', toggleFilterForm);
-
-            // Clear filter button
             document.getElementById('clearFilterBtn').addEventListener('click', clearFilters);
-
-            // Real-time validation for filter form
             const inputs = document.querySelectorAll('#filterForm input, #filterForm select');
             inputs.forEach(input => {
                 input.addEventListener('input', function(e) {
@@ -1056,15 +960,11 @@
                     }
                 });
             });
-
-            // Initial render
             renderReportsTable();
         });
-
-        // DateTime Update
         function updateDateTime() {
             const datetimeElement = document.getElementById("datetime");
-            const currentTime = new Date();
+            const currentTime = new Date('2025-09-19T12:24:00+05:30');
             const options = { weekday: 'long', year: 'numeric', month: 'numeric', day: 'numeric' };
             const options2 = { hour: '2-digit', minute: '2-digit', hour12: true };
             const formattedDate = currentTime.toLocaleDateString('en-IN', options);
@@ -1072,11 +972,8 @@
             const formattedDateTime = `${formattedDate} @ ${formattedTime} IST`;
             datetimeElement.textContent = formattedDateTime;
         }
-
         updateDateTime();
         setInterval(updateDateTime, 1000);
-
-        // Helper function to hide error
         function hideError(input) {
             const errorId = input.id + 'Error';
             const errorElement = document.getElementById(errorId);

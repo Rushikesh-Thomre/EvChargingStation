@@ -3,442 +3,359 @@
 <head>
     <meta charset="UTF-8">
     <title>Real-Time Sessions</title>
-    <link rel="icon" href="<?php echo base_url('Images\logo.png'); ?>" type="image/png">
+    <link rel="icon" href="<?php echo base_url('Images/logo.png'); ?>" type="image/png">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
-   <style>
-    body {
-    font-family: 'Montserrat', sans-serif !important;
-    background: #fafafa;
-    margin: 0;
-    overflow-x: hidden;
-    font-size: 12px;
-}
-
-.wrapper {
-    overflow-y: auto;
-    display: flex;
-    width: 100%;
-}
-
-.logo {
-    background-color: #f1f1f1;
-    width: 100%;
-    padding: 8px 0;
-    text-align: center;
-}
-
-.logo img {
-    width: 180px;
-    margin: 0 auto;
-}
-
-.line {
-    width: 100%;
-    height: 1px;
-    border-bottom: 1px dashed #ddd;
-    margin: 30px 0;
-}
-
-.content {
-    width: 100%;
-    padding: 8px;
-    transition: all 0.3s;
-}
-
-#datetime {
-    font-size: 12px;
-    color: #333;
-    padding: 8px 0;
-    background: #e6f0ff;
-    margin-top: 40px;
-    text-align: center;
-    border-radius: 4px;
-}
-
-#datetime span {
-    font-weight: bold;
-}
-
-/* Real-Time Sessions Dashboard Styles */
-.dashboard-container {
-    width: 100%;
-    max-width: 1000px;
-    margin: 0 auto;
-    padding: 20px;
-    background: #ffffff;
-    border-radius: 12px;
-    box-shadow: 0 3px 15px rgba(0, 0, 0, 0.1);
-    display: flex;
-    flex-direction: column;
-    gap: 20px;
-}
-
-.dashboard-header {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    margin-bottom: 15px;
-}
-
-.dashboard-title {
-    font-size: 20px;
-    font-weight: 800;
-    color: #1a73e8;
-}
-
-.refresh-btn {
-    min-width: 150px;
-    font-size: 14px;
-    padding: 10px 20px;
-    background: #1a73e8;
-    color: #ffffff;
-    border: none;
-    border-radius: 8px;
-    transition: background 0.3s ease;
-    text-decoration: none;
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    font-weight: 600;
-    text-transform: uppercase;
-}
-
-.refresh-btn:hover {
-    background: #1557b0;
-}
-
-.sessions-table {
-    width: 100%;
-    border-collapse: collapse;
-    background: #ffffff;
-    border-radius: 8px;
-    overflow: hidden;
-}
-
-.sessions-table th, .sessions-table td {
-    padding: 12px;
-    text-align: left;
-    color: #333;
-    border-bottom: 1px solid #e0e0e0;
-    font-size: 12px;
-}
-
-.sessions-table th {
-    background: #f5f7fa;
-    color: #333;
-    font-weight: 700;
-    text-transform: uppercase;
-    letter-spacing: 0.8px;
-}
-
-.sessions-table tr:hover {
-    background: #f9f9f9;
-}
-
-.status-active {
-    color: #28a745;
-    font-weight: 600;
-    background: rgba(40, 167, 69, 0.1);
-    padding: 3px 6px;
-    border-radius: 10px;
-}
-
-.status-completed {
-    color: #17a2b8;
-    font-weight: 600;
-    background: rgba(23, 162, 184, 0.1);
-    padding: 3px 6px;
-    border-radius: 10px;
-}
-
-.status-failed {
-    color: #dc3545;
-    font-weight: 600;
-    background: rgba(220, 53, 69, 0.1);
-    padding: 3px 6px;
-    border-radius: 10px;
-}
-
-.progress-bar {
-    width: 100%;
-    height: 6px;
-    background: #e0e0e0;
-    border-radius: 3px;
-    overflow: hidden;
-    margin-top: 4px;
-}
-
-.progress-fill {
-    height: 100%;
-    background: linear-gradient(90deg, #28a745, #20c997);
-    transition: width 0.3s ease;
-    border-radius: 3px;
-}
-
-.session-info {
-    font-size: 11px;
-    color: #666;
-}
-
-.action-btn {
-    padding: 6px 12px;
-    margin: 0 4px;
-    border: none;
-    border-radius: 4px;
-    cursor: pointer;
-    font-size: 12px;
-    transition: background 0.3s ease;
-    text-decoration: none;
-    display: inline-block;
-}
-
-.view-btn {
-    background: #1a73e8;
-    color: #fff;
-}
-
-.view-btn:hover {
-    background: #1557b0;
-}
-
-.stop-btn {
-    background: #dc3545;
-    color: #fff;
-}
-
-.stop-btn:hover {
-    background: #c82333;
-}
-
-/* Modal Styles */
-.session-modal {
-    display: none;
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background: rgba(0, 0, 0, 0.5);
-    backdrop-filter: blur(4px);
-    z-index: 1000;
-    justify-content: center;
-    align-items: center;
-}
-
-.session-modal.active {
-    display: flex;
-}
-
-.modal-content {
-    background: #ffffff;
-    padding: 15px;
-    border-radius: 8px;
-    width: 100%;
-    max-width: 550px;
-    box-shadow: 0 3px 12px rgba(0, 0, 0, 0.2);
-    max-height: 80vh;
-    overflow-y: auto;
-    scrollbar-width: none;
-    -ms-overflow-style: none;
-}
-
-.modal-content::-webkit-scrollbar {
-    display: none;
-}
-
-.modal-header {
-    font-size: 16px;
-    font-weight: 700;
-    color: #1a73e8;
-    margin-bottom: 15px;
-}
-
-.detail-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-    gap: 12px;
-    margin-bottom: 15px;
-}
-
-.detail-item {
-    background: #f8f9fa;
-    padding: 12px;
-    border-radius: 6px;
-}
-
-.detail-label {
-    font-weight: 600;
-    color: #333;
-    margin-bottom: 4px;
-    font-size: 12px;
-}
-
-.detail-value {
-    color: #666;
-    font-size: 12px;
-}
-
-.form-actions {
-    display: flex;
-    gap: 8px;
-    justify-content: flex-end;
-}
-
-.close-btn {
-    padding: 8px 15px;
-    border: none;
-    border-radius: 4px;
-    font-size: 12px;
-    cursor: pointer;
-    transition: background 0.3s ease;
-    background: #6c757d;
-    color: #fff;
-}
-
-.close-btn:hover {
-    background: #5a6268;
-}
-
-.sessions-table-wrapper {
-    overflow-x: auto;
-}
-
-/* Responsive Styles */
-@media (max-width: 1024px) {
-    .dashboard-container {
-        padding: 15px;
-    }
-
-    .dashboard-header {
-        flex-direction: column;
-        gap: 12px;
-    }
-
-    .dashboard-title {
-        font-size: 18px;
-    }
-
-    .refresh-btn {
-        min-width: 140px;
-        font-size: 13px;
-        padding: 8px 15px;
-    }
-
-    .modal-content {
-        max-width: 90%;
-    }
-}
-
-@media (max-width: 768px) {
-    .dashboard-container {
-        padding: 12px;
-    }
-
-    .dashboard-title {
-        font-size: 16px;
-    }
-
-    .refresh-btn {
-        min-width: 120px;
-        font-size: 12px;
-        padding: 8px 15px;
-    }
-
-    .sessions-table th, .sessions-table td {
-        padding: 8px;
-        font-size: 11px;
-    }
-
-    .detail-grid {
-        grid-template-columns: 1fr;
-    }
-
-    .action-btn {
-        padding: 5px 10px;
-        font-size: 11px;
-    }
-}
-
-@media (max-width: 480px) {
-    .dashboard-container {
-        padding: 8px;
-    }
-
-    .dashboard-header {
-        flex-direction: column;
-        gap: 8px;
-    }
-
-    .dashboard-title {
-        font-size: 14px;
-    }
-
-    .refresh-btn {
-        min-width: 100px;
-        font-size: 11px;
-        padding: 6px 12px;
-    }
-
-    .sessions-table {
-        display: block;
-        overflow-x: auto;
-        white-space: nowrap;
-    }
-
-    .sessions-table th, .sessions-table td {
-        min-width: 80px;
-        font-size: 10px;
-        padding: 6px;
-    }
-
-    .action-btn {
-        padding: 4px 8px;
-        font-size: 10px;
-        margin: 2px;
-    }
-
-    .form-actions {
-        flex-direction: column;
-        gap: 6px;
-    }
-
-    .close-btn {
-        width: 100%;
-        padding: 6px;
-    }
-
-    .modal-content {
-        max-width: 95%;
-        padding: 12px;
-    }
-}
-
-/* Blur Sidebar and Content when Modal is Active */
-.session-modal.active ~ .wrapper #sidebar,
-.session-modal.active ~ .wrapper .content {
-    filter: blur(4px);
-    transition: filter 0.3s ease;
-}
-
-#sidebar,
-.content {
-    filter: none;
-    transition: filter 0.3s ease;
-}
-   </style>
-
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet"
-          integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+    <style>
+        body {
+            font-family: 'Montserrat', sans-serif !important;
+            background: #fafafa;
+            margin: 0;
+            overflow-x: hidden;
+            font-size: 14px;
+        }
+        .wrapper {
+            display: flex;
+            width: 100%;
+            min-height: calc(100vh - 60px);
+            margin-top: 60px;
+        }
+        .content {
+            margin-left: 280px;
+            width: calc(100% - 280px);
+            padding: 10px;
+            transition: all 0.3s ease;
+            min-height: calc(100vh - 60px);
+        }
+        .content.expanded {
+            margin-left: 80px;
+            width: calc(100% - 80px);
+        }
+        #datetime {
+            font-size: 12px;
+            color: #333;
+            padding: 10px 0;
+            background: #e6f0ff;
+            margin-top: 10px;
+            text-align: center;
+            border-radius: 5px;
+        }
+        #datetime span {
+            font-weight: bold;
+        }
+        .dashboard-container {
+            width: 100%;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 25px;
+            background: #ffffff;
+            border-radius: 15px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+            display: flex;
+            flex-direction: column;
+            gap: 25px;
+        }
+        .dashboard-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+        .dashboard-title {
+            font-size: 18px;
+            font-weight: 800;
+            color: #1a73e8;
+        }
+        .refresh-btn {
+            min-width: 180px;
+            font-size: 12px;
+            padding: 12px 25px;
+            background: #1a73e8;
+            color: #ffffff;
+            border: none;
+            border-radius: 10px;
+            transition: background 0.3s ease;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 600;
+            text-transform: uppercase;
+        }
+        .refresh-btn:hover {
+            background: #1557b0;
+        }
+        .sessions-table {
+            width: 100%;
+            border-collapse: collapse;
+            background: #ffffff;
+            border-radius: 10px;
+            overflow: hidden;
+        }
+        .sessions-table th, .sessions-table td {
+            padding: 15px;
+            text-align: left;
+            color: #333;
+            border-bottom: 1px solid #e0e0e0;
+            font-size: 12px;
+        }
+        .sessions-table th {
+            background: #f5f7fa;
+            color: #333;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+        .sessions-table tr:hover {
+            background: #f9f9f9;
+        }
+        .status-active {
+            color: #28a745;
+            font-weight: 600;
+            background: rgba(40, 167, 69, 0.1);
+            padding: 3px 6px;
+            border-radius: 10px;
+        }
+        .status-completed {
+            color: #17a2b8;
+            font-weight: 600;
+            background: rgba(23, 162, 184, 0.1);
+            padding: 3px 6px;
+            border-radius: 10px;
+        }
+        .status-failed {
+            color: #dc3545;
+            font-weight: 600;
+            background: rgba(220, 53, 69, 0.1);
+            padding: 3px 6px;
+            border-radius: 10px;
+        }
+        .progress-bar {
+            width: 100%;
+            height: 6px;
+            background: #e0e0e0;
+            border-radius: 3px;
+            overflow: hidden;
+            margin-top: 4px;
+        }
+        .progress-fill {
+            height: 100%;
+            background: linear-gradient(90deg, #28a745, #20c997);
+            transition: width 0.3s ease;
+            border-radius: 3px;
+        }
+        .session-info {
+            font-size: 11px;
+            color: #666;
+        }
+        .action-btn {
+            padding: 6px 12px;
+            margin: 0 4px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 12px;
+            transition: background 0.3s ease;
+            text-decoration: none;
+            display: inline-block;
+        }
+        .view-btn {
+            background: #1a73e8;
+            color: #fff;
+        }
+        .view-btn:hover {
+            background: #1557b0;
+        }
+        .stop-btn {
+            background: #dc3545;
+            color: #fff;
+        }
+        .stop-btn:hover {
+            background: #c82333;
+        }
+        .session-modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.5);
+            backdrop-filter: blur(5px);
+            z-index: 1002;
+            justify-content: center;
+            align-items: center;
+        }
+        .session-modal.active {
+            display: flex;
+        }
+        .modal-content {
+            background: #ffffff;
+            padding: 20px;
+            border-radius: 10px;
+            width: 100%;
+            max-width: 550px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+            max-height: 80vh;
+            overflow-y: auto;
+            scrollbar-width: none;
+            -ms-overflow-style: none;
+        }
+        .modal-content::-webkit-scrollbar {
+            display: none;
+        }
+        .modal-header {
+            font-size: 14px;
+            font-weight: 700;
+            color: #1a73e8;
+            margin-bottom: 20px;
+        }
+        .detail-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 12px;
+            margin-bottom: 15px;
+        }
+        .detail-item {
+            background: #f8f9fa;
+            padding: 12px;
+            border-radius: 6px;
+        }
+        .detail-label {
+            font-weight: 600;
+            color: #333;
+            margin-bottom: 4px;
+            font-size: 12px;
+        }
+        .detail-value {
+            color: #666;
+            font-size: 12px;
+        }
+        .form-actions {
+            display: flex;
+            gap: 10px;
+            justify-content: flex-end;
+        }
+        .close-btn {
+            padding: 10px 20px;
+            border: none;
+            border-radius: 5px;
+            font-size: 12px;
+            cursor: pointer;
+            transition: background 0.3s ease;
+            background: #6c757d;
+            color: #fff;
+            flex: 1;
+        }
+        .close-btn:hover {
+            background: #5a6268;
+        }
+        .sessions-table-wrapper {
+            overflow-x: auto;
+        }
+        .session-modal.active ~ .wrapper #sidebar,
+        .session-modal.active ~ .wrapper .content {
+            filter: blur(5px);
+            transition: filter 0.3s ease;
+        }
+        #sidebar,
+        .content {
+            filter: none;
+            transition: filter 0.3s ease;
+        }
+        @media (max-width: 768px) {
+            .content {
+                margin-left: 0;
+                width: 100%;
+            }
+            .content.expanded {
+                margin-left: 80px;
+                width: calc(100% - 80px);
+            }
+            .dashboard-container {
+                padding: 15px;
+            }
+            .dashboard-title {
+                font-size: 14px;
+            }
+            .refresh-btn {
+                min-width: 140px;
+                font-size: 10px;
+                padding: 10px 20px;
+            }
+            .sessions-table th, .sessions-table td {
+                padding: 10px;
+                font-size: 11px;
+            }
+            .action-btn {
+                padding: 5px 10px;
+                font-size: 11px;
+            }
+            .detail-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+        @media (max-width: 480px) {
+            .content {
+                padding: 5px;
+            }
+            .content.expanded {
+                margin-left: 60px;
+                width: calc(100% - 60px);
+            }
+            .dashboard-container {
+                padding: 10px;
+            }
+            .dashboard-header {
+                flex-direction: column;
+                gap: 10px;
+            }
+            .dashboard-title {
+                font-size: 12px;
+            }
+            .refresh-btn {
+                min-width: 120px;
+                font-size: 9px;
+                padding: 8px 15px;
+            }
+            .sessions-table {
+                display: block;
+                overflow-x: auto;
+                white-space: nowrap;
+            }
+            .sessions-table th, .sessions-table td {
+                min-width: 80px;
+                font-size: 10px;
+                padding: 8px;
+            }
+            .action-btn {
+                padding: 4px 8px;
+                font-size: 10px;
+                margin: 2px;
+            }
+            .form-actions {
+                flex-direction: column;
+                gap: 8px;
+            }
+            .close-btn {
+                width: 100%;
+                padding: 8px;
+                font-size: 10px;
+            }
+            .modal-content {
+                max-width: 95%;
+                padding: 15px;
+            }
+        }
+    </style>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;700;800&display=swap" rel="stylesheet">
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 </head>
-
 <body>
-    <?php $this->load->view('base/base') ?>
-
+    <?php $this->load->view('base/navbar'); ?>
     <div class="wrapper">
+        <?php $this->load->view('base/sidebar'); ?>
         <div class="content" id="abc">
             <div class="container-fluid">
                 <div id="datetime"></div>
@@ -465,7 +382,6 @@
                             </thead>
                             <tbody id="sessionsTbody">
                                 <?php
-                                // Sample real-time session data
                                 $sessions = [
                                     [
                                         'id' => 1001,
@@ -564,18 +480,66 @@
         </div>
     </div>
 
-    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
-            integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo"
-            crossorigin="anonymous"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js"
-            integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49"
-            crossorigin="anonymous"></script>
-    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js"
-            integrity="sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEULTy"
-            crossorigin="anonymous"></script>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-
     <script>
+        $(document).ready(function () {
+            // Toggle sidebar for desktop
+            $('#sidebarToggle').on('click', function (e) {
+                e.preventDefault();
+                $('#sidebar').toggleClass('active');
+                $('#abc').toggleClass('expanded');
+                const toggleIcon = $(this).find('i');
+                toggleIcon.toggleClass('fa-chevron-left fa-chevron-right');
+            });
+
+            // Toggle sidebar for mobile
+            $('#navbarToggle').on('click', function (e) {
+                e.preventDefault();
+                $('#sidebar').toggleClass('active');
+                $('#abc').toggleClass('expanded');
+                const toggleIcon = $(this).find('i');
+                toggleIcon.toggleClass('fa-bars fa-times');
+            });
+
+            // Handle dropdown toggle
+            $('.dropdown-toggle').on('click', function(e) {
+                e.preventDefault();
+                if (!$('#sidebar').hasClass('active')) {
+                    var target = $(this).data('target');
+                    $('.list-unstyled').not(target).removeClass('show');
+                    $(target).toggleClass('show');
+                    $(this).attr('aria-expanded', $(this).attr('aria-expanded') === 'true' ? 'false' : 'true');
+                }
+            });
+
+            // Update navbar heading based on clicked link
+            const sidebarLinks = document.querySelectorAll("#sidebar a:not(.dropdown-toggle)");
+            sidebarLinks.forEach(link => {
+                link.addEventListener("click", function () {
+                    if (!$('#sidebar').hasClass('active')) {
+                        const sectionName = link.textContent.trim();
+                        document.getElementById("navbarHeading").textContent = sectionName;
+                        localStorage.setItem("sectionName", sectionName);
+                    }
+                });
+            });
+
+            // Set default section name for login or root path
+            if (window.location.pathname === "/" || window.location.pathname === "<?php echo base_url('login'); ?>") {
+                localStorage.setItem("sectionName", "Dashboard");
+                document.getElementById("navbarHeading").textContent = "Dashboard";
+            } else {
+                const savedSection = localStorage.getItem("sectionName");
+                if (savedSection) {
+                    document.getElementById("navbarHeading").textContent = savedSection;
+                } else {
+                    document.getElementById("navbarHeading").textContent = "Real-Time Sessions";
+                    localStorage.setItem("sectionName", "Real-Time Sessions");
+                }
+            }
+        });
+
         // Sessions data
         let sessions = <?php echo json_encode($sessions); ?>;
         let currentSessionId = null;
@@ -620,7 +584,6 @@
         function simulateRealTimeUpdates() {
             sessions.forEach(session => {
                 if (session.status === 'Active' && session.progress < 100) {
-                    // Simulate progress increase for active sessions
                     setTimeout(() => {
                         const idx = sessions.findIndex(s => s.id === session.id);
                         if (idx !== -1 && sessions[idx].status === 'Active') {
@@ -633,7 +596,7 @@
                             }
                             renderSessionsTable();
                         }
-                    }, Math.random() * 5000 + 2000); // Random update between 2-7 seconds
+                    }, Math.random() * 5000 + 2000);
                 }
             });
         }
@@ -748,7 +711,6 @@
                     didOpen: () => {
                         Swal.showLoading();
                         setTimeout(() => {
-                            // Simulate data refresh
                             sessions.forEach(session => {
                                 if (session.status === 'Active') {
                                     session.progress = Math.min(100, session.progress + Math.random() * 10);

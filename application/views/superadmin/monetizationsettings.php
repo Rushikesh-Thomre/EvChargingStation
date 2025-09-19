@@ -3,365 +3,311 @@
 <head>
     <meta charset="UTF-8">
     <title>Monetization Settings</title>
-    <link rel="icon" href="<?php echo base_url('Images\logo.png'); ?>" type="image/png">
+    <link rel="icon" href="<?php echo base_url('Images/logo.png'); ?>" type="image/png">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
-   <style>
-    body {
-    font-family: 'Montserrat', sans-serif !important;
-    background: #fafafa;
-    margin: 0;
-    overflow-x: hidden;
-    font-size: 12px;
-}
-
-.wrapper {
-    overflow-y: auto;
-    display: flex;
-    width: 100%;
-}
-
-.logo {
-    background-color: #f1f1f1;
-    width: 100%;
-    padding: 8px 0;
-    text-align: center;
-}
-
-.logo img {
-    width: 180px;
-    margin: 0 auto;
-}
-
-.line {
-    width: 100%;
-    height: 1px;
-    border-bottom: 1px dashed #ddd;
-    margin: 30px 0;
-}
-
-.content {
-    width: 100%;
-    padding: 8px;
-    transition: all 0.3s;
-}
-
-#datetime {
-    font-size: 12px;
-    color: #333;
-    padding: 8px 0;
-    background: #e6f0ff;
-    margin-top: 40px;
-    text-align: center;
-    border-radius: 4px;
-}
-
-#datetime span {
-    font-weight: bold;
-}
-
-/* Monetization Dashboard Styles */
-.dashboard-container {
-    width: 100%;
-    max-width: 1000px;
-    margin: 0 auto;
-    padding: 20px;
-    background: #ffffff;
-    border-radius: 12px;
-    box-shadow: 0 3px 15px rgba(0, 0, 0, 0.1);
-    display: flex;
-    flex-direction: column;
-    gap: 20px;
-}
-
-.dashboard-header {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    margin-bottom: 15px;
-    flex-wrap: wrap;
-    gap: 12px;
-}
-
-.dashboard-title {
-    font-size: 20px;
-    font-weight: 800;
-    color: #1a73e8;
-}
-
-.monetization-form {
-    background: #f8f9fa;
-    padding: 15px;
-    border-radius: 8px;
-    margin-bottom: 15px;
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-    gap: 12px;
-}
-
-.form-group {
-    min-width: 180px;
-}
-
-.form-group label {
-    display: block;
-    font-weight: 600;
-    margin-bottom: 4px;
-    color: #333;
-    font-size: 12px;
-}
-
-.form-group input, .form-group select {
-    width: 100%;
-    padding: 8px;
-    border: 1px solid #e0e0e0;
-    border-radius: 4px;
-    font-size: 12px;
-    box-sizing: border-box;
-}
-
-.form-group input.error, .form-group select.error {
-    border-color: #dc3545;
-}
-
-.error-message {
-    color: #dc3545;
-    font-size: 10px;
-    margin-top: 4px;
-    display: none;
-}
-
-.form-actions {
-    display: flex;
-    gap: 8px;
-    justify-content: flex-end;
-    grid-column: 1 / -1;
-}
-
-.save-btn, .reset-btn {
-    min-width: 130px;
-    font-size: 14px;
-    padding: 10px 20px;
-    border: none;
-    border-radius: 8px;
-    transition: background 0.3s ease;
-    text-decoration: none;
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    font-weight: 600;
-    text-transform: uppercase;
-}
-
-.save-btn {
-    background: #1a73e8;
-    color: #ffffff;
-}
-
-.save-btn:hover {
-    background: #1557b0;
-}
-
-.reset-btn {
-    background: #6c757d;
-    color: #ffffff;
-}
-
-.reset-btn:hover {
-    background: #5a6268;
-}
-
-/* Modal Styles */
-.monetization-modal {
-    display: none;
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background: rgba(0, 0, 0, 0.5);
-    backdrop-filter: blur(4px);
-    z-index: 1000;
-    justify-content: center;
-    align-items: center;
-}
-
-.monetization-modal.active {
-    display: flex;
-}
-
-.modal-content {
-    background: #ffffff;
-    padding: 15px;
-    border-radius: 8px;
-    width: 100%;
-    max-width: 550px;
-    box-shadow: 0 3px 12px rgba(0, 0, 0, 0.2);
-    max-height: 80vh;
-    overflow-y: auto;
-    scrollbar-width: none;
-    -ms-overflow-style: none;
-}
-
-.modal-content::-webkit-scrollbar {
-    display: none;
-}
-
-.modal-header {
-    font-size: 16px;
-    font-weight: 700;
-    color: #1a73e8;
-    margin-bottom: 15px;
-}
-
-.modal-body {
-    font-size: 12px;
-    color: #333;
-    margin-bottom: 15px;
-}
-
-.modal-actions {
-    display: flex;
-    gap: 8px;
-    justify-content: flex-end;
-}
-
-.confirm-btn, .cancel-btn {
-    padding: 8px 15px;
-    border: none;
-    border-radius: 4px;
-    font-size: 12px;
-    cursor: pointer;
-    transition: background 0.3s ease;
-}
-
-.confirm-btn {
-    background: #1a73e8;
-    color: #fff;
-}
-
-.confirm-btn:hover {
-    background: #1557b0;
-}
-
-.cancel-btn {
-    background: #6c757d;
-    color: #fff;
-}
-
-.cancel-btn:hover {
-    background: #5a6268;
-}
-
-/* Responsive Styles */
-@media (max-width: 1024px) {
-    .dashboard-container {
-        padding: 15px;
-    }
-
-    .dashboard-header {
-        flex-direction: column;
-        gap: 12px;
-        align-items: flex-start;
-    }
-
-    .modal-content {
-        max-width: 90%;
-    }
-
-    .monetization-form {
-        grid-template-columns: 1fr;
-    }
-
-    .form-group {
-        min-width: 100%;
-    }
-}
-
-@media (max-width: 768px) {
-    .dashboard-container {
-        padding: 12px;
-    }
-
-    .dashboard-title {
-        font-size: 16px;
-    }
-
-    .save-btn, .reset-btn {
-        min-width: 120px;
-        font-size: 12px;
-        padding: 8px 15px;
-    }
-
-    .modal-body {
-        font-size: 11px;
-    }
-
-    .confirm-btn, .cancel-btn {
-        padding: 6px 12px;
-        font-size: 11px;
-    }
-}
-
-@media (max-width: 480px) {
-    .dashboard-container {
-        padding: 8px;
-    }
-
-    .dashboard-header {
-        gap: 8px;
-    }
-
-    .dashboard-title {
-        font-size: 14px;
-    }
-
-    .save-btn, .reset-btn {
-        min-width: 100px;
-        font-size: 11px;
-        padding: 6px 12px;
-    }
-
-    .form-actions {
-        flex-direction: column;
-        gap: 6px;
-    }
-
-    .modal-content {
-        max-width: 95%;
-        padding: 12px;
-    }
-
-    .confirm-btn, .cancel-btn {
-        width: 100%;
-        padding: 6px;
-    }
-}
-
-/* Blur Sidebar and Content when Modal is Active */
-.monetization-modal.active ~ .wrapper #sidebar,
-.monetization-modal.active ~ .wrapper .content {
-    filter: blur(4px);
-    transition: filter 0.3s ease;
-}
-
-#sidebar,
-.content {
-    filter: none;
-    transition: filter 0.3s ease;
-}
-   </style>
+    <style>
+        body {
+            font-family: 'Montserrat', sans-serif !important;
+            background: #fafafa;
+            margin: 0;
+            overflow-x: hidden;
+            font-size: 14px;
+        }
+        .wrapper {
+            display: flex;
+            width: 100%;
+            min-height: calc(100vh - 60px);
+            margin-top: 60px;
+        }
+        .content {
+            margin-left: 280px;
+            width: calc(100% - 280px);
+            padding: 10px;
+            transition: all 0.3s ease;
+            min-height: calc(100vh - 60px);
+        }
+        .content.expanded {
+            margin-left: 80px;
+            width: calc(100% - 80px);
+        }
+        #datetime {
+            font-size: 12px;
+            color: #333;
+            padding: 10px 0;
+            background: #e6f0ff;
+            margin-top: 10px;
+            text-align: center;
+            border-radius: 5px;
+        }
+        #datetime span {
+            font-weight: bold;
+        }
+        .dashboard-container {
+            width: 100%;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 25px;
+            background: #ffffff;
+            border-radius: 15px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+            display: flex;
+            flex-direction: column;
+            gap: 25px;
+        }
+        .dashboard-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+            flex-wrap: wrap;
+            gap: 12px;
+        }
+        .dashboard-title {
+            font-size: 18px;
+            font-weight: 800;
+            color: #1a73e8;
+        }
+        .monetization-form {
+            background: #f8f9fa;
+            padding: 15px;
+            border-radius: 8px;
+            margin-bottom: 15px;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 12px;
+        }
+        .form-group {
+            min-width: 180px;
+        }
+        .form-group label {
+            display: block;
+            font-weight: 600;
+            margin-bottom: 5px;
+            color: #333;
+            font-size: 12px;
+        }
+        .form-group input, .form-group select {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #e0e0e0;
+            border-radius: 5px;
+            font-size: 12px;
+            box-sizing: border-box;
+        }
+        .form-group input.error, .form-group select.error {
+            border-color: #dc3545;
+        }
+        .error-message {
+            color: #dc3545;
+            font-size: 10px;
+            margin-top: 5px;
+            display: none;
+        }
+        .form-actions {
+            display: flex;
+            gap: 10px;
+            justify-content: flex-end;
+            grid-column: 1 / -1;
+        }
+        .save-btn, .reset-btn {
+            min-width: 180px;
+            font-size: 12px;
+            padding: 12px 25px;
+            border: none;
+            border-radius: 10px;
+            transition: background 0.3s ease;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 600;
+            text-transform: uppercase;
+        }
+        .save-btn {
+            background: #1a73e8;
+            color: #ffffff;
+        }
+        .save-btn:hover {
+            background: #1557b0;
+        }
+        .reset-btn {
+            background: #6c757d;
+            color: #ffffff;
+        }
+        .reset-btn:hover {
+            background: #5a6268;
+        }
+        .monetization-modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.5);
+            backdrop-filter: blur(5px);
+            z-index: 1002;
+            justify-content: center;
+            align-items: center;
+        }
+        .monetization-modal.active {
+            display: flex;
+        }
+        .modal-content {
+            background: #ffffff;
+            padding: 20px;
+            border-radius: 10px;
+            width: 100%;
+            max-width: 550px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+            max-height: 80vh;
+            overflow-y: auto;
+            scrollbar-width: none;
+            -ms-overflow-style: none;
+        }
+        .modal-content::-webkit-scrollbar {
+            display: none;
+        }
+        .modal-header {
+            font-size: 14px;
+            font-weight: 700;
+            color: #1a73e8;
+            margin-bottom: 20px;
+        }
+        .modal-body {
+            font-size: 12px;
+            color: #333;
+            margin-bottom: 20px;
+        }
+        .modal-actions {
+            display: flex;
+            gap: 10px;
+            justify-content: flex-end;
+        }
+        .confirm-btn, .cancel-btn {
+            padding: 10px 20px;
+            border: none;
+            border-radius: 5px;
+            font-size: 12px;
+            cursor: pointer;
+            transition: background 0.3s ease;
+            flex: 1;
+        }
+        .confirm-btn {
+            background: #1a73e8;
+            color: #fff;
+        }
+        .confirm-btn:hover {
+            background: #1557b0;
+        }
+        .cancel-btn {
+            background: #6c757d;
+            color: #fff;
+        }
+        .cancel-btn:hover {
+            background: #5a6268;
+        }
+        .monetization-modal.active ~ .wrapper #sidebar,
+        .monetization-modal.active ~ .wrapper .content {
+            filter: blur(5px);
+            transition: filter 0.3s ease;
+        }
+        #sidebar,
+        .content {
+            filter: none;
+            transition: filter 0.3s ease;
+        }
+        @media (max-width: 768px) {
+            .content {
+                margin-left: 0;
+                width: 100%;
+            }
+            .content.expanded {
+                margin-left: 80px;
+                width: calc(100% - 80px);
+            }
+            .dashboard-container {
+                padding: 15px;
+            }
+            .dashboard-title {
+                font-size: 14px;
+            }
+            .save-btn, .reset-btn {
+                min-width: 140px;
+                font-size: 10px;
+                padding: 10px 20px;
+            }
+            .form-group input,
+            .form-group select {
+                font-size: 11px;
+            }
+            .modal-body {
+                font-size: 11px;
+            }
+            .confirm-btn, .cancel-btn {
+                padding: 8px 15px;
+                font-size: 11px;
+            }
+        }
+        @media (max-width: 480px) {
+            .content {
+                padding: 5px;
+            }
+            .content.expanded {
+                margin-left: 60px;
+                width: calc(100% - 60px);
+            }
+            .dashboard-container {
+                padding: 10px;
+            }
+            .dashboard-header {
+                flex-direction: column;
+                gap: 10px;
+                align-items: flex-start;
+            }
+            .dashboard-title {
+                font-size: 12px;
+            }
+            .save-btn, .reset-btn {
+                min-width: 120px;
+                font-size: 9px;
+                padding: 8px 15px;
+            }
+            .monetization-form {
+                grid-template-columns: 1fr;
+            }
+            .form-group {
+                min-width: 100%;
+            }
+            .form-group input,
+            .form-group select {
+                font-size: 10px;
+            }
+            .form-actions {
+                flex-direction: column;
+                gap: 8px;
+            }
+            .confirm-btn, .cancel-btn {
+                width: 100%;
+                padding: 8px;
+                font-size: 10px;
+            }
+            .modal-content {
+                max-width: 95%;
+                padding: 15px;
+            }
+        }
+    </style>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet"
           integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;700;800&display=swap" rel="stylesheet">
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 </head>
-
 <body>
-    <?php $this->load->view('base/base') ?>
-
+    <?php $this->load->view('base/navbar'); ?>
     <div class="wrapper">
+        <?php $this->load->view('base/sidebar'); ?>
         <div class="content" id="abc">
             <div class="container-fluid">
                 <div id="datetime"></div>
@@ -403,8 +349,6 @@
             </div>
         </div>
     </div>
-
-    <!-- Confirmation Modal -->
     <div id="monetizationModal" class="monetization-modal">
         <div class="modal-content">
             <div class="modal-header" id="monetizationModalTitle">Confirm Monetization Update</div>
@@ -417,10 +361,7 @@
             </div>
         </div>
     </div>
-
-    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
-            integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo"
-            crossorigin="anonymous"></script>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js"
             integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49"
             crossorigin="anonymous"></script>
@@ -428,33 +369,68 @@
             integrity="sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEULTy"
             crossorigin="anonymous"></script>
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-
     <script>
-        // Default monetization settings
+        $(document).ready(function () {
+            $('#sidebarToggle').on('click', function (e) {
+                e.preventDefault();
+                $('#sidebar').toggleClass('active');
+                $('#abc').toggleClass('expanded');
+                const toggleIcon = $(this).find('i');
+                toggleIcon.toggleClass('fa-chevron-left fa-chevron-right');
+            });
+            $('#navbarToggle').on('click', function (e) {
+                e.preventDefault();
+                $('#sidebar').toggleClass('active');
+                $('#abc').toggleClass('expanded');
+                const toggleIcon = $(this).find('i');
+                toggleIcon.toggleClass('fa-bars fa-times');
+            });
+            $('.dropdown-toggle').on('click', function(e) {
+                e.preventDefault();
+                if (!$('#sidebar').hasClass('active')) {
+                    var target = $(this).data('target');
+                    $('.list-unstyled').not(target).removeClass('show');
+                    $(target).toggleClass('show');
+                    $(this).attr('aria-expanded', $(this).attr('aria-expanded') === 'true' ? 'false' : 'true');
+                }
+            });
+            const sidebarLinks = document.querySelectorAll("#sidebar a:not(.dropdown-toggle)");
+            sidebarLinks.forEach(link => {
+                link.addEventListener("click", function () {
+                    if (!$('#sidebar').hasClass('active')) {
+                        const sectionName = link.textContent.trim();
+                        document.getElementById("navbarHeading").textContent = sectionName;
+                        localStorage.setItem("sectionName", sectionName);
+                    }
+                });
+            });
+            if (window.location.pathname === "/" || window.location.pathname === "<?php echo base_url('login'); ?>") {
+                localStorage.setItem("sectionName", "Dashboard");
+                document.getElementById("navbarHeading").textContent = "Dashboard";
+            } else {
+                const savedSection = localStorage.getItem("sectionName");
+                if (savedSection) {
+                    document.getElementById("navbarHeading").textContent = savedSection;
+                }
+            }
+        });
         const defaultMonetization = {
             pricePerKwh: '0.30',
             transactionFee: '2.00',
             minimumCharge: '5.00',
             billingCycle: 'Monthly'
         };
-
-        // Validate Monetization Form
         function validateMonetizationForm() {
             const pricePerKwhInput = document.getElementById('pricePerKwh');
             const transactionFeeInput = document.getElementById('transactionFee');
             const minimumChargeInput = document.getElementById('minimumCharge');
             const billingCycleInput = document.getElementById('billingCycle');
             let isValid = true;
-
             clearErrors();
-
-            // Validate at least one field is filled
             if (!pricePerKwhInput.value && !transactionFeeInput.value && !minimumChargeInput.value && !billingCycleInput.value) {
                 showError(pricePerKwhInput, 'At least one field must be filled.');
                 isValid = false;
             }
-
-            // Validate price per kWh
             if (pricePerKwhInput.value) {
                 const price = Number(pricePerKwhInput.value);
                 const priceRegex = /^\d+(\.\d{1,2})?$/;
@@ -463,8 +439,6 @@
                     isValid = false;
                 }
             }
-
-            // Validate transaction fee
             if (transactionFeeInput.value) {
                 const fee = Number(transactionFeeInput.value);
                 const feeRegex = /^\d+(\.\d{1,2})?$/;
@@ -473,8 +447,6 @@
                     isValid = false;
                 }
             }
-
-            // Validate minimum charge
             if (minimumChargeInput.value) {
                 const charge = Number(minimumChargeInput.value);
                 const chargeRegex = /^\d+(\.\d{1,2})?$/;
@@ -483,17 +455,12 @@
                     isValid = false;
                 }
             }
-
-            // Validate billing cycle
             if (!billingCycleInput.value) {
                 showError(billingCycleInput, 'Please select a billing cycle.');
                 isValid = false;
             }
-
             return isValid;
         }
-
-        // Show Error
         function showError(input, message) {
             const errorId = input.id + 'Error';
             const errorElement = document.getElementById(errorId);
@@ -503,32 +470,23 @@
                 input.classList.add('error');
             }
         }
-
-        // Clear Errors
         function clearErrors() {
             const errors = document.querySelectorAll('#monetizationForm .error-message');
             errors.forEach(error => error.style.display = 'none');
             const inputs = document.querySelectorAll('#monetizationForm input, #monetizationForm select');
             inputs.forEach(input => input.classList.remove('error'));
         }
-
-        // Save Monetization Settings
         function saveMonetization() {
             if (validateMonetizationForm()) {
                 document.getElementById('monetizationModal').classList.add('active');
             }
         }
-
-        // Confirm Save
         function confirmSave() {
             const pricePerKwh = document.getElementById('pricePerKwh').value || defaultMonetization.pricePerKwh;
             const transactionFee = document.getElementById('transactionFee').value || defaultMonetization.transactionFee;
             const minimumCharge = document.getElementById('minimumCharge').value || defaultMonetization.minimumCharge;
             const billingCycle = document.getElementById('billingCycle').value || defaultMonetization.billingCycle;
-
-            // In production, save settings to database or server here
             console.log('Monetization settings saved:', { pricePerKwh, transactionFee, minimumCharge, billingCycle });
-
             closeMonetizationModal();
             Swal.fire({
                 icon: 'success',
@@ -538,8 +496,6 @@
                 showConfirmButton: false
             });
         }
-
-        // Reset Monetization Settings
         function resetMonetization() {
             const form = document.getElementById('monetizationForm');
             form.reset();
@@ -556,23 +512,16 @@
                 showConfirmButton: false
             });
         }
-
-        // Close Monetization Modal
         function closeMonetizationModal() {
             document.getElementById('monetizationModal').classList.remove('active');
         }
-
-        // Close modal on outside click
         window.onclick = function(event) {
             const modal = document.getElementById('monetizationModal');
             if (event.target === modal) {
                 closeMonetizationModal();
             }
         }
-
-        // Event Listeners
         document.addEventListener("DOMContentLoaded", function () {
-            // Real-time validation for monetization form
             const inputs = document.querySelectorAll('#monetizationForm input, #monetizationForm select');
             inputs.forEach(input => {
                 input.addEventListener('input', function(e) {
@@ -606,11 +555,9 @@
                 });
             });
         });
-
-        // DateTime Update
         function updateDateTime() {
             const datetimeElement = document.getElementById("datetime");
-            const currentTime = new Date();
+            const currentTime = new Date('2025-09-19T12:20:00+05:30');
             const options = { weekday: 'long', year: 'numeric', month: 'numeric', day: 'numeric' };
             const options2 = { hour: '2-digit', minute: '2-digit', hour12: true };
             const formattedDate = currentTime.toLocaleDateString('en-IN', options);
@@ -618,11 +565,8 @@
             const formattedDateTime = `${formattedDate} @ ${formattedTime} IST`;
             datetimeElement.textContent = formattedDateTime;
         }
-
         updateDateTime();
         setInterval(updateDateTime, 1000);
-
-        // Helper function to hide error
         function hideError(input) {
             const errorId = input.id + 'Error';
             const errorElement = document.getElementById(errorId);
